@@ -17,11 +17,6 @@ defmodule QuizWeb.Router do
   scope "/", QuizWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", QuizLive
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", QuizWeb do
-  #   pipe_through :api
-  # end
 end
