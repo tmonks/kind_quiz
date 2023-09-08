@@ -3,13 +3,11 @@ defmodule Quiz.Questions do
   Loads questions from a CSV file.
   """
 
-  @default_quiz  "./assets/quiz.csv"
-
   @doc """
   Returns an array of questions and answers.
   """
-  def get_questions(csv_path \\ @default_quiz) do
-    decode_csv(csv_path)
+  def get_questions do
+    decode_csv()
     # drop the top row
     |> Enum.drop(1)
     |> Enum.map(fn [question | answers] ->
@@ -20,16 +18,16 @@ defmodule Quiz.Questions do
   @doc """
   Returns the title of the quiz.
   """
-  def get_title(csv_path \\ @default_quiz) do
-    decode_csv(csv_path)
+  def get_title do
+    decode_csv()
     |> Enum.take(1)
     |> Enum.map(fn [title | _] -> title end)
     |> List.first()
   end
 
-
-  defp decode_csv(csv_path) do
-    csv_path
+  defp decode_csv() do
+    Application.get_env(:quiz, :quiz_path)
+    |> IO.inspect(label: "loading quiz from")
     |> Path.expand(__DIR__)
     |> File.stream!()
     |> CSV.decode!()
