@@ -21,33 +21,11 @@ defmodule QuizWeb.QuizLive do
       </h1>
       <form id="quiz-form" phx-submit="submit">
         <!-- quiz question with radio button with answers a, b, c, and d -->
-        <div class="question">
-          What is your favorite movie?
-          <div>
-            <label>
-              <input type="radio" name="question1" value="a" />
-              <span>Answer A</span>
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="radio" name="question1" value="b" />
-              <span>Answer B</span>
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="radio" name="question1" value="c" />
-              <span>Answer C</span>
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="radio" name="question1" value="c" />
-              <span>Answer D</span>
-            </label>
-          </div>
-        </div>
+        <.question_component
+          id={1}
+          text="What is your favorite subject in school?"
+          answers={["A", "B", "C", "D"]}
+        />
         <div>
           <button
             type="submit"
@@ -57,6 +35,25 @@ defmodule QuizWeb.QuizLive do
           </button>
         </div>
       </form>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a question with a radio button for each answer.
+  """
+  def question_component(assigns) do
+    ~H"""
+    <div id="question-1">
+      <%= @text %>
+      <%= for {answer, index} <- Enum.with_index(@answers) do %>
+        <div>
+          <label>
+            <input type="radio" name="question-1" value={index} />
+            <span><%= answer %></span>
+          </label>
+        </div>
+      <% end %>
     </div>
     """
   end
