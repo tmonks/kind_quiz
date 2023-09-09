@@ -27,7 +27,6 @@ defmodule Quiz.Questions do
 
   defp decode_csv() do
     Application.get_env(:quiz, :quiz_path)
-    |> IO.inspect(label: "loading quiz from")
     |> Path.expand(__DIR__)
     |> File.stream!()
     |> CSV.decode!()

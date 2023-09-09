@@ -1,14 +1,17 @@
 defmodule QuizWeb.QuizLive do
   use QuizWeb, :live_view
 
+  alias Quiz.Questions
+
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, answer: "42")}
+    questions = Questions.get_questions()
+
+    {:ok, assign(socket, questions: questions)}
   end
 
   @impl true
   def handle_event("submit", params, socket) do
-    IO.inspect(params)
     {:noreply, socket}
   end
 
@@ -20,12 +23,13 @@ defmodule QuizWeb.QuizLive do
         KindQuiz
       </h1>
       <form id="quiz-form" phx-submit="submit">
-        <!-- quiz question with radio button with answers a, b, c, and d -->
-        <.question_component
-          id={1}
-          text="What is your favorite subject in school?"
-          answers={["A", "B", "C", "D"]}
-        />
+        <%= for {question, index} <- Enum.with_index(@questions) do %>
+          <.question_component
+            id={"question-#{index}"}
+            text={question.text}
+            answers={question.answers}
+          />
+        <% end %>
         <div>
           <button
             type="submit"
@@ -44,12 +48,12 @@ defmodule QuizWeb.QuizLive do
   """
   def question_component(assigns) do
     ~H"""
-    <div id="question-1">
-      <%= @text %>
+    <div id={@id} class="pb-6">
+      <div class="pb-2"><%= @text %></div>
       <%= for {answer, index} <- Enum.with_index(@answers) do %>
-        <div>
+        <div class="pb-1">
           <label>
-            <input type="radio" name="question-1" value={index} />
+            <input type="radio" name={@id} value={index} />
             <span><%= answer %></span>
           </label>
         </div>
