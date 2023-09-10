@@ -18,5 +18,6 @@ defmodule QuizWeb.Router do
     pipe_through :browser
 
     live "/", QuizLive
+    live "/outcome/:id", OutcomeLive, :show
   end
 end
