@@ -18,4 +18,12 @@ defmodule Quiz.QuestionsTest do
     assert ["Captain America", "Black Panther", "Iron Man", "Hawkeye", "Thor"] =
              Questions.list_outcomes()
   end
+
+  test "get_outcome!/1 returns the outcome with the given id" do
+    assert Questions.get_outcome!(1) == "Black Panther"
+  end
+
+  test "get_outcome!/1 raises an error if the outcome id is invalid" do
+    assert_raise(ArgumentError, fn -> Questions.get_outcome!(10) end)
+  end
 end

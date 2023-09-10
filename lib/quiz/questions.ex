@@ -34,6 +34,22 @@ defmodule Quiz.Questions do
     |> Enum.drop(1)
   end
 
+  @doc """
+  Returns the outcome with the given id. Raises an error if the id is invalid.
+  """
+  def get_outcome!(id) do
+    outcome =
+      decode_csv()
+      |> Enum.at(0)
+      |> Enum.drop(1)
+      |> Enum.at(id)
+
+    case outcome do
+      nil -> raise ArgumentError, "Invalid outcome id"
+      _ -> outcome
+    end
+  end
+
   defp decode_csv() do
     Application.get_env(:quiz, :quiz_path)
     |> Path.expand(__DIR__)
