@@ -25,6 +25,15 @@ defmodule Quiz.Questions do
     |> List.first()
   end
 
+  @doc """
+  Returns the list of possible outcomes
+  """
+  def list_outcomes do
+    decode_csv()
+    |> Enum.at(0)
+    |> Enum.drop(1)
+  end
+
   defp decode_csv() do
     Application.get_env(:quiz, :quiz_path)
     |> Path.expand(__DIR__)
