@@ -12,7 +12,9 @@ defmodule QuizWeb.QuizLive do
 
   @impl true
   def handle_event("submit", params, socket) do
-    {:noreply, socket}
+    outcome = get_most_frequent_answer(params)
+
+    {:noreply, push_redirect(socket, to: ~p"/outcome/#{outcome}")}
   end
 
   @impl true
@@ -60,5 +62,13 @@ defmodule QuizWeb.QuizLive do
       <% end %>
     </div>
     """
+  end
+
+  defp get_most_frequent_answer(params) do
+    params
+    |> Enum.group_by(fn {_k, v} -> v end)
+    |> Enum.max_by(fn {_k, v} -> Enum.count(v) end)
+    |> elem(0)
+    |> String.to_integer()
   end
 end
