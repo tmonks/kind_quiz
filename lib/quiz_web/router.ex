@@ -17,7 +17,8 @@ defmodule QuizWeb.Router do
   scope "/", QuizWeb do
     pipe_through :browser
 
-    live "/", QuizLive
+    live "/", TitleLive
+    live "/quiz", QuizLive
     live "/outcome/:id", OutcomeLive, :show
   end
 end

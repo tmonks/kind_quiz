@@ -4,13 +4,13 @@ defmodule QuizWeb.QuizLiveTest do
   import Phoenix.LiveViewTest
 
   test "renders the quiz page", %{conn: conn} do
-    {:ok, _view, html} = live(conn, "/")
+    {:ok, _view, html} = live(conn, ~p"/quiz")
 
     assert html =~ "KindQuiz"
   end
 
   test "renders questions from the quiz csv", %{conn: conn} do
-    {:ok, view, _html} = live(conn, "/")
+    {:ok, view, _html} = live(conn, ~p"/quiz")
 
     assert has_element?(view, "#question-0", "What is your favorite subject in school?")
     assert has_element?(view, "#question-0 label", "History")
@@ -21,7 +21,7 @@ defmodule QuizWeb.QuizLiveTest do
   end
 
   test "redirects to the outcome for the most frequent answer", %{conn: conn} do
-    {:ok, view, _html} = live(conn, ~p"/")
+    {:ok, view, _html} = live(conn, ~p"/quiz")
 
     answers = %{
       "question-0" => "1",
