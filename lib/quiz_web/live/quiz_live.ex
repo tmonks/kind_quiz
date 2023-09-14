@@ -6,8 +6,12 @@ defmodule QuizWeb.QuizLive do
   @impl true
   def mount(_params, _session, socket) do
     questions = Questions.get_questions()
+    title = Questions.get_title()
 
-    {:ok, assign(socket, questions: questions)}
+    {:ok,
+     socket
+     |> assign(questions: questions)
+     |> assign(title: title)}
   end
 
   @impl true
@@ -21,8 +25,8 @@ defmodule QuizWeb.QuizLive do
   def render(assigns) do
     ~H"""
     <div class="container">
-      <h1 class="mt-0 mb-2 text-5xl font-medium leading-tight text-primary">
-        KindQuiz
+      <h1 class="mt-0 mb-8 text-4xl font-medium leading-tight text-primary">
+        <%= @title %>
       </h1>
       <form id="quiz-form" phx-submit="submit">
         <%= for {question, index} <- Enum.with_index(@questions) do %>

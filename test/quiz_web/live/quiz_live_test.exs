@@ -3,10 +3,10 @@ defmodule QuizWeb.QuizLiveTest do
 
   import Phoenix.LiveViewTest
 
-  test "renders the quiz page", %{conn: conn} do
+  test "renders the quiz page with the question at the top", %{conn: conn} do
     {:ok, _view, html} = live(conn, ~p"/quiz")
 
-    assert html =~ "KindQuiz"
+    assert html =~ "What kind of superhero are you?"
   end
 
   test "renders questions from the quiz csv", %{conn: conn} do
