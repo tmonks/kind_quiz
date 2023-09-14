@@ -55,12 +55,12 @@ defmodule QuizWeb.QuizLive do
   def question_component(assigns) do
     ~H"""
     <div id={@id} class="pb-6">
-      <div class="pb-2"><%= @text %></div>
+      <div class="pb-4 text-lg font-medium"><%= @text %></div>
       <%= for {answer, index} <- Enum.with_index(@answers) do %>
-        <div class="pb-1">
+        <div class="pb-2">
           <label>
             <input type="radio" name={@id} value={index} />
-            <span><%= answer %></span>
+            <span class="ml-2"><%= answer %></span>
           </label>
         </div>
       <% end %>
