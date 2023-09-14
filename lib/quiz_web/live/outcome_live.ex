@@ -12,8 +12,8 @@ defmodule QuizWeb.OutcomeLive do
 
   def render(assigns) do
     ~H"""
-    <div>
-      <h1 id="outcome" class="mt-0 mb-2 text-5xl font-medium leading-tight text-primary">
+    <div class="mt-28 mt-2 text-center">
+      <h1 id="outcome" class="text-4xl font-bold">
         You got <%= @outcome %>!
       </h1>
       <a
@@ -22,7 +22,7 @@ defmodule QuizWeb.OutcomeLive do
         class="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         href={~p"/"}
       >
-        Restart
+        Start over
       </a>
     </div>
     """
