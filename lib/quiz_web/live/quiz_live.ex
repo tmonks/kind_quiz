@@ -10,6 +10,8 @@ defmodule QuizWeb.QuizLive do
 
     {:ok,
      socket
+     |> assign(index: 0)
+     |> assign(question: Enum.at(questions, 0))
      |> assign(questions: questions)
      |> assign(title: title)}
   end
@@ -29,13 +31,11 @@ defmodule QuizWeb.QuizLive do
         <%= @title %>
       </h1>
       <form id="quiz-form" phx-submit="submit">
-        <%= for {question, index} <- Enum.with_index(@questions) do %>
-          <.question_component
-            id={"question-#{index}"}
-            text={question.text}
-            answers={question.answers}
-          />
-        <% end %>
+        <.question_component
+          id={"question-#{@index}"}
+          text={@question.text}
+          answers={@question.answers}
+        />
         <div>
           <button
             type="submit"

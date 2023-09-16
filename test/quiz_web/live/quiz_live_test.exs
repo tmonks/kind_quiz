@@ -9,7 +9,7 @@ defmodule QuizWeb.QuizLiveTest do
     assert html =~ "What kind of superhero are you?"
   end
 
-  test "renders questions from the quiz csv", %{conn: conn} do
+  test "renders the first question on load", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 
     assert has_element?(view, "#question-0", "What is your favorite subject in school?")
