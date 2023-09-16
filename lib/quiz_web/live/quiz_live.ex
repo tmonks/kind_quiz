@@ -13,7 +13,8 @@ defmodule QuizWeb.QuizLive do
      |> assign(index: 0)
      |> assign(question: Enum.at(questions, 0))
      |> assign(questions: questions)
-     |> assign(title: title)}
+     |> assign(title: title)
+     |> assign(button_disabled: true)}
   end
 
   @impl true
@@ -23,6 +24,17 @@ defmodule QuizWeb.QuizLive do
     {:noreply, push_redirect(socket, to: ~p"/outcome/#{outcome}")}
   end
 
+  def handle_event("select", _params, socket) do
+    {:noreply, assign(socket, button_disabled: false)}
+  end
+
+  def handle_event("next", _params, socket) do
+    index = socket.assigns.index + 1
+    question = Enum.at(socket.assigns.questions, index)
+
+    {:noreply, assign(socket, index: index, question: question, button_disabled: true)}
+  end
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -30,21 +42,23 @@ defmodule QuizWeb.QuizLive do
       <h1 class="mt-0 mb-8 text-4xl font-medium leading-tight text-primary">
         <%= @title %>
       </h1>
-      <form id="quiz-form" phx-submit="submit">
+      <form id="quiz-form" phx-submit="submit" phx-change="select">
         <.question_component
           id={"question-#{@index}"}
           text={@question.text}
           answers={@question.answers}
         />
-        <div>
-          <button
-            type="submit"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Submit
-          </button>
-        </div>
       </form>
+      <div>
+        <button
+          id="next-button"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:hover:bg-blue-500"
+          phx-click="next"
+          disabled={@button_disabled}
+        >
+          Next
+        </button>
+      </div>
     </div>
     """
   end

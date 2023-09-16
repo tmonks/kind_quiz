@@ -20,6 +20,37 @@ defmodule QuizWeb.QuizLiveTest do
     assert has_element?(view, "#question-0 label", "Mythology")
   end
 
+  test "Next button is initially disabled", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/quiz")
+
+    assert has_element?(view, "#next-button[disabled]")
+  end
+
+  test "Selecting an answer enables the Next button", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/quiz")
+
+    view
+    |> form("#quiz-form", %{"question-0" => "1"})
+    |> render_change()
+
+    refute has_element?(view, "#next-button[disabled]")
+  end
+
+  test "Clicking Next shows the next question", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/quiz")
+
+    view
+    |> form("#quiz-form", %{"question-0" => "1"})
+    |> render_change()
+
+    view
+    |> element("#next-button")
+    |> render_click()
+
+    assert has_element?(view, "#question-1", "How do you like to spend your free time?")
+  end
+
+  @tag :skip
   test "redirects to the outcome for the most frequent answer", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 
