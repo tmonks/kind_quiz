@@ -82,6 +82,7 @@ defmodule QuizWeb do
     quote do
       # HTML escaping functionality
       import Phoenix.HTML
+
       # Core UI components and translation
       import QuizWeb.CoreComponents
 

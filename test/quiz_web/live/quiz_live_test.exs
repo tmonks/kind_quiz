@@ -12,12 +12,12 @@ defmodule QuizWeb.QuizLiveTest do
   test "renders the first question on load", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 
-    assert has_element?(view, "#question-0", "What is your favorite subject in school?")
-    assert has_element?(view, "#question-0 label", "History")
-    assert has_element?(view, "#question-0 label", "Science")
-    assert has_element?(view, "#question-0 label", "Technology")
-    assert has_element?(view, "#question-0 label", "Physical Education")
-    assert has_element?(view, "#question-0 label", "Mythology")
+    assert has_element?(view, "#question-text", "What is your favorite subject in school?")
+    assert has_element?(view, "label", "History")
+    assert has_element?(view, "label", "Science")
+    assert has_element?(view, "label", "Technology")
+    assert has_element?(view, "label", "Physical Education")
+    assert has_element?(view, "label", "Mythology")
   end
 
   test "Next button is initially disabled", %{conn: conn} do
@@ -30,7 +30,7 @@ defmodule QuizWeb.QuizLiveTest do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 
     view
-    |> form("#quiz-form", %{"question-0" => "1"})
+    |> form("#quiz-form", %{"response" => "1"})
     |> render_change()
 
     refute has_element?(view, "#next-button[disabled]")
@@ -40,14 +40,14 @@ defmodule QuizWeb.QuizLiveTest do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 
     view
-    |> form("#quiz-form", %{"question-0" => "1"})
+    |> form("#quiz-form", %{"response" => "1"})
     |> render_change()
 
     view
     |> element("#next-button")
     |> render_click()
 
-    assert has_element?(view, "#question-1", "How do you like to spend your free time?")
+    assert has_element?(view, "#question-text", "How do you like to spend your free time?")
   end
 
   @tag :skip

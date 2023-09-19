@@ -1,5 +1,6 @@
 defmodule QuizWeb.QuizLive do
   use QuizWeb, :live_view
+  import Phoenix.HTML.Form
 
   alias Quiz.Questions
 
@@ -8,9 +9,12 @@ defmodule QuizWeb.QuizLive do
     questions = Questions.get_questions()
     title = Questions.get_title()
 
+    form = to_form(%{"response" => nil})
+
     {:ok,
      socket
      |> assign(index: 0)
+     |> assign(form: form)
      |> assign(question: Enum.at(questions, 0))
      |> assign(questions: questions)
      |> assign(title: title)
@@ -24,8 +28,9 @@ defmodule QuizWeb.QuizLive do
     {:noreply, push_redirect(socket, to: ~p"/outcome/#{outcome}")}
   end
 
-  def handle_event("select", _params, socket) do
-    {:noreply, assign(socket, button_disabled: false)}
+  def handle_event("select", params, socket) do
+    form = to_form(params)
+    {:noreply, assign(socket, form: form, button_disabled: false)}
   end
 
   def handle_event("next", _params, socket) do
@@ -42,13 +47,19 @@ defmodule QuizWeb.QuizLive do
       <h1 class="mt-0 mb-8 text-4xl font-medium leading-tight text-primary">
         <%= @title %>
       </h1>
-      <form id="quiz-form" phx-submit="submit" phx-change="select">
-        <.question_component
-          id={"question-#{@index}"}
-          text={@question.text}
-          answers={@question.answers}
-        />
-      </form>
+      <.form :let={f} id="quiz-form" for={@form} phx-submit="submit" phx-change="select">
+        <div class="pb-6">
+          <div id="question-text" class="pb-4 text-lg font-medium"><%= @question.text %></div>
+          <%= for {answer, index} <- Enum.with_index(@question.answers) do %>
+            <div class="pb-2">
+              <label>
+                <%= radio_button(f, :response, index) %>
+                <span class="ml-2"><%= answer %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      </.form>
       <div>
         <button
           id="next-button"
