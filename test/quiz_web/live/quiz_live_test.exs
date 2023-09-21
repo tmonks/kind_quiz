@@ -36,21 +36,16 @@ defmodule QuizWeb.QuizLiveTest do
     refute has_element?(view, "#next-button[disabled]")
   end
 
-  test "Clicking Next shows the next question", %{conn: conn} do
+  test "submitting the form shows the next question", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 
     view
     |> form("#quiz-form", %{"response" => "1"})
-    |> render_change()
-
-    view
-    |> element("#next-button")
-    |> render_click()
+    |> render_submit()
 
     assert has_element?(view, "#question-text", "How do you like to spend your free time?")
   end
 
-  @tag :skip
   test "redirects to the outcome for the most frequent answer", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 
@@ -62,8 +57,16 @@ defmodule QuizWeb.QuizLiveTest do
       "question-4" => "2"
     }
 
+    responses = [1, 1, 1, 2]
+
+    for response <- responses do
+      view
+      |> form("#quiz-form", %{"response" => response})
+      |> render_submit()
+    end
+
     view
-    |> form("#quiz-form", answers)
+    |> form("#quiz-form", %{"response" => 2})
     |> render_submit()
     |> follow_redirect(conn, ~p"/outcome/1")
   end
