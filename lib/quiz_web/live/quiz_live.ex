@@ -31,25 +31,18 @@ defmodule QuizWeb.QuizLive do
   def handle_event("next", %{"response" => response}, socket) do
     response = String.to_integer(response)
     counts = Map.update(socket.assigns.counts, response, 1, &(&1 + 1))
-    index = socket.assigns.index
+    index = socket.assigns.index + 1
     questions = socket.assigns.questions
 
-    IO.inspect(counts)
-
     socket =
-      if index == length(questions) - 1 do
+      if index == length(questions) do
         outcome = most_frequent_response(counts)
-
-        socket
-        |> redirect(to: ~p"/outcome/#{outcome}")
+        socket |> redirect(to: ~p"/outcome/#{outcome}")
       else
-        index = socket.assigns.index + 1
-        question = Enum.at(socket.assigns.questions, index)
-
         socket
         |> assign(index: index)
         |> assign(form: to_form(%{"response" => nil}))
-        |> assign(question: question)
+        |> assign(question: Enum.at(questions, index))
         |> assign(button_disabled: true)
         |> assign(counts: counts)
       end
@@ -114,13 +107,5 @@ defmodule QuizWeb.QuizLive do
       <% end %>
     </div>
     """
-  end
-
-  defp get_most_frequent_answer(params) do
-    params
-    |> Enum.group_by(fn {_k, v} -> v end)
-    |> Enum.max_by(fn {_k, v} -> Enum.count(v) end)
-    |> elem(0)
-    |> String.to_integer()
   end
 end

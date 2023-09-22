@@ -49,25 +49,16 @@ defmodule QuizWeb.QuizLiveTest do
   test "redirects to the outcome for the most frequent answer", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 
-    answers = %{
-      "question-0" => "1",
-      "question-1" => "1",
-      "question-2" => "1",
-      "question-3" => "2",
-      "question-4" => "2"
-    }
-
-    responses = [1, 1, 1, 2]
-
-    for response <- responses do
-      view
-      |> form("#quiz-form", %{"response" => response})
-      |> render_submit()
-    end
+    # majority of answers are 1
+    view |> form("#quiz-form", %{"response" => 1}) |> render_submit()
+    view |> form("#quiz-form", %{"response" => 1}) |> render_submit()
+    view |> form("#quiz-form", %{"response" => 1}) |> render_submit()
+    view |> form("#quiz-form", %{"response" => 2}) |> render_submit()
 
     view
     |> form("#quiz-form", %{"response" => 2})
     |> render_submit()
+    # redirected to outcome 1
     |> follow_redirect(conn, ~p"/outcome/1")
   end
 end
