@@ -68,10 +68,11 @@ defmodule QuizWeb.QuizLive do
           <div id="question-text" class="pb-4 text-lg font-medium"><%= @question.text %></div>
           <%= for {answer, index} <- Enum.with_index(@question.answers) do %>
             <div class="pb-2">
-              <label>
-                <%= radio_button(f, :response, index) %>
-                <span class="ml-2"><%= answer %></span>
-              </label>
+              <!-- TODO: figure out how to avoid conflict with QuizWeb.CoreComponents.label -->
+              <%= Phoenix.HTML.Form.label do %>
+                <%= radio_button(f, :response, index, class: "mr-2") %>
+                <%= answer %>
+              <% end %>
             </div>
           <% end %>
         </div>
@@ -86,25 +87,6 @@ defmodule QuizWeb.QuizLive do
           </button>
         </div>
       </.form>
-    </div>
-    """
-  end
-
-  @doc """
-  Renders a question with a radio button for each answer.
-  """
-  def question_component(assigns) do
-    ~H"""
-    <div id={@id} class="pb-6">
-      <div class="pb-4 text-lg font-medium"><%= @text %></div>
-      <%= for {answer, index} <- Enum.with_index(@answers) do %>
-        <div class="pb-2">
-          <label>
-            <input type="radio" name={@id} value={index} />
-            <span class="ml-2"><%= answer %></span>
-          </label>
-        </div>
-      <% end %>
     </div>
     """
   end
