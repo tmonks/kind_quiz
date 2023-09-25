@@ -4,7 +4,7 @@ defmodule QuizWeb.OutcomeLiveTest do
   import Phoenix.LiveViewTest
 
   test "renders the outcome from the id param", %{conn: conn} do
-    assert {:ok, view, html} = live(conn, ~p"/outcome/1")
+    assert {:ok, view, _html} = live(conn, ~p"/outcome/1")
 
     assert has_element?(view, "#outcome", "Black Panther")
   end
@@ -15,6 +15,12 @@ defmodule QuizWeb.OutcomeLiveTest do
     view
     |> element("#restart-quiz-button")
     |> render_click()
-    |> follow_redirect(~p"/")
+    |> follow_redirect(conn, ~p"/")
+  end
+
+  test "displays a picture of the outcome", %{conn: conn} do
+    assert {:ok, view, _html} = live(conn, ~p"/outcome/1")
+
+    assert has_element?(view, "img[src='/images/outcome-1.jpg']")
   end
 end
