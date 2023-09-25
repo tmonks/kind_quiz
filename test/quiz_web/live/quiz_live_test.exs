@@ -46,6 +46,18 @@ defmodule QuizWeb.QuizLiveTest do
     assert has_element?(view, "#question-text", "How do you like to spend your free time?")
   end
 
+  test "shows the question progress (x of y)", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/quiz")
+
+    assert has_element?(view, "#question-counter", "(1 of 5)")
+
+    view
+    |> form("#quiz-form", %{"response" => "1"})
+    |> render_submit()
+
+    assert has_element?(view, "#question-counter", "(2 of 5)")
+  end
+
   test "redirects to the outcome for the most frequent answer", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/quiz")
 

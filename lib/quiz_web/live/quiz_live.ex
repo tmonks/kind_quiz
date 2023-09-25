@@ -65,7 +65,10 @@ defmodule QuizWeb.QuizLive do
       </h1>
       <.form :let={f} id="quiz-form" for={@form} phx-submit="next" phx-change="select">
         <div class="pb-6">
-          <div id="question-text" class="pb-4 text-lg font-medium"><%= @question.text %></div>
+          <div id="question-text" class="pb-1 text-lg font-medium"><%= @question.text %></div>
+          <div id="question-counter" class="pb-5 text-sm text-gray-600">
+            (<%= @index + 1 %> of <%= length(@questions) %>)
+          </div>
           <%= for {answer, index} <- Enum.with_index(@question.answers) do %>
             <div class="pb-2">
               <!-- TODO: figure out how to avoid conflict with QuizWeb.CoreComponents.label -->
