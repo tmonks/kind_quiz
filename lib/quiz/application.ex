@@ -10,6 +10,8 @@ defmodule Quiz.Application do
     children = [
       # Start the Telemetry supervisor
       QuizWeb.Telemetry,
+      # Start the Ecto repository
+      Quiz.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: Quiz.PubSub},
       # Start the Endpoint (http/https)

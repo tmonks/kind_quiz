@@ -7,6 +7,9 @@
 # General application configuration
 import Config
 
+config :quiz,
+  ecto_repos: [Quiz.Repo]
+
 # Configures the endpoint
 config :quiz, QuizWeb.Endpoint,
   url: [host: "localhost"],
