@@ -10,12 +10,13 @@ swap_size_mb = 512
 
 [build]
 
-[deploy]
-  release_command = "/app/bin/migrate"
-
 [env]
   PHX_HOST = "quizzical.fly.dev"
   PORT = "8080"
+
+[mounts]
+  source="quiz_data"
+  destination="/data"
 
 [http_service]
   internal_port = 8080

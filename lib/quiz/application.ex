@@ -7,6 +7,9 @@ defmodule Quiz.Application do
 
   @impl true
   def start(_type, _args) do
+    # Run migrations
+    Quiz.Release.migrate()
+
     children = [
       # Start the Telemetry supervisor
       QuizWeb.Telemetry,
