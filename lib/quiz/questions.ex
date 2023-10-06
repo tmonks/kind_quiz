@@ -3,6 +3,8 @@ defmodule Quiz.Questions do
   Loads questions from a CSV file.
   """
 
+  @quiz_file Path.join(__DIR__, "quiz.csv")
+
   @doc """
   Returns an array of questions and answers.
   """
@@ -51,7 +53,7 @@ defmodule Quiz.Questions do
   end
 
   defp decode_csv() do
-    Application.get_env(:quiz, :quiz_path)
+    @quiz_file
     |> Path.expand(__DIR__)
     |> File.stream!()
     |> CSV.decode!()

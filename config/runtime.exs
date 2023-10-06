@@ -20,9 +20,6 @@ if System.get_env("PHX_SERVER") do
   config :quiz, QuizWeb.Endpoint, server: true
 end
 
-# configure the default path for the quiz csv
-config :quiz, quiz_path: Path.expand("../assets/quiz.csv", __DIR__)
-
 if config_env() == :prod do
   database_path =
     System.get_env("DATABASE_PATH") ||
