@@ -25,5 +25,6 @@ defmodule Quiz.QuestionsTest do
 
   test "get_outcome!/1 raises an error if the outcome id is invalid" do
     assert_raise(ArgumentError, fn -> Questions.get_outcome!(10) end)
+    assert_raise(ArgumentError, fn -> Questions.get_outcome!(-1) end)
   end
 end
