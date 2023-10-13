@@ -1,7 +1,12 @@
 defmodule Quiz.QuestionsTest do
-  use ExUnit.Case, async: true
+  use Quiz.DataCase, async: true
+  import Quiz.Factory
 
   alias Quiz.Questions
+
+  test "can use the factory" do
+    assert %Quiz.Quizzes.Quiz{title: "What kind of pizza are you?"} = insert(:quiz)
+  end
 
   test "get_questions/0 returns an array of questions and answers" do
     assert [question1 | _] = questions = Questions.get_questions()
