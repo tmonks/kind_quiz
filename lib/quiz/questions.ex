@@ -3,6 +3,9 @@ defmodule Quiz.Questions do
   Loads quiz and questions data
   """
 
+  alias Quiz.Repo
+  alias Quiz.Quizzes.Quiz
+
   @title "What kind of superhero are you?"
 
   @outcomes ["Captain America", "Black Panther", "Iron Man", "Hawkeye", "Thor"]
@@ -15,6 +18,13 @@ defmodule Quiz.Questions do
   What is your favorite animal?,Eagle,Panther,Robot (Yes it counts!),Hawk,Dragon
   How do you handle conflict?,Stand my ground and fight for what's right,Use wisdom and diplomacy,Outsmart the opponent,Keep a cool head and aim true,Charge in with all my might
   """
+
+  @doc """
+  Returns a quiz by id. Raises an error if the id is invalid.
+  """
+  def get_quiz!(id) do
+    Repo.get!(Quiz, id)
+  end
 
   @doc """
   Returns an array of questions and answers.
