@@ -1,11 +1,11 @@
-defmodule QuizWeb.Router do
-  use QuizWeb, :router
+defmodule KindQuizWeb.Router do
+  use KindQuizWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, html: {QuizWeb.Layouts, :root}
+    plug :put_root_layout, html: {KindQuizWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -14,7 +14,7 @@ defmodule QuizWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", QuizWeb do
+  scope "/", KindQuizWeb do
     pipe_through :browser
 
     live "/", TitleLive

@@ -1,5 +1,5 @@
-defmodule QuizWeb.ErrorHTML do
-  use QuizWeb, :html
+defmodule KindQuizWeb.ErrorHTML do
+  use KindQuizWeb, :html
 
   # If you want to customize your error pages,
   # uncomment the embed_templates/1 call below

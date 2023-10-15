@@ -1,8 +1,8 @@
-defmodule QuizWeb.QuizLive do
-  use QuizWeb, :live_view
+defmodule KindQuizWeb.QuizLive do
+  use KindQuizWeb, :live_view
   import Phoenix.HTML.Form
 
-  alias Quiz.Questions
+  alias KindQuiz.Questions
 
   @impl true
   def mount(_params, _session, socket) do
@@ -71,7 +71,7 @@ defmodule QuizWeb.QuizLive do
           </div>
           <%= for {answer, index} <- Enum.with_index(@question.answers) do %>
             <div class="pb-2">
-              <!-- TODO: figure out how to avoid conflict with QuizWeb.CoreComponents.label -->
+              <!-- TODO: figure out how to avoid conflict with KindQuizWeb.CoreComponents.label -->
               <%= Phoenix.HTML.Form.label do %>
                 <%= radio_button(f, :response, index, class: "mr-2") %>
                 <%= answer %>

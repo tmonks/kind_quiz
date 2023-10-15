@@ -1,4 +1,4 @@
-defmodule Quiz.Application do
+defmodule KindQuiz.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,24 +8,24 @@ defmodule Quiz.Application do
   @impl true
   def start(_type, _args) do
     # Run migrations
-    Quiz.Release.migrate()
+    KindQuiz.Release.migrate()
 
     children = [
       # Start the Telemetry supervisor
-      QuizWeb.Telemetry,
+      KindQuizWeb.Telemetry,
       # Start the Ecto repository
-      Quiz.Repo,
+      KindQuiz.Repo,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Quiz.PubSub},
+      {Phoenix.PubSub, name: KindQuiz.PubSub},
       # Start the Endpoint (http/https)
-      QuizWeb.Endpoint
-      # Start a worker by calling: Quiz.Worker.start_link(arg)
-      # {Quiz.Worker, arg}
+      KindQuizWeb.Endpoint
+      # Start a worker by calling: KindQuiz.Worker.start_link(arg)
+      # {KindQuiz.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Quiz.Supervisor]
+    opts = [strategy: :one_for_one, name: KindQuiz.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
@@ -33,7 +33,7 @@ defmodule Quiz.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    QuizWeb.Endpoint.config_change(changed, removed)
+    KindQuizWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

@@ -1,5 +1,5 @@
-defmodule QuizWeb.QuizLiveTest do
-  use QuizWeb.ConnCase, async: true
+defmodule KindQuizWeb.QuizLiveTest do
+  use KindQuizWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
 

@@ -1,10 +1,10 @@
-defmodule Quiz.Questions do
+defmodule KindQuiz.Questions do
   @moduledoc """
   Loads quiz and questions data
   """
 
-  alias Quiz.Repo
-  alias Quiz.Quizzes.Quiz
+  alias KindQuiz.Repo
+  alias KindQuiz.Quizzes.Quiz
 
   @title "What kind of superhero are you?"
 

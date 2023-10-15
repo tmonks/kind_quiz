@@ -8,16 +8,16 @@
 import Config
 
 config :quiz,
-  ecto_repos: [Quiz.Repo]
+  ecto_repos: [KindQuiz.Repo]
 
 # Configures the endpoint
-config :quiz, QuizWeb.Endpoint,
+config :quiz, KindQuizWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [
-    formats: [html: QuizWeb.ErrorHTML, json: QuizWeb.ErrorJSON],
+    formats: [html: KindQuizWeb.ErrorHTML, json: KindQuizWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: Quiz.PubSub,
+  pubsub_server: KindQuiz.PubSub,
   live_view: [signing_salt: "MVHWt9Te"]
 
 # Configure esbuild (the version is required)

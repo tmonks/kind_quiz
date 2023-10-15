@@ -1,4 +1,4 @@
-defmodule QuizWeb.Endpoint do
+defmodule KindQuizWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :quiz
 
   # The session will be stored in the cookie and signed,
@@ -21,7 +21,7 @@ defmodule QuizWeb.Endpoint do
     at: "/",
     from: :quiz,
     gzip: false,
-    only: QuizWeb.static_paths()
+    only: KindQuizWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -43,5 +43,5 @@ defmodule QuizWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug QuizWeb.Router
+  plug KindQuizWeb.Router
 end

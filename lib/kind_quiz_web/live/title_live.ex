@@ -1,7 +1,7 @@
-defmodule QuizWeb.TitleLive do
-  use QuizWeb, :live_view
+defmodule KindQuizWeb.TitleLive do
+  use KindQuizWeb, :live_view
 
-  alias Quiz.Questions
+  alias KindQuiz.Questions
 
   @impl true
   def mount(_params, _session, socket) do

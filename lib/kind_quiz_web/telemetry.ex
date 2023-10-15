@@ -1,4 +1,4 @@
-defmodule QuizWeb.Telemetry do
+defmodule KindQuizWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -86,7 +86,7 @@ defmodule QuizWeb.Telemetry do
     [
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric must be added above.
-      # {QuizWeb, :count_users, []}
+      # {KindQuizWeb, :count_users, []}
     ]
   end
 end

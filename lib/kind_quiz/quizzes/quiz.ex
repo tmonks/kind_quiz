@@ -1,4 +1,4 @@
-defmodule Quiz.Quizzes.Quiz do
+defmodule KindQuiz.Quizzes.Quiz do
   use Ecto.Schema
   import Ecto.Changeset
 

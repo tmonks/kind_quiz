@@ -1,4 +1,4 @@
-defmodule Quiz.Release do
+defmodule KindQuiz.Release do
   @moduledoc """
   Used for executing DB release tasks when run in production without Mix
   installed.

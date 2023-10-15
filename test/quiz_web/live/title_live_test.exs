@@ -1,5 +1,5 @@
-defmodule QuizWeb.TitleLiveTest do
-  use QuizWeb.ConnCase, async: true
+defmodule KindQuizWeb.TitleLiveTest do
+  use KindQuizWeb.ConnCase, async: true
   import Phoenix.LiveViewTest
 
   test "renders a title page with the quiz title", %{conn: conn} do

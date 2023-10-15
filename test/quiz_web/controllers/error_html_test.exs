@@ -1,14 +1,14 @@
-defmodule QuizWeb.ErrorHTMLTest do
-  use QuizWeb.ConnCase, async: true
+defmodule KindQuizWeb.ErrorHTMLTest do
+  use KindQuizWeb.ConnCase, async: true
 
   # Bring render_to_string/4 for testing custom views
   import Phoenix.Template
 
   test "renders 404.html" do
-    assert render_to_string(QuizWeb.ErrorHTML, "404", "html", []) == "Not Found"
+    assert render_to_string(KindQuizWeb.ErrorHTML, "404", "html", []) == "Not Found"
   end
 
   test "renders 500.html" do
-    assert render_to_string(QuizWeb.ErrorHTML, "500", "html", []) == "Internal Server Error"
+    assert render_to_string(KindQuizWeb.ErrorHTML, "500", "html", []) == "Internal Server Error"
   end
 end

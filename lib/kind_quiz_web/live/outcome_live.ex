@@ -1,7 +1,7 @@
-defmodule QuizWeb.OutcomeLive do
-  use QuizWeb, :live_view
+defmodule KindQuizWeb.OutcomeLive do
+  use KindQuizWeb, :live_view
 
-  alias Quiz.Questions
+  alias KindQuiz.Questions
 
   def handle_params(%{"id" => id}, _uri, socket) do
     id = String.to_integer(id)

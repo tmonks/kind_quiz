@@ -1,8 +1,8 @@
-defmodule Quiz.QuestionsTest do
-  use Quiz.DataCase, async: true
-  import Quiz.Factory
+defmodule KindQuiz.QuestionsTest do
+  use KindQuiz.DataCase, async: true
+  import KindQuiz.Factory
 
-  alias Quiz.Questions
+  alias KindQuiz.Questions
 
   test "get_quiz!/1 returns a quiz by id" do
     %{id: id} = insert(:quiz, %{title: "What kind of pizza are you?"})
