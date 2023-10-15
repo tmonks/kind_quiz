@@ -24,6 +24,7 @@ defmodule KindQuiz.Questions do
   """
   def get_quiz!(id) do
     Repo.get!(Quiz, id)
+    |> Repo.preload(:questions)
   end
 
   @doc """
