@@ -14,12 +14,22 @@ defmodule KindQuiz.QuestionsTest do
     assert_raise(Ecto.NoResultsError, fn -> Questions.get_quiz!(10) end)
   end
 
-  test "get_quiz!/1 preloads questions" do
+  test "get_quiz!/1 preloads questions and answers" do
     %{id: id} = insert(:quiz, %{title: "What kind of pizza are you?"})
-    question = insert(:question, %{quiz_id: id, text: "What is your favorite topping?"})
 
-    assert %{id: ^id, title: "What kind of pizza are you?", questions: [^question]} =
+    question =
+      %{id: question_id} =
+      insert(:question, %{quiz_id: id, text: "What is your favorite topping?"})
+
+    %{id: answer_id} = insert(:answer, %{question_id: question.id, text: "Pepperoni"})
+
+    assert %{id: ^id, title: "What kind of pizza are you?", questions: [question]} =
              Questions.get_quiz!(id)
+
+    assert %{id: ^question_id, text: "What is your favorite topping?", answers: [answer]} =
+             question
+
+    assert %{id: ^answer_id, text: "Pepperoni"} = answer
   end
 
   test "get_questions/0 returns an array of questions and answers" do
