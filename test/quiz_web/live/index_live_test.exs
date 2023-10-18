@@ -1,4 +1,4 @@
-defmodule KindQuizWeb.TitleLiveTest do
+defmodule KindQuizWeb.IndexLiveTest do
   use KindQuizWeb.ConnCase, async: true
   import Phoenix.LiveViewTest
 

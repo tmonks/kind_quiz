@@ -1,4 +1,4 @@
-defmodule KindQuizWeb.TitleLive do
+defmodule KindQuizWeb.IndexLive do
   use KindQuizWeb, :live_view
 
   alias KindQuiz.Questions
