@@ -32,6 +32,15 @@ defmodule KindQuiz.QuestionsTest do
     assert %{id: ^answer_id, text: "Pepperoni"} = answer
   end
 
+  describe "list_quizzes/0" do
+    test "returns a list of all quizzes" do
+      %{id: id1} = insert(:quiz)
+      %{id: id2} = insert(:quiz)
+
+      assert [%{id: ^id1}, %{id: ^id2}] = Questions.list_quizzes()
+    end
+  end
+
   test "get_questions/0 returns an array of questions and answers" do
     assert [question1 | _] = questions = Questions.get_questions()
     assert length(questions) == 5

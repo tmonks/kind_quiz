@@ -28,6 +28,13 @@ defmodule KindQuiz.Questions do
   end
 
   @doc """
+  Returns a list of all quizzes.
+  """
+  def list_quizzes do
+    Repo.all(Quiz)
+  end
+
+  @doc """
   Returns an array of questions and answers.
   """
   def get_questions do
