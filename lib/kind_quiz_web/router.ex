@@ -17,8 +17,8 @@ defmodule KindQuizWeb.Router do
   scope "/", KindQuizWeb do
     pipe_through :browser
 
-    live "/", TitleLive
-    live "/quiz", QuizLive
+    live "/", IndexLive
+    live "/quiz/:id", QuizLive, :show
     live "/outcome/:id", OutcomeLive, :show
   end
 end
