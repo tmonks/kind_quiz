@@ -5,19 +5,19 @@ defmodule KindQuizWeb.QuizLive do
   alias KindQuiz.Questions
 
   @impl true
-  def mount(_params, _session, socket) do
-    questions = Questions.get_questions()
+  def mount(%{"id" => id}, _session, socket) do
+    quiz = Questions.get_quiz!(id)
     title = Questions.get_title()
 
     form = to_form(%{"response" => nil})
 
     {:ok,
      socket
+     |> assign(quiz: quiz)
      |> assign(index: 0)
      |> assign(form: form)
      |> assign(counts: %{})
-     |> assign(question: Enum.at(questions, 0))
-     |> assign(questions: questions)
+     |> assign(question: Enum.at(quiz.questions, 0))
      |> assign(title: title)
      |> assign(button_disabled: true)}
   end
@@ -29,20 +29,20 @@ defmodule KindQuizWeb.QuizLive do
   end
 
   def handle_event("next", %{"response" => response}, socket) do
+    quiz = socket.assigns.quiz
     response = String.to_integer(response)
     counts = Map.update(socket.assigns.counts, response, 1, &(&1 + 1))
     index = socket.assigns.index + 1
-    questions = socket.assigns.questions
 
     socket =
-      if index == length(questions) do
+      if index == length(quiz.questions) do
         outcome = most_frequent_response(counts)
         socket |> redirect(to: ~p"/outcome/#{outcome}")
       else
         socket
         |> assign(index: index)
         |> assign(form: to_form(%{"response" => nil}))
-        |> assign(question: Enum.at(questions, index))
+        |> assign(question: Enum.at(quiz.questions, index))
         |> assign(button_disabled: true)
         |> assign(counts: counts)
       end
@@ -61,20 +61,23 @@ defmodule KindQuizWeb.QuizLive do
     ~H"""
     <div class="container">
       <h1 class="mt-0 mb-8 text-4xl font-medium leading-tight text-primary">
-        <%= @title %>
+        <%= @quiz.title %>
       </h1>
       <.form :let={f} id="quiz-form" for={@form} phx-submit="next" phx-change="select">
         <div class="pb-6">
           <div id="question-text" class="pb-1 text-lg font-medium"><%= @question.text %></div>
           <div id="question-counter" class="pb-5 text-sm text-gray-600">
-            (<%= @index + 1 %> of <%= length(@questions) %>)
+            (<%= @index + 1 %> of <%= length(@quiz.questions) %>)
           </div>
-          <%= for {answer, index} <- Enum.with_index(@question.answers) do %>
+          <%= for answer <- @question.answers do %>
             <div class="pb-2">
               <!-- TODO: figure out how to avoid conflict with KindQuizWeb.CoreComponents.label -->
               <%= Phoenix.HTML.Form.label do %>
-                <%= radio_button(f, :response, index, class: "mr-2") %>
-                <%= answer %>
+                <%= radio_button(f, :response, answer.outcome_id,
+                  class: "mr-2",
+                  id: "answer-#{answer.id}"
+                ) %>
+                <%= answer.text %>
               <% end %>
             </div>
           <% end %>

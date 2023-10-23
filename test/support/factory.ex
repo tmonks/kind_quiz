@@ -3,6 +3,7 @@ defmodule KindQuiz.Factory do
   use ExMachina.Ecto, repo: KindQuiz.Repo
 
   alias KindQuiz.Quizzes.Answer
+  alias KindQuiz.Quizzes.Outcome
   alias KindQuiz.Quizzes.Question
   alias KindQuiz.Quizzes.Quiz
 
@@ -20,7 +21,14 @@ defmodule KindQuiz.Factory do
 
   def answer_factory do
     %Answer{
-      text: "Pepperoni"
+      text: "Pepperoni",
+      outcome: build(:outcome)
+    }
+  end
+
+  def outcome_factory do
+    %Outcome{
+      text: "You are a pepperoni pizza!"
     }
   end
 end
