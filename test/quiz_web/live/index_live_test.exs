@@ -8,8 +8,6 @@ defmodule KindQuizWeb.IndexLiveTest do
     quiz2 = insert(:quiz, title: "What kind of book are you?")
     {:ok, view, _html} = live(conn, "/")
 
-    open_browser(view)
-
     assert has_element?(view, "#quiz-#{quiz1.id}", "What kind of pizza are you?")
     assert has_element?(view, "#quiz-#{quiz2.id}", "What kind of book are you?")
   end
@@ -21,6 +19,7 @@ defmodule KindQuizWeb.IndexLiveTest do
     view
     |> element("#quiz-#{quiz.id}-button")
     |> render_click()
-    |> follow_redirect(conn, ~p"/quiz/#{quiz.id}")
+
+    assert_redirect(view, ~p"/quiz/#{quiz.id}")
   end
 end

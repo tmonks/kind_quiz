@@ -58,11 +58,11 @@ defmodule KindQuiz.QuestionsTest do
   end
 
   test "get_outcome!/1 returns the outcome with the given id" do
-    assert Questions.get_outcome!(1) == "Black Panther"
+    %{id: id} = insert(:outcome, %{text: "Veggie Pizza"})
+    assert %{id: ^id, text: "Veggie Pizza"} = Questions.get_outcome!(id)
   end
 
   test "get_outcome!/1 raises an error if the outcome id is invalid" do
-    assert_raise(ArgumentError, fn -> Questions.get_outcome!(10) end)
-    assert_raise(ArgumentError, fn -> Questions.get_outcome!(-1) end)
+    assert_raise(Ecto.NoResultsError, fn -> Questions.get_outcome!(10) end)
   end
 end

@@ -4,6 +4,7 @@ defmodule KindQuiz.Questions do
   """
 
   alias KindQuiz.Repo
+  alias KindQuiz.Quizzes.Outcome
   alias KindQuiz.Quizzes.Quiz
 
   @title "What kind of superhero are you?"
@@ -62,10 +63,6 @@ defmodule KindQuiz.Questions do
   Returns the outcome with the given id. Raises an error if the id is invalid.
   """
   def get_outcome!(id) do
-    if id < 0 or id > length(@outcomes) - 1 do
-      raise ArgumentError, "Invalid outcome id"
-    else
-      @outcomes |> Enum.at(id)
-    end
+    Repo.get!(Outcome, id)
   end
 end

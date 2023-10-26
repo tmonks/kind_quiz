@@ -6,18 +6,21 @@ defmodule KindQuizWeb.OutcomeLive do
   def handle_params(%{"id" => id}, _uri, socket) do
     id = String.to_integer(id)
     outcome = Questions.get_outcome!(id)
-    image_name = "outcome-#{id}.jpg"
 
-    {:noreply, socket |> assign(outcome: outcome, image_name: image_name)}
+    {:noreply, socket |> assign(outcome: outcome)}
   end
 
   def render(assigns) do
     ~H"""
     <div class="mt-28 mt-2 text-center">
       <h1 id="outcome" class="text-4xl font-bold">
-        <%= @outcome %>!
+        <%= @outcome.text %>!
       </h1>
-      <img src={~p"/images/#{@image_name}"} class="mt-8 mx-auto" style="max-height: 700px" />
+      <img
+        src={~p"/images/#{@outcome.image_file_name}"}
+        class="mt-8 mx-auto"
+        style="max-height: 700px"
+      />
       <a
         type="button"
         id="restart-quiz-button"

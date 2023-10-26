@@ -28,7 +28,8 @@ defmodule KindQuiz.Factory do
 
   def outcome_factory do
     %Outcome{
-      text: "You are a pepperoni pizza!"
+      text: "You are a pepperoni pizza!",
+      image_file_name: "outcome-1.jpg"
     }
   end
 end
