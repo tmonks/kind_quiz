@@ -21,10 +21,19 @@ defmodule KindQuizWeb.OutcomeLiveTest do
     |> follow_redirect(conn, ~p"/")
   end
 
-  test "displays a picture of the outcome", %{conn: conn} do
+  test "displays a picture of the outcome if one is set", %{conn: conn} do
     %{id: id} = insert(:outcome, image_file_name: "outcome-5.jpg")
     assert {:ok, view, _html} = live(conn, ~p"/outcome/#{id}")
 
     assert has_element?(view, "img[src='/images/outcome-5.jpg']")
+  end
+
+  test "does not display picture if the outcome does not have one", %{conn: conn} do
+    %{id: id} = insert(:outcome, image_file_name: nil)
+    assert {:ok, view, _html} = live(conn, ~p"/outcome/#{id}")
+
+    open_browser(view)
+
+    refute has_element?(view, "img")
   end
 end
