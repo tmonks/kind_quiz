@@ -1,4 +1,8 @@
 import Config
+import Dotenvy
+
+# load environment variables from .env (system will override .env)
+source!([".env", System.get_env()])
 
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
@@ -19,6 +23,12 @@ import Config
 if System.get_env("PHX_SERVER") do
   config :quiz, KindQuizWeb.Endpoint, server: true
 end
+
+# OpenAI API configuration
+config :openai,
+  api_key: env!("OPENAI_API_KEY"),
+  organization_key: env!("OPENAI_ORG_KEY"),
+  http_options: [recv_timeout: 30_000]
 
 if config_env() == :prod do
   database_path =

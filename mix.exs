@@ -47,7 +47,10 @@ defmodule KindQuiz.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:csv, "~> 3.0"},
-      {:ex_machina, "~> 2.7.0", only: :test}
+      {:ex_machina, "~> 2.7.0", only: :test},
+      {:openai, "~> 0.5.2"},
+      {:ai, "~> 0.3.3"},
+      {:dotenvy, "~> 0.8.0"}
     ]
   end
 
