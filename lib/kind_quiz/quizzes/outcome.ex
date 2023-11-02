@@ -5,7 +5,8 @@ defmodule KindQuiz.Quizzes.Outcome do
 
   schema "outcomes" do
     field :text, :string
-    field :image_file_name, :string
+    field :image, :string
+    field :number, :integer
     belongs_to :quiz, Quiz
 
     timestamps()
@@ -14,7 +15,7 @@ defmodule KindQuiz.Quizzes.Outcome do
   @doc false
   def changeset(outcome, attrs) do
     outcome
-    |> cast(attrs, [:text, :image_file_name])
-    |> validate_required([:text, :image_file_name])
+    |> cast(attrs, [:text, :image, :number])
+    |> validate_required([:text, :number])
   end
 end

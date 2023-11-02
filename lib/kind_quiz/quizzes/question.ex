@@ -15,7 +15,8 @@ defmodule KindQuiz.Quizzes.Question do
   @doc false
   def changeset(question, attrs) do
     question
-    |> cast(attrs, [:text])
+    |> cast(attrs, [:text, :quiz_id])
     |> validate_required([:text])
+    |> cast_assoc(:answers)
   end
 end

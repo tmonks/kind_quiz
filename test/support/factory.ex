@@ -22,14 +22,15 @@ defmodule KindQuiz.Factory do
   def answer_factory do
     %Answer{
       text: "Pepperoni",
-      outcome: build(:outcome)
+      number: 1
     }
   end
 
   def outcome_factory do
     %Outcome{
+      quiz: build(:quiz),
       text: "You are a pepperoni pizza!",
-      image_file_name: "outcome-1.jpg"
+      number: 1
     }
   end
 end

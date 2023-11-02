@@ -73,7 +73,7 @@ defmodule KindQuizWeb.QuizLive do
             <div class="pb-2">
               <!-- TODO: figure out how to avoid conflict with KindQuizWeb.CoreComponents.label -->
               <%= Phoenix.HTML.Form.label do %>
-                <%= radio_button(f, :response, answer.outcome_id,
+                <%= radio_button(f, :response, answer.number,
                   class: "mr-2",
                   id: "answer-#{answer.id}"
                 ) %>

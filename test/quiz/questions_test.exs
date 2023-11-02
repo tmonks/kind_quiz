@@ -58,7 +58,8 @@ defmodule KindQuiz.QuestionsTest do
   end
 
   test "get_outcome!/1 returns the outcome with the given id" do
-    %{id: id} = insert(:outcome, %{text: "Veggie Pizza"})
+    quiz = insert(:quiz)
+    %{id: id} = insert(:outcome, %{text: "Veggie Pizza", quiz: quiz})
     assert %{id: ^id, text: "Veggie Pizza"} = Questions.get_outcome!(id)
   end
 

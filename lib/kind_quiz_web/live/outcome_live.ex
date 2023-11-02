@@ -16,12 +16,8 @@ defmodule KindQuizWeb.OutcomeLive do
       <h1 id="outcome" class="text-4xl font-bold">
         <%= @outcome.text %>!
       </h1>
-      <%= if @outcome.image_file_name do %>
-        <img
-          src={~p"/images/#{@outcome.image_file_name}"}
-          class="mt-8 mx-auto"
-          style="max-height: 700px"
-        />
+      <%= if @outcome.image do %>
+        <img src={~p"/images/#{@outcome.image}"} class="mt-8 mx-auto" style="max-height: 700px" />
       <% end %>
       <a
         type="button"

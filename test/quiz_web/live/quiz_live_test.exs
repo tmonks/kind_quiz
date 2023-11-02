@@ -20,9 +20,9 @@ defmodule KindQuizWeb.QuizLiveTest do
     [answer1, answer2, answer3] = Enum.at(quiz.questions, 0).answers
 
     assert has_element?(view, "#question-text", "What is your favorite TV show?")
-    assert has_element?(view, "input#answer-#{answer1.id}[value=#{answer1.outcome_id}]")
-    assert has_element?(view, "input#answer-#{answer2.id}[value=#{answer2.outcome_id}]")
-    assert has_element?(view, "input#answer-#{answer3.id}[value=#{answer3.outcome_id}]")
+    assert has_element?(view, "input#answer-#{answer1.id}[value=#{answer1.number}]")
+    assert has_element?(view, "input#answer-#{answer2.id}[value=#{answer2.number}]")
+    assert has_element?(view, "input#answer-#{answer3.id}[value=#{answer3.number}]")
   end
 
   test "Next button is initially disabled", %{conn: conn, quiz: quiz} do
@@ -81,40 +81,40 @@ defmodule KindQuizWeb.QuizLiveTest do
 
   defp setup_quiz(_) do
     quiz = insert(:quiz, title: "What kind of pizza are you?")
-    outcome1 = insert(:outcome, text: "You are a pepperoni pizza!", quiz_id: quiz.id)
-    outcome2 = insert(:outcome, text: "You are a cheese pizza!", quiz_id: quiz.id)
-    outcome3 = insert(:outcome, text: "You are a pineapple pizza!", quiz_id: quiz.id)
+    insert(:outcome, number: 1, text: "You are a pepperoni pizza!", quiz: quiz)
+    insert(:outcome, number: 2, text: "You are a cheese pizza!", quiz: quiz)
+    insert(:outcome, number: 3, text: "You are a pineapple pizza!", quiz: quiz)
 
     insert(:question,
       # id: 4,
       text: "What is your favorite TV show?",
-      quiz_id: quiz.id,
+      quiz: quiz,
       answers: [
-        build(:answer, text: "The Simpsons", outcome: outcome1),
-        build(:answer, text: "The Office", outcome: outcome2),
-        build(:answer, text: "The Mandalorian", outcome: outcome3)
+        build(:answer, text: "The Simpsons", number: 1),
+        build(:answer, text: "The Office", number: 2),
+        build(:answer, text: "The Mandalorian", number: 3)
       ]
     )
 
     insert(:question,
       # id: 5,
       text: "How do you like to spend your free time?",
-      quiz_id: quiz.id,
+      quiz: quiz,
       answers: [
-        build(:answer, text: "Watching TV", outcome: outcome1),
-        build(:answer, text: "Reading", outcome: outcome2),
-        build(:answer, text: "Playing video games", outcome: outcome3)
+        build(:answer, text: "Watching TV", number: 1),
+        build(:answer, text: "Reading", number: 2),
+        build(:answer, text: "Playing video games", number: 3)
       ]
     )
 
     insert(:question,
       # id: 6,
       text: "What is your favorite sport?",
-      quiz_id: quiz.id,
+      quiz: quiz,
       answers: [
-        build(:answer, text: "Football", outcome: outcome1),
-        build(:answer, text: "Baseball", outcome: outcome2),
-        build(:answer, text: "Basketball", outcome: outcome3)
+        build(:answer, text: "Football", number: 1),
+        build(:answer, text: "Baseball", number: 2),
+        build(:answer, text: "Basketball", number: 3)
       ]
     )
 
