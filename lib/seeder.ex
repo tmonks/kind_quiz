@@ -6,35 +6,17 @@ defmodule KindQuiz.Seeder do
   alias KindQuiz.Quizzes.Quiz
 
   def run do
-    clear_db()
+    delete_all()
 
-    quiz =
-      Quiz.changeset(%Quiz{}, %{title: "What kind of superhero are you?"})
-      |> Repo.insert!()
-      |> IO.inspect()
+    json = File.read!("priv/repo/quiz.json")
 
-    outcome1 = Outcome.changeset(%Outcome{}, %{text: "Captain America"}) |> Repo.insert!()
-    outcome2 = Outcome.changeset(%Outcome{}, %{text: "Black Panther"}) |> Repo.insert!()
-    outcome3 = Outcome.changeset(%Outcome{}, %{text: "Iron Man"}) |> Repo.insert!()
-    outcome4 = Outcome.changeset(%Outcome{}, %{text: "Hawkeye"}) |> Repo.insert!()
-    outcome5 = Outcome.changeset(%Outcome{}, %{text: "Thor"}) |> Repo.insert!()
+    attrs = Jason.decode!(json)
 
-    question_attrs = %{
-      text: "What is your favorite subject in school?",
-      quiz_id: quiz.id,
-      answers: [
-        %{text: "History", outcome_id: outcome1.id},
-        %{text: "Science", outcome_id: outcome2.id},
-        %{text: "Technology", outcome_id: outcome3.id},
-        %{text: "Physical Education", outcome_id: outcome4.id},
-        %{text: "Mythology", outcome_id: outcome5.id}
-      ]
-    }
-
-    Question.changeset(%Question{}, question_attrs) |> Repo.insert!()
+    Quiz.changeset(%Quiz{}, attrs)
+    |> Repo.insert!()
   end
 
-  defp clear_db do
+  defp delete_all do
     Repo.delete_all(Answer)
     Repo.delete_all(Outcome)
     Repo.delete_all(Question)

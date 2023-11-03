@@ -1,0 +1,52 @@
+{
+  "title": "What kind of superhero are you?",
+  "outcomes": [
+    { "number": 1, "text": "Captain America" },
+    { "number": 2, "text": "Black Panther" },
+    { "number": 3, "text": "Iron Man" },
+    { "number": 4, "text": "Hawkeye" },
+    { "number": 5, "text": "Thor" }
+  ],
+  "questions": [
+    {
+      "text": "How do you like to spend your free time?",
+      "answers": [
+        { "text": "Helping others", "number": 1 },
+        { "text": "Studying or reading", "number": 2 },
+        { "text": "Inventing or building things", "number": 3 },
+        { "text": "Practicing archery or other sports", "number": 4 },
+        { "text": "Exploring the outdoors", "number": 5 }
+      ]
+    },
+    {
+      "text": "What is your dream job?",
+      "answers": [
+        { "text": "Soldier or Police Officer", "number": 1 },
+        { "text": "Leader or Diplomat", "number": 2 },
+        { "text": "Engineer or Inventor", "number": 3 },
+        { "text": "Professional Athlete", "number": 4 },
+        { "text": "Explorer or Adventurer", "number": 5 }
+      ]
+    },
+    {
+      "text": "What is your favorite animal?",
+      "answers": [
+        { "text": "Eagle", "number": 1 },
+        { "text": "Panther", "number": 2 },
+        { "text": "Robot (Yes it counts!)", "number": 3 },
+        { "text": "Hawk", "number": 4 },
+        { "text": "Dragon", "number": 5 }
+      ]
+    },
+    {
+      "text": "How do you handle conflict?",
+      "answers": [
+        { "text": "Stand my ground and fight for what's right", "number": 1 },
+        { "text": "Use wisdom and diplomacy", "number": 2 },
+        { "text": "Outsmart the opponent", "number": 3 },
+        { "text": "Keep a cool head and aim true", "number": 4 },
+        { "text": "Charge in with all my might", "number": 5 }
+      ]
+    }
+  ]
+}
