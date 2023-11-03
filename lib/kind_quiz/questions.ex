@@ -65,4 +65,11 @@ defmodule KindQuiz.Questions do
   def get_outcome!(id) do
     Repo.get!(Outcome, id)
   end
+
+  @doc """
+  Returns the outcome with the given quiz_id and number. Raises an error if the id is invalid.
+  """
+  def get_outcome!(quiz_id, number) do
+    Repo.get_by!(Outcome, quiz_id: quiz_id, number: number)
+  end
 end

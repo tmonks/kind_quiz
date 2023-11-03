@@ -37,7 +37,7 @@ defmodule KindQuizWeb.QuizLive do
     socket =
       if index == length(quiz.questions) do
         outcome = most_frequent_response(counts)
-        socket |> redirect(to: ~p"/outcome/#{outcome}")
+        socket |> redirect(to: ~p"/quiz/#{quiz.id}/outcome/#{outcome}")
       else
         socket
         |> assign(index: index)

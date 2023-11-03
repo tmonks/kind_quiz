@@ -68,15 +68,15 @@ defmodule KindQuizWeb.QuizLiveTest do
   test "redirects to the outcome for the most frequent answer", %{conn: conn, quiz: quiz} do
     {:ok, view, _html} = live(conn, ~p"/quiz/#{quiz.id}")
 
-    # majority of answers are 1
-    view |> form("#quiz-form", %{"response" => 1}) |> render_submit()
-    view |> form("#quiz-form", %{"response" => 1}) |> render_submit()
+    # majority of answers are 3
+    view |> form("#quiz-form", %{"response" => 3}) |> render_submit()
+    view |> form("#quiz-form", %{"response" => 3}) |> render_submit()
 
     view
     |> form("#quiz-form", %{"response" => 2})
     |> render_submit()
-    # redirected to outcome 1
-    |> follow_redirect(conn, ~p"/outcome/1")
+    # redirected to outcome 3
+    |> follow_redirect(conn, ~p"/quiz/#{quiz.id}/outcome/3")
   end
 
   defp setup_quiz(_) do
