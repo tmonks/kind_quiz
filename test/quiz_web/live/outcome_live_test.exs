@@ -5,8 +5,9 @@ defmodule KindQuizWeb.OutcomeLiveTest do
   import KindQuiz.Factory
 
   test "renders the outcome from the id param", %{conn: conn} do
-    outcome = insert(:outcome, text: "Veggie Pizza")
-    assert {:ok, view, _html} = live(conn, ~p"/quiz/#{outcome.quiz.id}/outcome/#{outcome.id}")
+    quiz = insert(:quiz, id: 5)
+    insert(:outcome, number: 3, quiz: quiz, text: "Veggie Pizza")
+    assert {:ok, view, _html} = live(conn, ~p"/quiz/5/outcome/3")
 
     assert has_element?(view, "#outcome", "Veggie Pizza")
   end

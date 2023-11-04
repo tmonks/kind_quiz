@@ -3,9 +3,10 @@ defmodule KindQuizWeb.OutcomeLive do
 
   alias KindQuiz.Questions
 
-  def handle_params(%{"id" => id}, _uri, socket) do
-    id = String.to_integer(id)
-    outcome = Questions.get_outcome!(id)
+  def handle_params(%{"id" => quiz_id, "number" => number}, _uri, socket) do
+    quiz_id = String.to_integer(quiz_id)
+    number = String.to_integer(number)
+    outcome = Questions.get_outcome!(quiz_id, number)
 
     {:noreply, socket |> assign(outcome: outcome)}
   end
