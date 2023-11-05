@@ -9,6 +9,7 @@ defmodule KindQuizWeb.OutcomeLiveTest do
     insert(:outcome, number: 3, quiz: quiz, text: "Veggie Pizza")
     assert {:ok, view, _html} = live(conn, ~p"/quiz/5/outcome/3")
 
+    assert has_element?(view, "#quiz-title")
     assert has_element?(view, "#outcome", "Veggie Pizza")
   end
 
