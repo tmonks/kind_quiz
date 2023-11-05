@@ -10,10 +10,12 @@ defmodule KindQuiz.Seeder do
 
     json = File.read!("priv/repo/quiz.json")
 
-    attrs = Jason.decode!(json)
+    quizzes = Jason.decode!(json)
 
-    Quiz.changeset(%Quiz{}, attrs)
-    |> Repo.insert!()
+    for quiz <- quizzes do
+      Quiz.changeset(%Quiz{}, quiz)
+      |> Repo.insert!()
+    end
   end
 
   defp delete_all do

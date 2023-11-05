@@ -1,52 +1,176 @@
-{
-  "title": "What kind of superhero are you?",
-  "outcomes": [
-    { "number": 1, "text": "Captain America" },
-    { "number": 2, "text": "Black Panther" },
-    { "number": 3, "text": "Iron Man" },
-    { "number": 4, "text": "Hawkeye" },
-    { "number": 5, "text": "Thor" }
-  ],
-  "questions": [
-    {
-      "text": "How do you like to spend your free time?",
-      "answers": [
-        { "text": "Helping others", "number": 1 },
-        { "text": "Studying or reading", "number": 2 },
-        { "text": "Inventing or building things", "number": 3 },
-        { "text": "Practicing archery or other sports", "number": 4 },
-        { "text": "Exploring the outdoors", "number": 5 }
-      ]
-    },
-    {
-      "text": "What is your dream job?",
-      "answers": [
-        { "text": "Soldier or Police Officer", "number": 1 },
-        { "text": "Leader or Diplomat", "number": 2 },
-        { "text": "Engineer or Inventor", "number": 3 },
-        { "text": "Professional Athlete", "number": 4 },
-        { "text": "Explorer or Adventurer", "number": 5 }
-      ]
-    },
-    {
-      "text": "What is your favorite animal?",
-      "answers": [
-        { "text": "Eagle", "number": 1 },
-        { "text": "Panther", "number": 2 },
-        { "text": "Robot (Yes it counts!)", "number": 3 },
-        { "text": "Hawk", "number": 4 },
-        { "text": "Dragon", "number": 5 }
-      ]
-    },
-    {
-      "text": "How do you handle conflict?",
-      "answers": [
-        { "text": "Stand my ground and fight for what's right", "number": 1 },
-        { "text": "Use wisdom and diplomacy", "number": 2 },
-        { "text": "Outsmart the opponent", "number": 3 },
-        { "text": "Keep a cool head and aim true", "number": 4 },
-        { "text": "Charge in with all my might", "number": 5 }
-      ]
-    }
-  ]
-}
+[
+  {
+    "title": "What kind of superhero are you?",
+    "outcomes": [
+      { "number": 1, "text": "Captain America" },
+      { "number": 2, "text": "Black Panther" },
+      { "number": 3, "text": "Iron Man" },
+      { "number": 4, "text": "Hawkeye" },
+      { "number": 5, "text": "Thor" }
+    ],
+    "questions": [
+      { 
+        "text": "What is your favorite subject in school?",
+        "answers": [
+          { "text": "History", "number": 1 },
+          { "text": "Science", "number": 2 },
+          { "text": "Technology", "number": 3 },
+          { "text": "Physical Education", "number": 4 },
+          { "text": "Mythology", "number": 5 }
+        ]
+      },
+      {
+        "text": "How do you like to spend your free time?",
+        "answers": [
+          { "text": "Helping others", "number": 1 },
+          { "text": "Studying or reading", "number": 2 },
+          { "text": "Inventing or building things", "number": 3 },
+          { "text": "Practicing archery or other sports", "number": 4 },
+          { "text": "Exploring the outdoors", "number": 5 }
+        ]
+      },
+      {
+        "text": "What is your dream job?",
+        "answers": [
+          { "text": "Soldier or Police Officer", "number": 1 },
+          { "text": "Leader or Diplomat", "number": 2 },
+          { "text": "Engineer or Inventor", "number": 3 },
+          { "text": "Professional Athlete", "number": 4 },
+          { "text": "Explorer or Adventurer", "number": 5 }
+        ]
+      },
+      {
+        "text": "What is your favorite animal?",
+        "answers": [
+          { "text": "Eagle", "number": 1 },
+          { "text": "Panther", "number": 2 },
+          { "text": "Robot (Yes it counts!)", "number": 3 },
+          { "text": "Hawk", "number": 4 },
+          { "text": "Dragon", "number": 5 }
+        ]
+      },
+      {
+        "text": "How do you handle conflict?",
+        "answers": [
+          { "text": "Stand my ground and fight for what's right", "number": 1 },
+          { "text": "Use wisdom and diplomacy", "number": 2 },
+          { "text": "Outsmart the opponent", "number": 3 },
+          { "text": "Keep a cool head and aim true", "number": 4 },
+          { "text": "Charge in with all my might", "number": 5 }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Which Hogwarts house do you belong to?",
+    "outcomes": [
+      { "number": 1, "text": "Gryffindor" },
+      { "number": 2, "text": "Hufflepuff" },
+      { "number": 3, "text": "Ravenclaw" },
+      { "number": 4, "text": "Slytherin" }
+    ],
+    "questions": [
+      {
+        "text": "How do you react when faced with a challenge?",
+        "answers": [
+          { "text": "Face it head-on with bravery", "number": 1 },
+          { "text": "Work hard and persevere", "number": 2 },
+          { "text": "Use wisdom and knowledge to find a solution", "number": 3 },
+          { "text": "Strategize and maybe bend some rules", "number": 4 }
+        ]
+      },
+      {
+        "text": "What trait do you value the most in yourself?",
+        "answers": [
+          { "text": "Courage", "number": 1 },
+          { "text": "Loyalty", "number": 2 },
+          { "text": "Intelligence", "number": 3 },
+          { "text": "Ambition", "number": 4 }
+        ]
+      },
+      {
+        "text": "Which of these magical creatures would you like as a pet?",
+        "answers": [
+          { "text": "Phoenix", "number": 1 },
+          { "text": "Niffler", "number": 2 },
+          { "text": "Owl", "number": 3 },
+          { "text": "Basilisk", "number": 4 }
+        ]
+      },
+      {
+        "text": "What's most important to you?",
+        "answers": [
+          { "text": "Doing what's right", "number": 1 },
+          { "text": "Taking care of others", "number": 2 },
+          { "text": "Pursuit of knowledge", "number": 3 },
+          { "text": "Achieving my goals", "number": 4 }
+        ]
+      },
+      {
+        "text": "How would your friends describe you?",
+        "answers": [
+          { "text": "Brave and outspoken", "number": 1 },
+          { "text": "Kind and dependable", "number": 2 },
+          { "text": "Witty and intelligent", "number": 3 },
+          { "text": "Cunning and resourceful", "number": 4 }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "What Kind of Christmas Dessert Are You?",
+    "outcomes": [
+      { "number": 1, "text": "Christmas Pudding" },
+      { "number": 2, "text": "Gingerbread Cookies" },
+      { "number": 3, "text": "Fruitcake" },
+      { "number": 4, "text": "Yule Log Cake" }
+    ],
+    "questions": [
+      {
+        "text": "Choose a holiday activity you enjoy the most:",
+        "answers": [
+          { "text": "Singing carols", "number": 1 },
+          { "text": "Decorating the house", "number": 2 },
+          { "text": "Spending time with family", "number": 3 },
+          { "text": "Opening presents", "number": 4 }
+        ]
+      },
+      {
+        "text": "What's your favorite holiday drink?",
+        "answers": [
+          { "text": "Mulled wine", "number": 1 },
+          { "text": "Hot chocolate", "number": 2 },
+          { "text": "Apple cider", "number": 3 },
+          { "text": "Eggnog", "number": 4 }
+        ]
+      },
+      {
+        "text": "How do you usually feel during the holidays?",
+        "answers": [
+          { "text": "Warm and joyful", "number": 1 },
+          { "text": "Excited and energetic", "number": 2 },
+          { "text": "Nostalgic and reflective", "number": 3 },
+          { "text": "Cozy and content", "number": 4 }
+        ]
+      },
+      {
+        "text": "What is your favorite holiday scent?",
+        "answers": [
+          { "text": "Cinnamon and spice", "number": 1 },
+          { "text": "Ginger and nutmeg", "number": 2 },
+          { "text": "Pine and cranberry", "number": 3 },
+          { "text": "Chocolate and mint", "number": 4 }
+        ]
+      },
+      {
+        "text": "What do you most look forward to eating at Christmas dinner?",
+        "answers": [
+          { "text": "Traditional recipes", "number": 1 },
+          { "text": "Homemade treats", "number": 2 },
+          { "text": "A variety of everything", "number": 3 },
+          { "text": "The fancy desserts", "number": 4 }
+        ]
+      }
+    ]
+  }
+]
