@@ -8,6 +8,9 @@ defmodule KindQuizWeb.QuizLive do
   def mount(%{"id" => id}, _session, socket) do
     quiz = Questions.get_quiz!(id)
     title = Questions.get_title()
+    question = Enum.at(quiz.questions, 0)
+    # only assign answers once connected, so we don't see the shuffling 😅
+    answers = if connected?(socket), do: get_shuffled_answers(question), else: []
 
     form = to_form(%{"response" => nil})
 
@@ -17,7 +20,8 @@ defmodule KindQuizWeb.QuizLive do
      |> assign(index: 0)
      |> assign(form: form)
      |> assign(counts: %{})
-     |> assign(question: Enum.at(quiz.questions, 0))
+     |> assign(question: question)
+     |> assign(answers: answers)
      |> assign(title: title)
      |> assign(button_disabled: true)}
   end
@@ -33,6 +37,7 @@ defmodule KindQuizWeb.QuizLive do
     response = String.to_integer(response)
     counts = Map.update(socket.assigns.counts, response, 1, &(&1 + 1))
     index = socket.assigns.index + 1
+    question = Enum.at(quiz.questions, index)
 
     socket =
       if index == length(quiz.questions) do
@@ -42,7 +47,8 @@ defmodule KindQuizWeb.QuizLive do
         socket
         |> assign(index: index)
         |> assign(form: to_form(%{"response" => nil}))
-        |> assign(question: Enum.at(quiz.questions, index))
+        |> assign(question: question)
+        |> assign(answers: get_shuffled_answers(question))
         |> assign(button_disabled: true)
         |> assign(counts: counts)
       end
@@ -54,6 +60,11 @@ defmodule KindQuizWeb.QuizLive do
     counts
     |> Enum.max_by(fn {_k, v} -> v end)
     |> elem(0)
+  end
+
+  defp get_shuffled_answers(question) do
+    question.answers
+    |> Enum.shuffle()
   end
 
   @impl true
@@ -69,7 +80,7 @@ defmodule KindQuizWeb.QuizLive do
           <div id="question-counter" class="pb-5 text-sm text-gray-600">
             (<%= @index + 1 %> of <%= length(@quiz.questions) %>)
           </div>
-          <%= for answer <- @question.answers do %>
+          <%= for answer <- @answers do %>
             <div class="pb-2">
               <!-- TODO: figure out how to avoid conflict with KindQuizWeb.CoreComponents.label -->
               <%= Phoenix.HTML.Form.label do %>
