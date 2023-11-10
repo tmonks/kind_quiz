@@ -10,17 +10,30 @@ defmodule KindQuiz.Generator do
   @doc """
   Generates a personality quiz
   """
-  def generate_quiz(quiz_title) do
+  def generate_quiz(quiz_title, outcomes \\ 5) do
+    outcome_text =
+      if is_list(outcomes) do
+        Enum.join(outcomes, ", ")
+      else
+        outcomes
+      end
+
     ~l"""
     model: gpt-3.5-turbo
-    system: You are a quiz generator that generates fun quizzes for 10-14 year old children which will attempt to categorize the taker in some way based on their responses.
-    Each quiz should have 5 questions, each with 5 possible answers (1-5).
-    Each of the answers corresponds to one of 5 possible outcomes (1-5).
+    system: You are a quiz generator that generates fun quizzes for 10-14 year old children.
+    The quiz will attempt to categorize the taker in some way based on their responses.
+    Each quiz should have 5 questions.
+    Each quiz will have a certain number of possible outcomes (i.e. categories that the taker can be placed in).
+    Each question should have a number of possible answers equal to the number of possible outcomes.
     The most frequently selected answer number will determine the outcome.
-    I will give you the title of the quiz, and you will generate the quiz in JSON.
+    Each question's answer `number` 1 will correspond to the outcome with `number` 1, and so on.
+    I will give you the title of the quiz, and either the specific outcomes or the number of outcomes for you to make up.
+    Please generate the quiz in JSON format like the example below.
     Respond ONLY with the JSON with no additional text.
 
-    Here is an example of the format you should use:
+    User: "Title: What kind of superhero are you? Outcomes: 5"
+
+    You:
 
     ```
     {
@@ -44,12 +57,12 @@ defmodule KindQuiz.Generator do
           ]
         }
       ]
+      // 4 more questions...
     }
     ```
-    user: #{quiz_title}
+    user: Title: #{quiz_title}, Outcomes: #{outcome_text}
     """
     |> chat()
-    |> IO.inspect()
     |> decode_response()
     |> create_changeset()
     |> Repo.insert()
