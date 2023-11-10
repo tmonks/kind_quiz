@@ -12,7 +12,7 @@ defmodule KindQuizWeb.IndexLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <%= for quiz <- @quizzes do %>
         <!-- Card -->
         <div
@@ -20,14 +20,16 @@ defmodule KindQuizWeb.IndexLive do
           class="bg-white p-4 rounded shadow flex flex-col justify-between gap-4"
         >
           <h2 class="text-lg font-semibold mb-2"><%= quiz.title %></h2>
-          <a
-            type="button"
-            id={"quiz-#{quiz.id}-button"}
-            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
-            href={~p"/quiz/#{quiz.id}"}
-          >
-            Take the quiz
-          </a>
+          <div>
+            <a
+              type="button"
+              id={"quiz-#{quiz.id}-button"}
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
+              href={~p"/quiz/#{quiz.id}"}
+            >
+              Take the quiz
+            </a>
+          </div>
         </div>
       <% end %>
     </div>
