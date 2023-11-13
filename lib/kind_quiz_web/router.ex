@@ -20,5 +20,6 @@ defmodule KindQuizWeb.Router do
     live "/", IndexLive
     live "/quiz/:id", QuizLive, :show
     live "/quiz/:id/outcome/:number", OutcomeLive, :show
+    live "/trivia/:id", TriviaQuizLive, :show
   end
 end
