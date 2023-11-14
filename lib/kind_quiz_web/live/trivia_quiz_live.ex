@@ -25,7 +25,8 @@ defmodule KindQuizWeb.TriviaQuizLive do
      |> assign(title: title)
      |> assign(button_disabled: true)
      |> assign(submitted_answer: nil)
-     |> assign(correct_count: 0)}
+     |> assign(correct_count: 0)
+     |> assign(final_score: nil)}
   end
 
   @impl true
@@ -64,8 +65,10 @@ defmodule KindQuizWeb.TriviaQuizLive do
 
     socket =
       if index == length(quiz.questions) do
-        outcome = most_frequent_response(counts)
-        socket |> redirect(to: ~p"/quiz/#{quiz.id}/outcome/#{outcome}")
+        final_score = socket.assigns.correct_count / length(quiz.questions) * 100
+        final_score = Float.round(final_score) |> trunc()
+
+        socket |> assign(final_score: final_score)
       else
         socket
         |> assign(index: index)
@@ -78,12 +81,6 @@ defmodule KindQuizWeb.TriviaQuizLive do
       end
 
     {:noreply, socket}
-  end
-
-  defp most_frequent_response(counts) do
-    counts
-    |> Enum.max_by(fn {_k, v} -> v end)
-    |> elem(0)
   end
 
   defp get_shuffled_answers(question) do
@@ -100,6 +97,11 @@ defmodule KindQuizWeb.TriviaQuizLive do
       </h1>
       <.form :let={f} id="quiz-form" for={@form} phx-submit="submit" phx-change="select">
         <div class="pb-6">
+          <%= if @final_score do %>
+            <div id="score">
+              You scored <%= @final_score %>%!
+            </div>
+          <% end %>
           <div id="correct-count" class="pb-1 text-lg font-medium">
             Correct so far: <%= @correct_count %>
           </div>
@@ -140,17 +142,18 @@ defmodule KindQuizWeb.TriviaQuizLive do
             >
               Submit
             </button>
-          <% else %>
-            <button
-              id="next-button"
-              phx-click="next"
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:hover:bg-blue-500"
-            >
-              Next
-            </button>
           <% end %>
         </div>
       </.form>
+      <%= if not is_nil(@submitted_answer) do %>
+        <button
+          id="next-button"
+          phx-click="next"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:hover:bg-blue-500"
+        >
+          Next
+        </button>
+      <% end %>
     </div>
     """
   end
@@ -167,62 +170,24 @@ defmodule KindQuizWeb.TriviaQuizLive do
       questions: [
         %{
           answers: [
-            %{id: 1, number: 1, text: "Red"},
-            %{id: 2, number: 2, text: "Black"},
-            %{id: 3, number: 3, text: "Blue"},
-            %{id: 4, number: 4, text: "Green"},
-            %{id: 5, number: 5, text: "Purple"}
+            %{id: 1, number: 1, text: "pick this one"},
+            %{id: 2, number: 2, text: "not this one"},
+            %{id: 3, number: 3, text: "or this one"},
+            %{id: 4, number: 4, text: "definitely not this one"}
           ],
-          text: "What is your favorite color?",
+          text: "This is the first question",
           correct: 1,
-          explanation: "Black Widow is a master spy and assassin."
+          explanation: "Some good reason why"
         },
         %{
           answers: [
-            %{id: 1, number: 1, text: "Swinging on webs"},
-            %{id: 2, number: 2, text: "Driving a fast car"},
-            %{id: 3, number: 3, text: "Flying"},
-            %{id: 4, number: 4, text: "Running or jumping"},
-            %{id: 5, number: 5, text: "Teleporting"}
+            %{id: 1, number: 1, text: "Nope"},
+            %{id: 2, number: 2, text: "pick me, pick me!"},
+            %{id: 3, number: 3, text: "Not it"},
+            %{id: 4, number: 4, text: "Nuh uh"}
           ],
-          text: "What is your preferred method of transportation?",
+          text: "Another question",
           correct: 2,
-          explanation: "Some brilliant explanation"
-        },
-        %{
-          answers: [
-            %{id: 1, number: 1, text: "Friendly and witty"},
-            %{id: 2, number: 2, text: "Mysterious and skilled"},
-            %{id: 3, number: 3, text: "Confident and powerful"},
-            %{id: 4, number: 4, text: "Strong and tough"},
-            %{id: 5, number: 5, text: "Intelligent and wise"}
-          ],
-          text: "How would you describe your personality?",
-          correct: 3,
-          explanation: "Some brilliant explanation"
-        },
-        %{
-          answers: [
-            %{id: 1, number: 1, text: "Sunny"},
-            %{id: 2, number: 2, text: "Rainy"},
-            %{id: 3, number: 3, text: "Stormy"},
-            %{id: 4, number: 4, text: "Cloudy"},
-            %{id: 5, number: 5, text: "Foggy"}
-          ],
-          text: "What is your favorite type of weather?",
-          correct: 4,
-          explanation: "Some brilliant explanation"
-        },
-        %{
-          answers: [
-            %{id: 1, number: 1, text: "Make jokes and lighten the mood"},
-            %{id: 2, number: 2, text: "Analyze the situation and come up with a plan"},
-            %{id: 3, number: 3, text: "Use your powers or skills to take charge"},
-            %{id: 4, number: 4, text: "Use brute force and smash through obstacles"},
-            %{id: 5, number: 5, text: "Use your magic or mystical abilities"}
-          ],
-          text: "How do you handle difficult situations?",
-          correct: 5,
           explanation: "Some brilliant explanation"
         }
       ],

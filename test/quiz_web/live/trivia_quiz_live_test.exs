@@ -107,4 +107,22 @@ defmodule KindQuizWeb.TriviaQuizLiveTest do
 
     assert has_element?(view, "#correct-count", "1")
   end
+
+  test "completing the quiz shows your score", %{conn: conn} do
+    {:ok, view, _html} = live(conn, ~p"/trivia/1")
+
+    view
+    |> form("#quiz-form", %{"response" => "1"})
+    |> render_submit()
+
+    view |> element("#next-button") |> render_click()
+
+    view
+    |> form("#quiz-form", %{"response" => "1"})
+    |> render_submit()
+
+    view |> element("#next-button") |> render_click()
+
+    assert has_element?(view, "#score", "50%")
+  end
 end
