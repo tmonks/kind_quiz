@@ -9,7 +9,7 @@ defmodule KindQuizWeb.TriviaQuizLiveTest do
   test "renders the quiz page with the quiz title at the top", %{conn: conn} do
     {:ok, _view, html} = live(conn, ~p"/trivia/1")
 
-    assert html =~ "What Marvel superhero are you?"
+    assert html =~ "Trivia Quiz"
   end
 
   test "has a Submit button that's initially disabled", %{conn: conn} do
@@ -90,22 +90,6 @@ defmodule KindQuizWeb.TriviaQuizLiveTest do
            )
 
     assert has_element?(view, "#question-counter", "(2 of 5)")
-  end
-
-  test "has correct count which is initially zero", %{conn: conn} do
-    {:ok, view, _html} = live(conn, ~p"/trivia/1")
-
-    assert has_element?(view, "#correct-count", "0")
-  end
-
-  test "clicking Submit updates the correct count", %{conn: conn} do
-    {:ok, view, _html} = live(conn, ~p"/trivia/1")
-
-    view
-    |> form("#quiz-form", %{"response" => "1"})
-    |> render_submit()
-
-    assert has_element?(view, "#correct-count", "1")
   end
 
   test "completing the quiz shows your score", %{conn: conn} do

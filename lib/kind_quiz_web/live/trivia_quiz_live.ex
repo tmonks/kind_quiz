@@ -95,56 +95,54 @@ defmodule KindQuizWeb.TriviaQuizLive do
       <h1 class="mt-0 mb-8 text-4xl font-medium leading-tight text-primary">
         <%= @quiz.title %>
       </h1>
-      <.form :let={f} id="quiz-form" for={@form} phx-submit="submit" phx-change="select">
-        <div class="pb-6">
-          <%= if @final_score do %>
-            <div id="score">
-              You scored <%= @final_score %>%!
-            </div>
-          <% end %>
-          <div id="correct-count" class="pb-1 text-lg font-medium">
-            Correct so far: <%= @correct_count %>
-          </div>
-          <div id="question-text" class="pb-1 text-lg font-medium"><%= @question.text %></div>
-          <div id="question-counter" class="pb-5 text-sm text-gray-600">
-            (<%= @index + 1 %> of <%= length(@quiz.questions) %>)
-          </div>
-          <%= for answer <- @answers do %>
-            <div class="pb-2">
-              <!-- TODO: figure out how to avoid conflict with KindQuizWeb.CoreComponents.label -->
-              <%= Phoenix.HTML.Form.label do %>
-                <%= radio_button(f, :response, answer.number,
-                  class: "mr-2",
-                  id: "answer-#{answer.id}",
-                  disabled: not is_nil(@submitted_answer)
-                ) %>
-                <%= answer.text %>
-              <% end %>
-            </div>
-          <% end %>
+      <%= if @final_score do %>
+        <div id="score" class="text-3xl font-medium pb-6">
+          Your score: <%= @final_score %>%
         </div>
-        <%= if not is_nil(@submitted_answer) do %>
-          <div id="result">
-            <%= if @submitted_answer == @question.correct do %>
-              Correct! <%= @question.explanation %>
-            <% else %>
-              Incorrect. <%= @question.explanation %>
+      <% else %>
+        <.form :let={f} id="quiz-form" for={@form} phx-submit="submit" phx-change="select">
+          <div class="pb-6">
+            <div id="question-text" class="pb-1 text-lg font-medium"><%= @question.text %></div>
+            <div id="question-counter" class="pb-5 text-sm text-gray-600">
+              (<%= @index + 1 %> of <%= length(@quiz.questions) %>)
+            </div>
+            <%= for answer <- @answers do %>
+              <div class="pb-2">
+                <!-- TODO: figure out how to avoid conflict with KindQuizWeb.CoreComponents.label -->
+                <%= Phoenix.HTML.Form.label do %>
+                  <%= radio_button(f, :response, answer.number,
+                    class: "mr-2",
+                    id: "answer-#{answer.id}",
+                    disabled: not is_nil(@submitted_answer)
+                  ) %>
+                  <%= answer.text %>
+                <% end %>
+              </div>
+            <% end %>
+            <%= if not is_nil(@submitted_answer) do %>
+              <div id="result" class="pt-2">
+                <%= if @submitted_answer == @question.correct do %>
+                  <span class="font-medium text-green-600">Correct!</span> <%= @question.explanation %>
+                <% else %>
+                  <span class="font-medium text-red-600">Incorrect.</span> <%= @question.explanation %>
+                <% end %>
+              </div>
             <% end %>
           </div>
-        <% end %>
-        <div>
-          <%= if is_nil(@submitted_answer) do %>
-            <button
-              id="submit-button"
-              type="submit"
-              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:hover:bg-blue-500"
-              disabled={@button_disabled}
-            >
-              Submit
-            </button>
-          <% end %>
-        </div>
-      </.form>
+          <div>
+            <%= if is_nil(@submitted_answer) do %>
+              <button
+                id="submit-button"
+                type="submit"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:hover:bg-blue-500"
+                disabled={@button_disabled}
+              >
+                Submit
+              </button>
+            <% end %>
+          </div>
+        </.form>
+      <% end %>
       <%= if not is_nil(@submitted_answer) do %>
         <button
           id="next-button"
@@ -191,7 +189,7 @@ defmodule KindQuizWeb.TriviaQuizLive do
           explanation: "Some brilliant explanation"
         }
       ],
-      title: "What Marvel superhero are you?"
+      title: "Trivia Quiz"
     }
   end
 end
