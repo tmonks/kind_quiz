@@ -5,7 +5,7 @@ defmodule KindQuizWeb.TriviaQuizLive do
   alias KindQuiz.Questions
 
   @impl true
-  def mount(%{"id" => id}, _session, socket) do
+  def mount(%{"id" => _id}, _session, socket) do
     quiz = get_trivia_quiz()
     title = Questions.get_title()
     question = Enum.at(quiz.questions, 0)
@@ -37,14 +37,13 @@ defmodule KindQuizWeb.TriviaQuizLive do
 
   def handle_event("submit", %{"response" => response}, socket) do
     question = socket.assigns.question
-    IO.inspect(question.correct, label: "actually correct")
     correct_count = socket.assigns.correct_count
-    submitted_answer = String.to_integer(response) |> IO.inspect(label: "submitted_answer")
+    submitted_answer = String.to_integer(response)
 
     correct_count =
       if submitted_answer == question.correct,
         do: correct_count + 1,
-        else: correct_count |> IO.inspect(label: "correct_count")
+        else: correct_count
 
     socket =
       socket
@@ -96,9 +95,7 @@ defmodule KindQuizWeb.TriviaQuizLive do
         <%= @quiz.title %>
       </h1>
       <%= if @final_score do %>
-        <div id="score" class="text-3xl font-medium pb-6">
-          Your score: <%= @final_score %>%
-        </div>
+        <.quiz_score final_score={@final_score} />
       <% else %>
         <.form :let={f} id="quiz-form" for={@form} phx-submit="submit" phx-change="select">
           <div class="pb-6">
@@ -131,6 +128,7 @@ defmodule KindQuizWeb.TriviaQuizLive do
           </div>
           <div>
             <%= if is_nil(@submitted_answer) do %>
+              <!-- SUBMIT BUTTON -->
               <button
                 id="submit-button"
                 type="submit"
@@ -143,7 +141,8 @@ defmodule KindQuizWeb.TriviaQuizLive do
           </div>
         </.form>
       <% end %>
-      <%= if not is_nil(@submitted_answer) do %>
+      <%= if not is_nil(@submitted_answer) and is_nil(@final_score) do %>
+        <!-- NEXT BUTTON -->
         <button
           id="next-button"
           phx-click="next"
@@ -152,6 +151,24 @@ defmodule KindQuizWeb.TriviaQuizLive do
           Next
         </button>
       <% end %>
+    </div>
+    """
+  end
+
+  defp quiz_score(assigns) do
+    ~H"""
+    <div>
+      <div id="score" class="text-3xl font-medium pb-6">
+        Your score: <%= @final_score %>%
+      </div>
+      <a
+        id="home-button"
+        type="button"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:hover:bg-blue-500"
+        href="/"
+      >
+        Home
+      </a>
     </div>
     """
   end

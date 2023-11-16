@@ -2,9 +2,9 @@ defmodule KindQuizWeb.TriviaQuizLiveTest do
   use KindQuizWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import KindQuiz.Factory
+  # import KindQuiz.Factory
 
-  alias KindQuiz.Repo
+  # alias KindQuiz.Repo
 
   test "renders the quiz page with the quiz title at the top", %{conn: conn} do
     {:ok, _view, html} = live(conn, ~p"/trivia/1")
@@ -108,5 +108,6 @@ defmodule KindQuizWeb.TriviaQuizLiveTest do
     view |> element("#next-button") |> render_click()
 
     assert has_element?(view, "#score", "50%")
+    assert has_element?(view, "#home-button")
   end
 end
