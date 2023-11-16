@@ -6,6 +6,7 @@ defmodule KindQuiz.Quizzes.Quiz do
 
   schema "quizzes" do
     field :title, :string
+    field :type, Ecto.Enum, values: [:trivia, :category]
 
     has_many :questions, Question
     has_many :outcomes, Outcome

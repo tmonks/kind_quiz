@@ -5,8 +5,8 @@ defmodule KindQuizWeb.TriviaQuizLive do
   alias KindQuiz.Questions
 
   @impl true
-  def mount(%{"id" => _id}, _session, socket) do
-    quiz = get_trivia_quiz()
+  def mount(%{"id" => id}, _session, socket) do
+    quiz = Questions.get_quiz!(id)
     title = Questions.get_title()
     question = Enum.at(quiz.questions, 0)
     # only assign answers once connected, so we don't see the shuffling 😅
@@ -171,42 +171,5 @@ defmodule KindQuizWeb.TriviaQuizLive do
       </a>
     </div>
     """
-  end
-
-  defp get_trivia_quiz() do
-    %{
-      outcomes: [
-        %{id: 1, number: 1, text: "Spider-Man"},
-        %{id: 2, number: 2, text: "Black Widow"},
-        %{id: 3, number: 3, text: "Captain Marvel"},
-        %{id: 4, number: 4, text: "Hulk"},
-        %{id: 5, number: 5, text: "Doctor Strange"}
-      ],
-      questions: [
-        %{
-          answers: [
-            %{id: 1, number: 1, text: "pick this one"},
-            %{id: 2, number: 2, text: "not this one"},
-            %{id: 3, number: 3, text: "or this one"},
-            %{id: 4, number: 4, text: "definitely not this one"}
-          ],
-          text: "This is the first question",
-          correct: 1,
-          explanation: "Some good reason why"
-        },
-        %{
-          answers: [
-            %{id: 1, number: 1, text: "Nope"},
-            %{id: 2, number: 2, text: "pick me, pick me!"},
-            %{id: 3, number: 3, text: "Not it"},
-            %{id: 4, number: 4, text: "Nuh uh"}
-          ],
-          text: "Another question",
-          correct: 2,
-          explanation: "Some brilliant explanation"
-        }
-      ],
-      title: "Trivia Quiz"
-    }
   end
 end

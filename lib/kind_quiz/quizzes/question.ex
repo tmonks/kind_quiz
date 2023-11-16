@@ -6,6 +6,8 @@ defmodule KindQuiz.Quizzes.Question do
 
   schema "questions" do
     field :text, :string
+    field :correct, :integer
+    field :explanation, :string
     belongs_to :quiz, Quiz
     has_many :answers, Answer
 
