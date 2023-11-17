@@ -20,6 +20,6 @@ defmodule KindQuiz.Quizzes.Quiz do
     |> cast(attrs, [:title])
     |> cast_assoc(:outcomes)
     |> cast_assoc(:questions)
-    |> validate_required([:title])
+    |> validate_required([:title, :type])
   end
 end

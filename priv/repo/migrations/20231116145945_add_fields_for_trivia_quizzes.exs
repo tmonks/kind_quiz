@@ -3,7 +3,7 @@ defmodule KindQuiz.Repo.Migrations.AddFieldsForTriviaQuizzes do
 
   def change do
     alter table(:quizzes) do
-      add :type, :string
+      add :type, :string, null: false, default: "category"
     end
 
     alter table(:questions) do
