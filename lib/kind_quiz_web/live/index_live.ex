@@ -25,7 +25,7 @@ defmodule KindQuizWeb.IndexLive do
               type="button"
               id={"quiz-#{quiz.id}-button"}
               class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
-              href={~p"/quiz/#{quiz.id}"}
+              href={get_quiz_link(quiz)}
             >
               Take the quiz
             </a>
@@ -34,5 +34,13 @@ defmodule KindQuizWeb.IndexLive do
       <% end %>
     </div>
     """
+  end
+
+  defp get_quiz_link(quiz) do
+    if quiz.type == :trivia do
+      ~p"/trivia/#{quiz.id}"
+    else
+      ~p"/quiz/#{quiz.id}"
+    end
   end
 end

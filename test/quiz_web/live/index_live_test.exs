@@ -12,8 +12,8 @@ defmodule KindQuizWeb.IndexLiveTest do
     assert has_element?(view, "#quiz-#{quiz2.id}", "What kind of book are you?")
   end
 
-  test "has a button to start each quiz", %{conn: conn} do
-    quiz = insert(:quiz, title: "What kind of pizza are you?")
+  test "redirects :category quizzes to QuizLive", %{conn: conn} do
+    quiz = insert(:quiz, type: :category, title: "What kind of pizza are you?")
     {:ok, view, _html} = live(conn, "/")
 
     view
@@ -21,5 +21,16 @@ defmodule KindQuizWeb.IndexLiveTest do
     |> render_click()
 
     assert_redirect(view, ~p"/quiz/#{quiz.id}")
+  end
+
+  test "redirects :trivia quizzes to TriviaLive", %{conn: conn} do
+    quiz = insert(:quiz, type: :trivia, title: "What kind of pizza are you?")
+    {:ok, view, _html} = live(conn, "/")
+
+    view
+    |> element("#quiz-#{quiz.id}-button")
+    |> render_click()
+
+    assert_redirect(view, ~p"/trivia/#{quiz.id}")
   end
 end
