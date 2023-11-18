@@ -9,7 +9,7 @@
       { "number": 5, "text": "Thor" }
     ],
     "questions": [
-      { 
+      {
         "text": "What is your favorite subject in school?",
         "answers": [
           { "text": "History", "number": 1 },
@@ -169,6 +169,62 @@
           { "text": "Homemade treats", "number": 2 },
           { "text": "A variety of everything", "number": 3 },
           { "text": "The fancy desserts", "number": 4 }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "What Element Are You?",
+    "outcomes": [
+      { "number": 1, "text": "Earth" },
+      { "number": 2, "text": "Water" },
+      { "number": 3, "text": "Air" },
+      { "number": 4, "text": "Fire" }
+    ],
+    "questions": [
+      {
+        "text": "What is your favorite type of landscape?",
+        "answers": [
+          { "text": "Lush forests and mountains", "number": 1 },
+          { "text": "Oceans, rivers, and lakes", "number": 2 },
+          { "text": "Open skies and breezy heights", "number": 3 },
+          { "text": "Volcanoes and deserts", "number": 4 }
+        ]
+      },
+      {
+        "text": "How do you handle problems?",
+        "answers": [
+          { "text": "With patience and stability", "number": 1 },
+          { "text": "Adapting to the situation like water", "number": 2 },
+          { "text": "Taking a broader view to understand the issue", "number": 3 },
+          { "text": "With passion and immediate action", "number": 4 }
+        ]
+      },
+      {
+        "text": "What is your preferred way of relaxing?",
+        "answers": [
+          { "text": "Gardening or walking in nature", "number": 1 },
+          { "text": "Listening to the sound of water or taking a bath", "number": 2 },
+          { "text": "Reading or meditating in a quiet place", "number": 3 },
+          { "text": "Exercising or engaging in a passionate debate", "number": 4 }
+        ]
+      },
+      {
+        "text": "How would you describe your personality?",
+        "answers": [
+          { "text": "Grounded and reliable", "number": 1 },
+          { "text": "Calm and flexible", "number": 2 },
+          { "text": "Thoughtful and curious", "number": 3 },
+          { "text": "Energetic and courageous", "number": 4 }
+        ]
+      },
+      {
+        "text": "What is your dream vacation?",
+        "answers": [
+          { "text": "A cabin in the woods", "number": 1 },
+          { "text": "Beach or island resort", "number": 2 },
+          { "text": "Cultural tour in various cities", "number": 3 },
+          { "text": "Adventure trip with lots of activities", "number": 4 }
         ]
       }
     ]

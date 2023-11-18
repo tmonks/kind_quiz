@@ -8,9 +8,9 @@ defmodule KindQuiz.Generator do
   alias KindQuiz.Repo
 
   @doc """
-  Generates a personality quiz
+  Generates a category quiz
   """
-  def generate_quiz(quiz_title, outcomes \\ 5) do
+  def generate_category_quiz(quiz_title, outcomes \\ 5) do
     outcome_text =
       if is_list(outcomes) do
         Enum.join(outcomes, ", ")
@@ -27,17 +27,19 @@ defmodule KindQuiz.Generator do
     Each question should have a number of possible answers equal to the number of possible outcomes.
     The most frequently selected answer number will determine the outcome.
     Each question's answer `number` 1 will correspond to the outcome with `number` 1, and so on.
+    Insert a relevant emoji at the beginning of the title.
     I will give you the title of the quiz, and either the specific outcomes or the number of outcomes for you to make up.
     Please generate the quiz in JSON format like the example below.
     Respond ONLY with the JSON with no additional text.
 
-    User: "Title: What kind of superhero are you? Outcomes: 5"
+    User: "Title: 💪 What kind of superhero are you? Outcomes: 5"
 
     You:
 
     ```
     {
       "title": "What kind of superhero are you?",
+      "type": "category",
       "outcomes": [
         { "number": 1, "text": "Captain America" },
         { "number": 2, "text": "Black Panther" },
@@ -64,8 +66,57 @@ defmodule KindQuiz.Generator do
     """
     |> chat()
     |> decode_response()
+    # |> IO.inspect()
     |> create_changeset()
     |> Repo.insert()
+  end
+
+  @doc """
+  Generates a trivia quiz
+  """
+  def generate_trivia_quiz(quiz_title) do
+    ~l"""
+    model: gpt-4-1106-preview
+    system: You are a quiz generator that generates fun and interesting trivia quizzes"
+    Each quiz will be a trivia quiz with 5 questions.
+    Each of the questions on the quiz should have 4 possible answers, numbered 1-4.
+    The questions should be of a difficulty level appropriate for an adult.
+    Each question should have a brief explanation about the correct answer.
+    I will give you the title of the quiz and you will generate all the data for the quiz with questions on that topic.
+    Please generate the quiz in JSON format like the example below.
+    Respond ONLY with the JSON with no additional text.
+
+    User: "Title: What kind of superhero are you? Outcomes: 5"
+
+    You:
+
+    {
+      "title": "Marvel Superheroes Trivia Quiz",
+      "type": "trivia",
+      "questions": [
+        {
+          "text": "What is the name of Thor's hammer?",
+          "correct": 1,
+          "explanation": "Mjolnir is the name of Thor's hammer.",
+          "answers": [
+            { "text": "Mjolnir", "number": 1 },
+            { "text": "Stormbreaker", "number": 2 },
+            { "text": "Axe of Angarruumus", "number": 3 },
+            { "text": "The Destroyer", "number": 4 }
+          ]
+        }
+      // 4 more questions...
+      ]
+    }
+
+    User: Title: #{quiz_title}
+    """
+    |> chat()
+    |> decode_response()
+    |> dbg()
+
+    # |> create_changeset()
+    # |> Repo.insert()
   end
 
   defp decode_response({:ok, json}) do
