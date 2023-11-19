@@ -1,11 +1,11 @@
 defmodule KindQuizWeb.IndexLive do
   use KindQuizWeb, :live_view
 
-  alias KindQuiz.Questions
+  alias KindQuiz.Quizzes
 
   @impl true
   def mount(_params, _session, socket) do
-    quizzes = Questions.list_quizzes()
+    quizzes = Quizzes.list_quizzes()
     {:ok, assign(socket, quizzes: quizzes)}
   end
 

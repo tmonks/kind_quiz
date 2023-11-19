@@ -1,4 +1,4 @@
-defmodule KindQuiz.Questions do
+defmodule KindQuiz.Quizzes do
   @moduledoc """
   Loads quiz and questions data
   """

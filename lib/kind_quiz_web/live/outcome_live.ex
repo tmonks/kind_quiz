@@ -1,13 +1,13 @@
 defmodule KindQuizWeb.OutcomeLive do
   use KindQuizWeb, :live_view
 
-  alias KindQuiz.Questions
+  alias KindQuiz.Quizzes
   alias KindQuiz.Repo
 
   def handle_params(%{"id" => quiz_id, "number" => number}, _uri, socket) do
     quiz_id = String.to_integer(quiz_id)
     number = String.to_integer(number)
-    outcome = Questions.get_outcome!(quiz_id, number) |> Repo.preload(:quiz)
+    outcome = Quizzes.get_outcome!(quiz_id, number) |> Repo.preload(:quiz)
 
     socket = socket |> assign(quiz: outcome.quiz) |> assign(outcome: outcome)
 
