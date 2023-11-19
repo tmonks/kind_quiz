@@ -6,7 +6,7 @@ defmodule KindQuiz.Repo.Migrations.CreateOutcomes do
       add :text, :string, null: false
       add :number, :integer, null: false
       add :image, :string
-      add :quiz_id, references(:quizzes, on_delete: :restrict), null: false
+      add :quiz_id, references(:quizzes, on_delete: :cascade), null: false
 
       timestamps()
     end

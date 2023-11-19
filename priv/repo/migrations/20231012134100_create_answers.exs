@@ -5,7 +5,7 @@ defmodule KindQuiz.Repo.Migrations.CreateAnswers do
     create table(:answers) do
       add :text, :string, null: false
       add :number, :integer, null: false
-      add :question_id, references(:questions, on_delete: :restrict), null: false
+      add :question_id, references(:questions, on_delete: :cascade), null: false
 
       timestamps()
     end

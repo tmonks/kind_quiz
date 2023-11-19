@@ -4,7 +4,7 @@ defmodule KindQuiz.Repo.Migrations.CreateQuestions do
   def change do
     create table(:questions) do
       add :text, :string
-      add :quiz_id, references(:quizzes, on_delete: :restrict)
+      add :quiz_id, references(:quizzes, on_delete: :cascade)
 
       timestamps()
     end
