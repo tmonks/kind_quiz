@@ -5,6 +5,7 @@ defmodule KindQuiz.Generator do
   import AI
 
   alias KindQuiz.Quizzes.Quiz
+  alias KindQuiz.Quizzes.Question
   alias KindQuiz.Repo
 
   @doc """
@@ -74,49 +75,44 @@ defmodule KindQuiz.Generator do
   @doc """
   Generates a trivia quiz
   """
-  def generate_trivia_quiz(quiz_title) do
+  def generate_trivia_question(%{title: title} = quiz) do
+    quiz = Repo.reload(quiz) |> Repo.preload(:questions)
+    previous_questions = quiz.questions |> Enum.map(& &1.text) |> Enum.join(", ")
+
     ~l"""
     model: gpt-4-1106-preview
-    system: You are a quiz generator that generates fun and interesting trivia quizzes"
-    Each quiz will be a trivia quiz with 5 questions.
-    Each of the questions on the quiz should have 4 possible answers, numbered 1-4.
+    system: You are a quiz question generator that generates fun and interesting trivia questions"
+    Each question on should have 4 possible answers, numbered 1-4.
     The questions should be of a difficulty level appropriate for an adult.
     Each question should have a brief explanation about the correct answer.
-    I will give you the title of the quiz and you will generate all the data for the quiz with questions on that topic.
-    Please generate the quiz in JSON format like the example below.
+    I will give you the subject of the trivia and you will generate the data for a trivia quiz question on that topic.
+    I will provide you with a list of previous questions so that you can avoid repeating them.
+    Please generate the question in JSON format like the example below.
     Respond ONLY with the JSON with no additional text.
 
-    User: "Title: What kind of superhero are you? Outcomes: 5"
+    User: "Subject: Interesting insects. Previous questions: What is the fastest insect?"
 
     You:
 
     {
-      "title": "Marvel Superheroes Trivia Quiz",
-      "type": "trivia",
-      "questions": [
-        {
-          "text": "What is the name of Thor's hammer?",
-          "correct": 1,
-          "explanation": "Mjolnir is the name of Thor's hammer.",
-          "answers": [
-            { "text": "Mjolnir", "number": 1 },
-            { "text": "Stormbreaker", "number": 2 },
-            { "text": "Axe of Angarruumus", "number": 3 },
-            { "text": "The Destroyer", "number": 4 }
-          ]
-        }
-      // 4 more questions...
+      "text": "The praying mantid can move only the top part of this",
+      "correct": 4,
+      "explanation": "This ability allows them to sneak up on prey without startling it",
+      "answers": [
+        { "text": "arms", "number": 1 },
+        { "text": "legs", "number": 2 },
+        { "text": "eyes", "number": 3 },
+        { "text": "body", "number": 4 }
       ]
     }
 
-    User: Title: #{quiz_title}
+    User: Subject: #{title}. Previous questions: #{previous_questions}
     """
     |> chat()
     |> decode_response()
-    |> dbg()
-
-    # |> create_changeset()
-    # |> Repo.insert()
+    |> create_question_changeset(quiz)
+    |> Repo.insert()
+    |> IO.inspect()
   end
 
   defp decode_response({:ok, json}) do
@@ -125,5 +121,10 @@ defmodule KindQuiz.Generator do
 
   defp create_changeset(attrs) do
     Quiz.changeset(%Quiz{}, attrs)
+  end
+
+  defp create_question_changeset(attrs, quiz) do
+    Question.changeset(%Question{}, attrs)
+    |> Ecto.Changeset.put_change(:quiz_id, quiz.id)
   end
 end

@@ -17,9 +17,9 @@ defmodule KindQuiz.Quizzes.Quiz do
   @doc false
   def changeset(quiz, attrs) do
     quiz
-    |> cast(attrs, [:title])
+    |> cast(attrs, [:title, :type])
+    |> validate_required([:title, :type])
     |> cast_assoc(:outcomes)
     |> cast_assoc(:questions)
-    |> validate_required([:title, :type])
   end
 end
