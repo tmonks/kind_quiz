@@ -3,6 +3,8 @@ defmodule KindQuiz.Quizzes do
   Loads quiz and questions data
   """
 
+  import Ecto.Query
+
   alias KindQuiz.Repo
   alias KindQuiz.Quizzes.Outcome
   alias KindQuiz.Quizzes.Quiz
@@ -29,10 +31,13 @@ defmodule KindQuiz.Quizzes do
   end
 
   @doc """
-  Returns a list of all quizzes.
+  Returns a list of all quizzes sorted by newest first.
   """
   def list_quizzes do
-    Repo.all(Quiz)
+    from(q in Quiz,
+      order_by: [desc: q.inserted_at]
+    )
+    |> Repo.all()
   end
 
   @doc """
