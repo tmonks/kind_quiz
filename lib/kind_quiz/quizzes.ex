@@ -84,6 +84,7 @@ defmodule KindQuiz.Quizzes do
   def get_incomplete_quiz do
     from(q in Quiz,
       where: fragment("SELECT COUNT(*) FROM questions WHERE questions.quiz_id = ? ", q.id) < 10,
+      where: q.type == :trivia,
       order_by: [asc: q.inserted_at],
       limit: 1
     )
