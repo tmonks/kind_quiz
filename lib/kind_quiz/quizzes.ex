@@ -77,4 +77,16 @@ defmodule KindQuiz.Quizzes do
   def get_outcome!(quiz_id, number) do
     Repo.get_by!(Outcome, quiz_id: quiz_id, number: number)
   end
+
+  @doc """
+  Gets the oldest quiz with less than 10 questions.
+  """
+  def get_incomplete_quiz do
+    from(q in Quiz,
+      where: fragment("SELECT COUNT(*) FROM questions WHERE questions.quiz_id = ? ", q.id) < 10,
+      order_by: [asc: q.inserted_at],
+      limit: 1
+    )
+    |> Repo.one()
+  end
 end

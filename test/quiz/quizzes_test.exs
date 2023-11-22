@@ -77,4 +77,29 @@ defmodule KindQuiz.QuizzesTest do
     quiz = insert(:quiz)
     assert_raise(Ecto.NoResultsError, fn -> Quizzes.get_outcome!(quiz.id, 10) end)
   end
+
+  test "get_incomplete_quiz/0 returns the oldest quiz with less than 10 questions" do
+    _quiz1 = %{id: quiz1_id} = insert(:quiz, inserted_at: DateTime.utc_now() |> DateTime.add(-60))
+    _quiz2 = %{id: _quiz2_id} = insert(:quiz, inserted_at: DateTime.utc_now())
+
+    assert %{id: ^quiz1_id} = Quizzes.get_incomplete_quiz()
+  end
+
+  test "get_incomplete_quiz/0 returns nil if there are no incomplete quizzes" do
+    quiz = insert(:quiz, inserted_at: DateTime.utc_now() |> DateTime.add(-60))
+
+    insert_list(10, :question, quiz: quiz)
+
+    assert Quizzes.get_incomplete_quiz() |> is_nil()
+  end
+
+  test "get_incomplete_quiz/0 will not return a quiz with 10 answers" do
+    quiz1 = %{id: _quiz1_id} = insert(:quiz, inserted_at: DateTime.utc_now() |> DateTime.add(-60))
+    quiz2 = %{id: quiz2_id} = insert(:quiz, inserted_at: DateTime.utc_now())
+
+    insert_list(10, :question, quiz: quiz1)
+    insert_list(9, :question, quiz: quiz2)
+
+    assert %{id: ^quiz2_id} = Quizzes.get_incomplete_quiz()
+  end
 end
