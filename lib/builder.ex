@@ -20,7 +20,7 @@ defmodule KindQuiz.Builder do
 
     if not is_nil(quiz) do
       IO.puts("Generating question for: #{quiz.title}")
-      %{text: text} = Generator.generate_trivia_question(quiz)
+      {:ok, %{text: text}} = Generator.generate_trivia_question(quiz)
       IO.puts("Generated question: #{text}")
     end
 

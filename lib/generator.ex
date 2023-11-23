@@ -109,6 +109,7 @@ defmodule KindQuiz.Generator do
     User: Subject: #{title}. Previous questions: #{previous_questions}
     """
     |> chat()
+    |> IO.inspect()
     |> decode_response()
     |> create_question_changeset(quiz)
     |> Repo.insert()
