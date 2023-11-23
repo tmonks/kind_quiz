@@ -1,4 +1,4 @@
-defmodule KindQuiz.Filler do
+defmodule KindQuiz.Builder do
   use GenServer
 
   alias KindQuiz.Quizzes
@@ -20,7 +20,8 @@ defmodule KindQuiz.Filler do
 
     if not is_nil(quiz) do
       IO.puts("Generating question for: #{quiz.title}")
-      Generator.generate_trivia_question(quiz)
+      %{text: text} = Generator.generate_trivia_question(quiz)
+      IO.puts("Generated question: #{text}")
     end
 
     schedule_creation()

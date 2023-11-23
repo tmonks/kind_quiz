@@ -112,7 +112,6 @@ defmodule KindQuiz.Generator do
     |> decode_response()
     |> create_question_changeset(quiz)
     |> Repo.insert()
-    |> IO.inspect()
   end
 
   defp decode_response({:ok, json}) do

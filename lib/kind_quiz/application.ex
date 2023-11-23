@@ -19,9 +19,9 @@ defmodule KindQuiz.Application do
       {Phoenix.PubSub, name: KindQuiz.PubSub},
       # Start the Endpoint (http/https)
       KindQuizWeb.Endpoint,
+      KindQuiz.Builder
       # Start a worker by calling: KindQuiz.Worker.start_link(arg)
       # {KindQuiz.Worker, arg}
-      KindQuiz.Filler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
