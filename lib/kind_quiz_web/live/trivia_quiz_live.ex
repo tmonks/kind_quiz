@@ -7,7 +7,6 @@ defmodule KindQuizWeb.TriviaQuizLive do
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     quiz = Quizzes.get_quiz!(id)
-    title = Quizzes.get_title()
     question = Enum.at(quiz.questions, 0)
     # only assign answers once connected, so we don't see the shuffling 😅
     answers = if connected?(socket), do: get_shuffled_answers(question), else: []
@@ -22,7 +21,6 @@ defmodule KindQuizWeb.TriviaQuizLive do
      |> assign(counts: %{})
      |> assign(question: question)
      |> assign(answers: answers)
-     |> assign(title: title)
      |> assign(button_disabled: true)
      |> assign(submitted_answer: nil)
      |> assign(correct_count: 0)
