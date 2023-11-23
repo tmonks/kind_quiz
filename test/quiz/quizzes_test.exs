@@ -3,6 +3,19 @@ defmodule KindQuiz.QuizzesTest do
   import KindQuiz.Factory
 
   alias KindQuiz.Quizzes
+  alias KindQuiz.Quizzes.Quiz
+
+  describe "create_trivia_quiz/1" do
+    test "creates a trivia quiz from a title" do
+      assert {:ok, %Quiz{title: "Amazing trivia quiz"}} =
+               Quizzes.create_trivia_quiz("Amazing trivia quiz")
+    end
+
+    test "returns an error changeset if the title is blank" do
+      assert {:error, changeset} = Quizzes.create_trivia_quiz("")
+      assert {"can't be blank", _} = changeset.errors[:title]
+    end
+  end
 
   describe "qet_quiz!/1" do
     test "returns a quiz by id" do

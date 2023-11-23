@@ -10,6 +10,15 @@ defmodule KindQuiz.Quizzes do
   alias KindQuiz.Quizzes.Quiz
 
   @doc """
+  Creates a new trivia quiz with the given title.
+  """
+  def create_trivia_quiz(title) do
+    %Quiz{}
+    |> Quiz.changeset(%{title: title, type: :trivia})
+    |> Repo.insert()
+  end
+
+  @doc """
   Returns a quiz by id. Raises an error if the id is invalid.
   """
   def get_quiz!(id) do
