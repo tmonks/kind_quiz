@@ -17,20 +17,34 @@ defmodule KindQuizWeb.IndexLiveTest do
     {:ok, view, _html} = live(conn, "/")
 
     view
-    |> element("#quiz-#{quiz.id}-button")
+    |> element("#quiz-#{quiz.id}-link")
     |> render_click()
 
     assert_redirect(view, ~p"/quiz/#{quiz.id}")
   end
 
-  test "redirects :trivia quizzes to TriviaLive", %{conn: conn} do
+  test "redirects trivia quizzes to TriviaLive", %{conn: conn} do
     quiz = insert(:quiz, type: :trivia, title: "What kind of pizza are you?")
     {:ok, view, _html} = live(conn, "/")
 
     view
-    |> element("#quiz-#{quiz.id}-button")
+    |> element("#quiz-#{quiz.id}-link")
     |> render_click()
 
     assert_redirect(view, ~p"/trivia/#{quiz.id}")
+  end
+
+  test "displays a placeholder image if the quiz does not have an image", %{conn: conn} do
+    quiz = insert(:quiz)
+    {:ok, view, _html} = live(conn, "/")
+
+    assert has_element?(view, "#quiz-#{quiz.id} img[src='images/placeholder.png']")
+  end
+
+  test "displays the quiz image if the quiz has an image", %{conn: conn} do
+    quiz = insert(:quiz, image: "pizza.png")
+    {:ok, view, _html} = live(conn, "/")
+
+    assert has_element?(view, "#quiz-#{quiz.id} img[src='images/pizza.png']")
   end
 end

@@ -15,20 +15,15 @@ defmodule KindQuizWeb.IndexLive do
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <%= for quiz <- @quizzes do %>
         <!-- Card -->
-        <div
-          id={"quiz-#{quiz.id}"}
-          class="bg-white p-4 rounded shadow flex flex-col justify-between gap-4"
-        >
-          <h2 class="text-lg font-semibold mb-2"><%= quiz.title %></h2>
-          <div>
-            <a
-              type="button"
-              id={"quiz-#{quiz.id}-button"}
-              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
-              href={get_quiz_link(quiz)}
-            >
-              Take the quiz
-            </a>
+        <div id={"quiz-#{quiz.id}"} class="max-w-sm rounded overflow-hidden shadow-lg">
+          <img class="w-full" src={get_image_path(quiz)} />
+          <div class="px-6 py-4">
+            <div class="text-xl font-bold mb-2">
+              <a id={"quiz-#{quiz.id}-link"} href={get_quiz_link(quiz)}>
+                <%= quiz.title %>
+              </a>
+            </div>
+            <div></div>
           </div>
         </div>
       <% end %>
@@ -43,4 +38,7 @@ defmodule KindQuizWeb.IndexLive do
       ~p"/quiz/#{quiz.id}"
     end
   end
+
+  defp get_image_path(%{image: nil}), do: "images/placeholder.png"
+  defp get_image_path(%{image: image}), do: "images/#{image}"
 end
