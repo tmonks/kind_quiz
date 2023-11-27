@@ -123,4 +123,25 @@ defmodule KindQuiz.QuizzesTest do
       assert %{id: ^quiz2_id} = Quizzes.get_incomplete_quiz()
     end
   end
+
+  describe "list_empty_quizzes/0" do
+    test "returns a list of all quizzes with no questions" do
+      # quiz1 has no questions
+      %{id: id1} = insert(:quiz)
+
+      # quiz 2 has a question
+      quiz2 = insert(:quiz)
+      insert(:question, quiz: quiz2)
+
+      assert [%{id: ^id1}] = Quizzes.list_empty_quizzes()
+    end
+
+    test "sorts quizzes by oldest first" do
+      %{id: id1} = insert(:quiz, inserted_at: DateTime.utc_now())
+      %{id: id2} = insert(:quiz, inserted_at: DateTime.utc_now() |> DateTime.add(-60))
+      %{id: id3} = insert(:quiz, inserted_at: DateTime.utc_now() |> DateTime.add(-30))
+
+      assert [%{id: ^id2}, %{id: ^id3}, %{id: ^id1}] = Quizzes.list_empty_quizzes()
+    end
+  end
 end

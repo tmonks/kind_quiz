@@ -16,17 +16,22 @@ defmodule KindQuiz.Builder do
 
   @impl true
   def handle_info(:create, state) do
-    quiz = Quizzes.get_incomplete_quiz()
+    empty_quizzes = Quizzes.list_empty_quizzes() |> Enum.filter(&(&1.type == :trivia))
 
-    if not is_nil(quiz) do
-      IO.puts("Generating question for: #{quiz.title}")
-      {:ok, %{text: text}} = Generator.generate_trivia_question(quiz)
-      IO.puts("Generated question: #{text}")
+    if empty_quizzes != [] do
+      quiz = Enum.at(empty_quizzes, 0)
+      IO.puts("Generating questions for: #{quiz.title}")
+      Enum.each(1..10, fn _ -> create_question(quiz) end)
     end
 
     schedule_creation()
 
     {:noreply, state}
+  end
+
+  defp create_question(quiz) do
+    {:ok, %{text: text}} = Generator.generate_trivia_question(quiz)
+    IO.puts("Generated question: #{text}")
   end
 
   defp schedule_creation() do

@@ -40,7 +40,7 @@ defmodule KindQuiz.Generator do
 
     You:
 
-    ``
+    ```
     {
       "title": "What kind of superhero are you?",
       "type": "category",
@@ -125,6 +125,21 @@ defmodule KindQuiz.Generator do
     |> decode_json()
     |> create_question_changeset(quiz)
     |> Repo.insert()
+  end
+
+  def generate_cover_image_prompt(quiz) do
+    system_prompt = """
+    You are a an image prompt generator that generates prompts to create cover images for quizzes.
+    I will give you the title of the quiz and you will generate a prompt for a cover image for that quiz.
+    The prompt should ALWAYS specify 'CARTOON IMAGE" style.
+    Do not give any additional explantion, just the prompt text that can be passed to the DALL-E model.
+    """
+
+    user_prompt = "Title: #{quiz.title}"
+
+    get_completion(@models[:gpt3], system_prompt, user_prompt, temperature: 0.8)
+    |> parse_chat()
+    |> IO.inspect()
   end
 
   def get_completion(model, system_prompt, user_prompt, options \\ []) do

@@ -62,4 +62,15 @@ defmodule KindQuiz.Quizzes do
     )
     |> Repo.one()
   end
+
+  @doc """
+  Lists quizzes with no questions
+  """
+  def list_empty_quizzes do
+    from(q in Quiz,
+      where: fragment("SELECT COUNT(*) FROM questions WHERE questions.quiz_id = ? ", q.id) == 0,
+      order_by: [asc: q.inserted_at]
+    )
+    |> Repo.all()
+  end
 end
