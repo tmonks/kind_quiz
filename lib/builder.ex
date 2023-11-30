@@ -3,6 +3,7 @@ defmodule KindQuiz.Builder do
 
   alias KindQuiz.Quizzes
   alias KindQuiz.Generator
+  alias KindQuiz.Repo
 
   def start_link(_args) do
     GenServer.start_link(__MODULE__, %{})
@@ -27,6 +28,17 @@ defmodule KindQuiz.Builder do
     schedule_creation()
 
     {:noreply, state}
+  end
+
+  @doc """
+  Generates and adds an image to a quiz
+  """
+  def add_image(quiz) do
+    {:ok, filename, prompt} = Generator.generate_image(quiz)
+
+    quiz
+    |> Ecto.Changeset.change(%{image: filename, image_prompt: prompt})
+    |> Repo.update()
   end
 
   defp create_question(quiz) do

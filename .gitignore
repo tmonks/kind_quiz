@@ -39,4 +39,9 @@ npm-debug.log
 *.db
 *.db-*
 
+# environment file
 .env
+
+# generated images
+/priv/static/images/quiz/*
+

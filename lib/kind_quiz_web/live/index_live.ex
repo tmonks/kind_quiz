@@ -40,5 +40,5 @@ defmodule KindQuizWeb.IndexLive do
   end
 
   defp get_image_path(%{image: nil}), do: "images/placeholder.png"
-  defp get_image_path(%{image: image}), do: "images/#{image}"
+  defp get_image_path(%{image: image}), do: "images/quiz/#{image}"
 end

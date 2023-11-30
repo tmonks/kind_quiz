@@ -142,6 +142,28 @@ defmodule KindQuiz.Generator do
     |> IO.inspect()
   end
 
+  @doc """
+  Generates an image for a quiz, and saves it to the filesystem
+  Returns a 3-item :ok tuple with the filename and prompt used to generate the image.
+  """
+  def generate_image(quiz) do
+    {:ok, prompt} = generate_cover_image_prompt(quiz)
+
+    # generate image
+    {:ok, %{data: [%{"url" => url}]}} =
+      OpenAI.image_generations(prompt: prompt, size: "512x512") |> IO.inspect()
+
+    # parse file name
+    [filename] = Regex.run(~r/img-.*\.png/, url)
+
+    # download image
+    {:ok, resp} = :httpc.request(:get, {url, []}, [], body_format: :binary)
+    {{_, 200, ~c"OK"}, _headers, body} = resp
+    File.write!("priv/static/images/quiz/#{filename}", body)
+
+    {:ok, filename, prompt}
+  end
+
   def get_completion(model, system_prompt, user_prompt, options \\ []) do
     messages = [
       %{role: "system", content: system_prompt},
