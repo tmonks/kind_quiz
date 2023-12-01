@@ -18,6 +18,7 @@ defmodule KindQuizWeb.Router do
     pipe_through :browser
 
     live "/", IndexLive
+    live "/admin", AdminLive
     live "/quiz/:id", QuizLive, :show
     live "/quiz/:id/outcome/:number", OutcomeLive, :show
     live "/trivia/:id", TriviaQuizLive, :show
