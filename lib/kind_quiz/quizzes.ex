@@ -19,6 +19,15 @@ defmodule KindQuiz.Quizzes do
   end
 
   @doc """
+  Toggles the is_active flag for the given quiz.
+  """
+  def toggle_active(quiz) do
+    quiz
+    |> Quiz.changeset(%{is_active: !quiz.is_active})
+    |> Repo.update()
+  end
+
+  @doc """
   Returns a quiz by id. Raises an error if the id is invalid.
   """
   def get_quiz!(id) do

@@ -9,7 +9,8 @@ defmodule KindQuiz.Factory do
 
   def quiz_factory do
     %Quiz{
-      title: "What kind of pizza are you?"
+      title: "What kind of pizza are you?",
+      type: :category
     }
   end
 

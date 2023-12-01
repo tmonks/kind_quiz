@@ -9,6 +9,7 @@ defmodule KindQuiz.Quizzes.Quiz do
     field :type, Ecto.Enum, values: [:trivia, :category]
     field :image, :string
     field :image_prompt, :string
+    field :is_active, :boolean, default: false
 
     has_many :questions, Question
     has_many :outcomes, Outcome
@@ -19,7 +20,7 @@ defmodule KindQuiz.Quizzes.Quiz do
   @doc false
   def changeset(quiz, attrs) do
     quiz
-    |> cast(attrs, [:title, :type])
+    |> cast(attrs, [:title, :type, :is_active])
     |> validate_required([:title, :type])
     |> cast_assoc(:outcomes)
     |> cast_assoc(:questions)

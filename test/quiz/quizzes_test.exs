@@ -17,6 +17,18 @@ defmodule KindQuiz.QuizzesTest do
     end
   end
 
+  describe "toggle_active/1" do
+    test "toggles the is_active flag from false to true" do
+      quiz = %{id: quiz_id} = insert(:quiz, is_active: false)
+      assert {:ok, %{id: ^quiz_id, is_active: true}} = Quizzes.toggle_active(quiz)
+    end
+
+    test "toggles the is_active flag from true to false" do
+      quiz = %{id: quiz_id} = insert(:quiz, is_active: true)
+      assert {:ok, %{id: ^quiz_id, is_active: false}} = Quizzes.toggle_active(quiz)
+    end
+  end
+
   describe "qet_quiz!/1" do
     test "returns a quiz by id" do
       %{id: id} = insert(:quiz, %{title: "What kind of pizza are you?"})
