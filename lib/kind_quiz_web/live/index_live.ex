@@ -15,17 +15,17 @@ defmodule KindQuizWeb.IndexLive do
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <%= for quiz <- @quizzes do %>
         <!-- Card -->
-        <div id={"quiz-#{quiz.id}"} class="max-w-sm rounded overflow-hidden shadow-lg">
-          <img class="w-full" src={get_image_path(quiz)} />
-          <div class="px-6 py-4">
-            <div class="text-xl font-bold mb-2">
-              <a id={"quiz-#{quiz.id}-link"} href={get_quiz_link(quiz)}>
+        <a id={"quiz-#{quiz.id}-link"} href={get_quiz_link(quiz)}>
+          <div id={"quiz-#{quiz.id}"} class="max-w-sm rounded overflow-hidden shadow-lg h-full">
+            <img class="w-full" src={get_image_path(quiz)} />
+            <div class="px-6 py-4">
+              <div class="text-xl font-bold mb-2">
                 <%= quiz.title %>
-              </a>
+              </div>
+              <div></div>
             </div>
-            <div></div>
           </div>
-        </div>
+        </a>
       <% end %>
     </div>
     """

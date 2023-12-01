@@ -45,6 +45,6 @@ defmodule KindQuizWeb.IndexLiveTest do
     quiz = insert(:quiz, image: "pizza.png")
     {:ok, view, _html} = live(conn, "/")
 
-    assert has_element?(view, "#quiz-#{quiz.id} img[src='images/pizza.png']")
+    assert has_element?(view, "#quiz-#{quiz.id} img[src='images/quiz/pizza.png']")
   end
 end
