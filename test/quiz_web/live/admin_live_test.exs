@@ -3,6 +3,8 @@ defmodule KindQuizWeb.AdminLiveTest do
   import Phoenix.LiveViewTest
   import KindQuiz.Factory
 
+  alias KindQuiz.Quizzes
+
   test "renders a card for each quiz", %{conn: conn} do
     quiz1 = insert(:quiz, title: "What kind of pizza are you?")
     quiz2 = insert(:quiz, title: "What kind of book are you?")
@@ -46,5 +48,38 @@ defmodule KindQuizWeb.AdminLiveTest do
     {:ok, view, _html} = live(conn, "/admin")
 
     assert has_element?(view, "#quiz-#{quiz.id} img[src='images/quiz/pizza.png']")
+  end
+
+  test "has a checkbox on each card to toggle the quiz's active status", %{conn: conn} do
+    quiz = insert(:quiz, is_active: true)
+    {:ok, view, _html} = live(conn, "/admin")
+
+    assert has_element?(view, "#quiz-#{quiz.id} input[type='checkbox']")
+  end
+
+  test "the checkbox is checked if the quiz is active", %{conn: conn} do
+    active_quiz = insert(:quiz, is_active: true)
+    inactive_quiz = insert(:quiz, is_active: false)
+    {:ok, view, _html} = live(conn, "/admin")
+
+    assert has_element?(view, "#quiz-#{active_quiz.id} input[type='checkbox'][checked]")
+    refute has_element?(view, "#quiz-#{inactive_quiz.id} input[type='checkbox'][checked]")
+  end
+
+  test "toggling the checkbox updates the quiz's active status", %{conn: conn} do
+    quiz = insert(:quiz, is_active: false)
+    {:ok, view, _html} = live(conn, "/admin")
+
+    # checkbox is unchecked
+    refute has_element?(view, "#quiz-#{quiz.id} input[type='checkbox'][checked]")
+
+    view
+    |> element("#quiz-#{quiz.id} input[type='checkbox']")
+    |> render_click()
+
+    # checkbox is checked
+    assert has_element?(view, "#quiz-#{quiz.id} input[type='checkbox'][checked]")
+    # quiz is updated
+    assert Quizzes.get_quiz!(quiz.id).is_active == true
   end
 end
