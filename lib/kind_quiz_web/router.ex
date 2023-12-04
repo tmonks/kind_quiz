@@ -18,9 +18,23 @@ defmodule KindQuizWeb.Router do
     pipe_through :browser
 
     live "/", IndexLive
-    live "/admin", AdminLive
     live "/quiz/:id", QuizLive, :show
     live "/quiz/:id/outcome/:number", OutcomeLive, :show
     live "/trivia/:id", TriviaQuizLive, :show
+  end
+
+  scope "/admin", KindQuizWeb do
+    pipe_through [:browser, :auth]
+
+    live "/", AdminLive
+  end
+
+  defp auth(conn, _opts) do
+    config = Application.get_env(:quiz, :auth)
+
+    Plug.BasicAuth.basic_auth(conn,
+      username: Keyword.fetch!(config, :username),
+      password: Keyword.fetch!(config, :password)
+    )
   end
 end
