@@ -70,7 +70,7 @@ if config_env() == :prod do
     secret_key_base: secret_key_base
 
   # get password from env (will raise if not set in prod)
-  config :chat_bots, :auth, password: System.fetch_env!("ADMIN_PASSWORD")
+  config :quiz, :auth, password: System.fetch_env!("ADMIN_PASSWORD")
 
   # ## SSL Support
   #
