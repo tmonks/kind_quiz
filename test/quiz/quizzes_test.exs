@@ -68,6 +68,15 @@ defmodule KindQuiz.QuizzesTest do
     end
   end
 
+  describe "list_active_quizzes/0" do
+    test "returns a list of all active quizzes" do
+      _active_quiz = %{id: active_quiz_id} = insert(:quiz, is_active: true)
+      _inactive_quiz = insert(:quiz, is_active: false)
+
+      assert [%{id: ^active_quiz_id}] = Quizzes.list_active_quizzes()
+    end
+  end
+
   describe "get_outcome!/1" do
     test "returns the outcome with the given id" do
       quiz = insert(:quiz)

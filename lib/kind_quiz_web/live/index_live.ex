@@ -5,7 +5,7 @@ defmodule KindQuizWeb.IndexLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    quizzes = Quizzes.list_quizzes()
+    quizzes = Quizzes.list_active_quizzes()
     {:ok, assign(socket, quizzes: quizzes)}
   end
 

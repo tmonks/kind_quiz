@@ -3,13 +3,22 @@ defmodule KindQuizWeb.IndexLiveTest do
   import Phoenix.LiveViewTest
   import KindQuiz.Factory
 
-  test "renders a row for each quiz", %{conn: conn} do
+  test "renders a card for each quiz", %{conn: conn} do
     quiz1 = insert(:quiz, title: "What kind of pizza are you?")
     quiz2 = insert(:quiz, title: "What kind of book are you?")
     {:ok, view, _html} = live(conn, "/")
 
     assert has_element?(view, "#quiz-#{quiz1.id}", "What kind of pizza are you?")
     assert has_element?(view, "#quiz-#{quiz2.id}", "What kind of book are you?")
+  end
+
+  test "shows only active quizzes", %{conn: conn} do
+    active_quiz = insert(:quiz, is_active: true)
+    inactive_quiz = insert(:quiz, is_active: false)
+    {:ok, view, _html} = live(conn, "/")
+
+    assert has_element?(view, "#quiz-#{active_quiz.id}")
+    refute has_element?(view, "#quiz-#{inactive_quiz.id}")
   end
 
   test "redirects :category quizzes to QuizLive", %{conn: conn} do

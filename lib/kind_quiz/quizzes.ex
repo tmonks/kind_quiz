@@ -46,6 +46,17 @@ defmodule KindQuiz.Quizzes do
   end
 
   @doc """
+  Returns a list of all active quizzes sorted by newest first
+  """
+  def list_active_quizzes do
+    from(q in Quiz,
+      where: q.is_active == true,
+      order_by: [desc: q.inserted_at]
+    )
+    |> Repo.all()
+  end
+
+  @doc """
   Returns the outcome with the given id. Raises an error if the id is invalid.
   """
   def get_outcome!(id) do
