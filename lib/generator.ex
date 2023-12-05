@@ -172,8 +172,7 @@ defmodule KindQuiz.Generator do
     [filename] = Regex.run(~r/img-.*\.png/, url)
 
     # download image
-    {:ok, resp} = :httpc.request(:get, {url, []}, [], body_format: :binary)
-    {{_, 200, ~c"OK"}, _headers, body} = resp
+    %Req.Response{status: 200, body: body} = Req.get!(url)
     File.write!("priv/static/images/quiz/#{filename}", body)
 
     {:ok, filename, prompt}
