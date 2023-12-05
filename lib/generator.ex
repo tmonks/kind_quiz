@@ -70,7 +70,7 @@ defmodule KindQuiz.Generator do
 
     user_prompt = "Title: #{quiz_title}, Outcomes: #{outcome_text}"
 
-    get_completion(@models[:gpt3], system_prompt, user_prompt,
+    get_completion(@models[:gpt4], system_prompt, user_prompt,
       temperature: 0.8,
       response_format: %{type: "json_object"}
     )
@@ -117,7 +117,7 @@ defmodule KindQuiz.Generator do
 
     user_prompt = "Subject: #{title}. Previous questions: #{previous_questions}"
 
-    get_completion(@models[:gpt3], system_prompt, user_prompt,
+    get_completion(@models[:gpt4], system_prompt, user_prompt,
       temperature: 0.8,
       response_format: %{type: "json_object"}
     )
@@ -131,7 +131,7 @@ defmodule KindQuiz.Generator do
     system_prompt = """
     You are a an image prompt generator that generates prompts to create cover images for quizzes.
     I will give you the title of the quiz and you will generate a prompt for a cover image for that quiz.
-    The prompt should ALWAYS specify 'CARTOON IMAGE" style.
+    The prompt should ALWAYS specify 'FANTASY ILLUSTRATION' style.
     Do not give any additional explantion, just the prompt text that can be passed to the DALL-E model.
     """
 
@@ -142,11 +142,26 @@ defmodule KindQuiz.Generator do
     |> IO.inspect()
   end
 
+  def generate_image(prompt) when is_binary(prompt) do
+    # generate image
+    {:ok, %{data: [%{"url" => url}]}} =
+      OpenAI.image_generations(prompt: prompt, size: "512x512") |> IO.inspect()
+
+    # parse file name
+    [filename] = Regex.run(~r/img-.*\.png/, url)
+
+    # download image
+    %Req.Response{status: 200, body: body} = Req.get!(url)
+    File.write!("priv/static/images/quiz/#{filename}", body)
+
+    {:ok, filename}
+  end
+
   @doc """
   Generates an image for a quiz, and saves it to the filesystem
   Returns a 3-item :ok tuple with the filename and prompt used to generate the image.
   """
-  def generate_image(quiz) do
+  def generate_image(%Quiz{} = quiz) do
     {:ok, prompt} = generate_cover_image_prompt(quiz)
 
     # generate image

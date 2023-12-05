@@ -19,7 +19,7 @@ defmodule KindQuiz.MixProject do
   def application do
     [
       mod: {KindQuiz.Application, []},
-      extra_applications: [:logger, :runtime_tools, :inets]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -50,7 +50,8 @@ defmodule KindQuiz.MixProject do
       {:ex_machina, "~> 2.7.0", only: :test},
       {:openai, "~> 0.5.2"},
       {:ai, "~> 0.3.3"},
-      {:dotenvy, "~> 0.8.0"}
+      {:dotenvy, "~> 0.8.0"},
+      {:req, "~> 0.4.0"}
     ]
   end
 
