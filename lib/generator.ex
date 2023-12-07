@@ -9,7 +9,7 @@ defmodule KindQuiz.Generator do
 
   @models %{
     gpt3: "gpt-3.5-turbo-1106",
-    gtp4: "gpt-4-1106-preview"
+    gpt4: "gpt-4-1106-preview"
   }
 
   @doc """
@@ -131,13 +131,13 @@ defmodule KindQuiz.Generator do
     system_prompt = """
     You are a an image prompt generator that generates prompts to create cover images for quizzes.
     I will give you the title of the quiz and you will generate a prompt for a cover image for that quiz.
-    The prompt should ALWAYS specify 'FANTASY ILLUSTRATION' style.
+    The prompt should ALWAYS specify a 'fantasy illustration' style, and also specify that the image should contain NO TEXT.
     Do not give any additional explantion, just the prompt text that can be passed to the DALL-E model.
     """
 
     user_prompt = "Title: #{quiz.title}"
 
-    get_completion(@models[:gpt3], system_prompt, user_prompt, temperature: 0.8)
+    get_completion(@models[:gpt4], system_prompt, user_prompt, temperature: 0.8)
     |> parse_chat()
     |> IO.inspect()
   end
@@ -147,12 +147,7 @@ defmodule KindQuiz.Generator do
     {:ok, %{data: [%{"url" => url}]}} =
       OpenAI.image_generations(prompt: prompt, size: "512x512") |> IO.inspect()
 
-    # parse file name
-    [filename] = Regex.run(~r/img-.*\.png/, url)
-
-    # download image
-    %Req.Response{status: 200, body: body} = Req.get!(url)
-    File.write!("priv/static/images/quiz/#{filename}", body)
+    filename = download_image(url)
 
     {:ok, filename}
   end
@@ -168,17 +163,25 @@ defmodule KindQuiz.Generator do
     {:ok, %{data: [%{"url" => url}]}} =
       OpenAI.image_generations(prompt: prompt, size: "512x512") |> IO.inspect()
 
+    filename = download_image(url)
+
+    {:ok, filename, prompt}
+  end
+
+  defp download_image(url) do
+    download_path = Application.get_env(:quiz, :download_path)
+
     # parse file name
     [filename] = Regex.run(~r/img-.*\.png/, url)
 
     # download image
     %Req.Response{status: 200, body: body} = Req.get!(url)
-    File.write!("priv/static/images/quiz/#{filename}", body)
+    File.write!("#{download_path}/#{filename}", body)
 
-    {:ok, filename, prompt}
+    filename
   end
 
-  def get_completion(model, system_prompt, user_prompt, options \\ []) do
+  defp get_completion(model, system_prompt, user_prompt, options) do
     messages = [
       %{role: "system", content: system_prompt},
       %{role: "user", content: user_prompt}

@@ -70,3 +70,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# path for downloading images
+config :quiz, download_path: "priv/static/images/quiz"
