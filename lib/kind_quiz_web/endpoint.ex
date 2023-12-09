@@ -23,6 +23,14 @@ defmodule KindQuizWeb.Endpoint do
     gzip: false,
     only: KindQuizWeb.static_paths()
 
+  # serve quiz images from /data/images in production
+  if Mix.env() == :prod do
+    plug Plug.Static,
+      at: "/images/quiz",
+      from: "/data/images",
+      gzip: false
+  end
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do

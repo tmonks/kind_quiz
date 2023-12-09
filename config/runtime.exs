@@ -73,7 +73,7 @@ if config_env() == :prod do
   config :quiz, :auth, password: System.fetch_env!("ADMIN_PASSWORD")
 
   # path for downloading images
-  config :quiz, download_path: Application.app_dir(:quiz) <> "/priv/static/images/quiz"
+  config :quiz, download_path: "/data/images"
 
   # ## SSL Support
   #
