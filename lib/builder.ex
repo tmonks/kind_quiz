@@ -15,6 +15,9 @@ defmodule KindQuiz.Builder do
     {:ok, state}
   end
 
+  @doc """
+  Populates questions for brand new trivia quizzes
+  """
   @impl true
   def handle_info(:create, state) do
     empty_quizzes = Quizzes.list_empty_quizzes() |> Enum.filter(&(&1.type == :trivia))
@@ -41,7 +44,10 @@ defmodule KindQuiz.Builder do
     |> Repo.update()
   end
 
-  defp create_question(quiz) do
+  @doc """
+  Generates and inserts a question to a trivia quiz
+  """
+  def create_question(quiz) do
     {:ok, %{text: text}} = Generator.generate_trivia_question(quiz)
     IO.puts("Generated question: #{text}")
   end
