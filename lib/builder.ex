@@ -1,36 +1,20 @@
 defmodule KindQuiz.Builder do
-  use GenServer
-
   alias KindQuiz.Quizzes
+  alias KindQuiz.Quizzes.Question
   alias KindQuiz.Generator
   alias KindQuiz.Repo
-
-  def start_link(_args) do
-    GenServer.start_link(__MODULE__, %{})
-  end
-
-  @impl true
-  def init(state) do
-    schedule_creation()
-    {:ok, state}
-  end
 
   @doc """
   Populates questions for brand new trivia quizzes
   """
-  @impl true
-  def handle_info(:create, state) do
-    empty_quizzes = Quizzes.list_empty_quizzes() |> Enum.filter(&(&1.type == :trivia))
+  def create_trivia_quiz(title) do
+    {:ok, quiz} = Quizzes.create_trivia_quiz(title)
 
-    if empty_quizzes != [] do
-      quiz = Enum.at(empty_quizzes, 0)
-      IO.puts("Generating questions for: #{quiz.title}")
-      Enum.each(1..10, fn _ -> create_question(quiz) end)
-    end
+    add_image(quiz)
 
-    schedule_creation()
+    Enum.each(1..10, fn _ -> add_trivia_question(quiz) end)
 
-    {:noreply, state}
+    Repo.reload(quiz) |> Repo.preload(:questions)
   end
 
   @doc """
@@ -47,12 +31,15 @@ defmodule KindQuiz.Builder do
   @doc """
   Generates and inserts a question to a trivia quiz
   """
-  def create_question(quiz) do
-    {:ok, %{text: text}} = Generator.generate_trivia_question(quiz)
-    IO.puts("Generated question: #{text}")
+  def add_trivia_question(quiz) do
+    Generator.generate_trivia_question(quiz)
+    |> create_question_changeset(quiz)
+    |> Repo.insert()
+    |> IO.inspect()
   end
 
-  defp schedule_creation() do
-    Process.send_after(self(), :create, 10_000)
+  defp create_question_changeset(attrs, quiz) do
+    Question.changeset(%Question{}, attrs)
+    |> Ecto.Changeset.put_change(:quiz_id, quiz.id)
   end
 end

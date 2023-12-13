@@ -18,8 +18,7 @@ defmodule KindQuiz.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: KindQuiz.PubSub},
       # Start the Endpoint (http/https)
-      KindQuizWeb.Endpoint,
-      KindQuiz.Builder
+      KindQuizWeb.Endpoint
       # Start a worker by calling: KindQuiz.Worker.start_link(arg)
       # {KindQuiz.Worker, arg}
     ]
