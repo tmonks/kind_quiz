@@ -28,7 +28,7 @@ end
 config :openai,
   api_key: env!("OPENAI_API_KEY"),
   organization_key: env!("OPENAI_ORG_KEY"),
-  http_options: [recv_timeout: 30_000]
+  http_options: [recv_timeout: 60_000]
 
 if config_env() == :prod do
   database_path =

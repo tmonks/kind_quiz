@@ -4,7 +4,6 @@ defmodule KindQuiz.Generator do
   """
 
   alias KindQuiz.Quizzes.Quiz
-  alias KindQuiz.Quizzes.Question
   alias KindQuiz.Repo
 
   @models %{
@@ -26,23 +25,23 @@ defmodule KindQuiz.Generator do
     system_prompt = """
     You are a quiz generator that generates fun quizzes for 10-14 year old children.
     The quiz will attempt to categorize the taker in some way based on their responses.
-    Each quiz should have 5 questions.
-    Each quiz will have a certain number of possible outcomes (i.e. categories that the taker can be placed in).
+    The quiz should have 5 questions.
+    The quiz will have a certain number of possible outcomes (i.e. categories that the taker can be placed in).
     Each question should have a number of possible answers equal to the number of possible outcomes.
     The most frequently selected answer number will determine the outcome.
     Each question's answer `number` 1 will correspond to the outcome with `number` 1, and so on.
+    The answers should be brief and easy for a 10-year old to understand.
     Insert a relevant emoji at the beginning of the title.
     I will give you the title of the quiz, and either the specific outcomes or the number of outcomes for you to make up.
     Please generate the quiz in JSON format like the example below.
-    Respond ONLY with the JSON with no additional text.
+    Respond ONLY with the valid JSON and no additional text.
 
-    User: "Title: 💪 What kind of superhero are you? Outcomes: 5"
+    User: "Title: What kind of superhero are you? Outcomes: 5"
 
     You:
 
-    ```
     {
-      "title": "What kind of superhero are you?",
+      "title": "🦸 What kind of superhero are you?",
       "type": "category",
       "outcomes": [
         { "number": 1, "text": "Captain America" },
@@ -65,7 +64,6 @@ defmodule KindQuiz.Generator do
       ]
       // 4 more questions...
     }
-    ```
     """
 
     user_prompt = "Title: #{quiz_title}, Outcomes: #{outcome_text}"
@@ -76,12 +74,48 @@ defmodule KindQuiz.Generator do
     )
     |> parse_chat()
     |> decode_json()
-    |> create_quiz_changeset()
-    |> Repo.insert()
   end
 
   @doc """
-  Generates a trivia quiz
+  Generates a set of outcomes for a category quiz
+  """
+  def generate_outcomes(quiz, outcomes \\ 5) do
+    system_prompt =
+      """
+      Please generate possible outcomes for a personality quiz.
+      The outcomes should be numbered in order.
+      Each outcome should have a brief description of the type of person that would get that outcome.
+      I will give you the title of the quiz and the number of required outcomes.
+      Generate only valid JSON with no additional text.
+
+      Example:
+
+      User: "Quiz title: What kind of spirit animal are you?, Outcomes: 4"
+
+      You:
+
+      {
+        outcomes: [
+          { "number": 1, "text": "Wolf", "description": "You're a natural-born leader with a strong sense of loyalty and a desire for freedom. You value deep connections with others and are not afraid to face challenges head-on." },
+          { "number": 2, "text": "Bear", "description": "You exude confidence and strength, preferring solitude or a small circle of close friends. Your resilience and protective nature make you a powerful presence to those around you." },
+          { "number": 3, "text": "Eagle" "description": "Your perspective is unique, offering you insight that others may lack. You value freedom and have a clear vision for your life, soaring above life's challenges with grace." },
+          { "number": 4, "text": "Dolphin", "description": "You are playful and intelligent, with an innate ability to connect with others. Your social nature and empathy allow you to navigate the world with a gentle, yet persuasive charm." }
+        ]
+      }
+      """
+
+    user_prompt = "Quiz title: #{quiz.title}, Outcomes: #{outcomes}"
+
+    get_completion(@models[:gpt4], system_prompt, user_prompt,
+      temperature: 0.8,
+      response_format: %{type: "json_object"}
+    )
+    |> parse_chat()
+    |> decode_json()
+  end
+
+  @doc """
+  Generates a trivia question and adds it to a quiz
   """
   def generate_trivia_question(%{title: title} = quiz) do
     quiz = Repo.reload(quiz) |> Repo.preload(:questions)
@@ -123,8 +157,6 @@ defmodule KindQuiz.Generator do
     )
     |> parse_chat()
     |> decode_json()
-    |> create_question_changeset(quiz)
-    |> Repo.insert()
   end
 
   def generate_cover_image_prompt(quiz) do
@@ -142,16 +174,6 @@ defmodule KindQuiz.Generator do
     |> IO.inspect()
   end
 
-  def generate_image(prompt) when is_binary(prompt) do
-    # generate image
-    {:ok, %{data: [%{"url" => url}]}} =
-      OpenAI.image_generations(prompt: prompt, size: "512x512") |> IO.inspect()
-
-    filename = download_image(url)
-
-    {:ok, filename}
-  end
-
   @doc """
   Generates an image for a quiz, and saves it to the filesystem
   Returns a 3-item :ok tuple with the filename and prompt used to generate the image.
@@ -166,6 +188,18 @@ defmodule KindQuiz.Generator do
     filename = download_image(url)
 
     {:ok, filename, prompt}
+  end
+
+  @doc """
+  Temporary function to generate and download test image from a prompt
+  """
+  def generate_image_from_prompt(prompt) do
+    {:ok, %{data: [%{"url" => url}]}} =
+      OpenAI.image_generations(prompt: prompt, size: "512x512") |> IO.inspect()
+
+    filename = download_image(url)
+
+    {:ok, filename}
   end
 
   defp download_image(url) do
@@ -203,10 +237,5 @@ defmodule KindQuiz.Generator do
 
   defp create_quiz_changeset(attrs) do
     Quiz.changeset(%Quiz{}, attrs)
-  end
-
-  defp create_question_changeset(attrs, quiz) do
-    Question.changeset(%Question{}, attrs)
-    |> Ecto.Changeset.put_change(:quiz_id, quiz.id)
   end
 end
