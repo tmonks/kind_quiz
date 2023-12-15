@@ -30,6 +30,9 @@ config :openai,
   organization_key: env!("OPENAI_ORG_KEY"),
   http_options: [recv_timeout: 60_000]
 
+# Stability.ai configuration
+config :quiz, stability_ai_api_key: env!("STABILITY_AI_API_KEY")
+
 if config_env() == :prod do
   database_path =
     System.get_env("DATABASE_PATH") ||

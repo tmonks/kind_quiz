@@ -51,7 +51,8 @@ defmodule KindQuiz.MixProject do
       {:openai, "~> 0.5.2"},
       {:ai, "~> 0.3.3"},
       {:dotenvy, "~> 0.8.0"},
-      {:req, "~> 0.4.0"}
+      {:req, "~> 0.4.0"},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 
