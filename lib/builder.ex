@@ -42,4 +42,20 @@ defmodule KQ.Builder do
     Question.changeset(%Question{}, attrs)
     |> Ecto.Changeset.put_change(:quiz_id, quiz.id)
   end
+
+  @doc """
+  Builds a category quiz with outcomes, questions, and images
+  """
+  def build_category_quiz(title) do
+    Quizzes.create_category_quiz(title)
+
+    # add_image(quiz)
+
+    # Add outcomes
+
+    # Add questions
+    # Enum.each(1..5, fn _ -> add_category_question(quiz) end)
+
+    # Repo.reload(quiz) |> Repo.preload(:questions)
+  end
 end
