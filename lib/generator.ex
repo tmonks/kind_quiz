@@ -1,10 +1,10 @@
-defmodule KindQuiz.Generator do
+defmodule KQ.Generator do
   @moduledoc """
   Generatez quizzes and questions using OpenAI API
   """
 
-  alias KindQuiz.Quizzes.Quiz
-  alias KindQuiz.Repo
+  alias KQ.Quizzes.Quiz
+  alias KQ.Repo
 
   @models %{
     gpt3: "gpt-3.5-turbo-1106",

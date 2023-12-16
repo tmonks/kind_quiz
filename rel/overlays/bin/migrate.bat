@@ -1,1 +1,1 @@
-call "%~dp0\quiz" eval KindQuiz.Release.migrate
+call "%~dp0\quiz" eval KQ.Release.migrate

@@ -1,12 +1,12 @@
-defmodule KindQuizWeb do
+defmodule KQWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use KindQuizWeb, :controller
-      use KindQuizWeb, :html
+      use KQWeb, :controller
+      use KQWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -40,7 +40,7 @@ defmodule KindQuizWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: KindQuizWeb.Layouts]
+        layouts: [html: KQWeb.Layouts]
 
       import Plug.Conn
 
@@ -51,7 +51,7 @@ defmodule KindQuizWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {KindQuizWeb.Layouts, :app}
+        layout: {KQWeb.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -83,7 +83,7 @@ defmodule KindQuizWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
-      import KindQuizWeb.CoreComponents
+      import KQWeb.CoreComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
@@ -96,9 +96,9 @@ defmodule KindQuizWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: KindQuizWeb.Endpoint,
-        router: KindQuizWeb.Router,
-        statics: KindQuizWeb.static_paths()
+        endpoint: KQWeb.Endpoint,
+        router: KQWeb.Router,
+        statics: KQWeb.static_paths()
     end
   end
 

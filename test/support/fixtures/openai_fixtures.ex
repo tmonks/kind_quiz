@@ -1,4 +1,4 @@
-defmodule KindQuiz.Fixtures.OpenAI do
+defmodule KQ.Fixtures.OpenAI do
   def image_generation_error do
     {:error,
      %{

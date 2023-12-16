@@ -1,8 +1,8 @@
-defmodule KindQuizWeb.OutcomeLiveTest do
-  use KindQuizWeb.ConnCase, async: true
+defmodule KQWeb.OutcomeLiveTest do
+  use KQWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import KindQuiz.Factory
+  import KQ.Factory
 
   test "renders the outcome from the id param", %{conn: conn} do
     quiz = insert(:quiz, id: 5)

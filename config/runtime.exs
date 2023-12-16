@@ -21,7 +21,7 @@ source!([".env", System.get_env()])
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
 if System.get_env("PHX_SERVER") do
-  config :quiz, KindQuizWeb.Endpoint, server: true
+  config :quiz, KQWeb.Endpoint, server: true
 end
 
 # OpenAI API configuration
@@ -41,7 +41,7 @@ if config_env() == :prod do
       For example: /etc/quiz/quiz.db
       """
 
-  config :quiz, KindQuiz.Repo,
+  config :quiz, KQ.Repo,
     database: database_path,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "5")
 
@@ -60,7 +60,7 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
-  config :quiz, KindQuizWeb.Endpoint,
+  config :quiz, KQWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
       # Enable IPv6 and bind on all interfaces.
@@ -83,7 +83,7 @@ if config_env() == :prod do
   # To get SSL working, you will need to add the `https` key
   # to your endpoint configuration:
   #
-  #     config :quiz, KindQuizWeb.Endpoint,
+  #     config :quiz, KQWeb.Endpoint,
   #       https: [
   #         ...,
   #         port: 443,
@@ -105,7 +105,7 @@ if config_env() == :prod do
   # We also recommend setting `force_ssl` in your endpoint, ensuring
   # no data is ever sent via http, always redirecting to https:
   #
-  #     config :quiz, KindQuizWeb.Endpoint,
+  #     config :quiz, KQWeb.Endpoint,
   #       force_ssl: [hsts: true]
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.

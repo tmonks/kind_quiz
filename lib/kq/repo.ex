@@ -1,4 +1,4 @@
-defmodule KindQuiz.Repo do
+defmodule KQ.Repo do
   use Ecto.Repo,
     otp_app: :quiz,
     adapter: Ecto.Adapters.SQLite3

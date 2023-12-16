@@ -1,11 +1,11 @@
-defmodule KindQuiz.Factory do
+defmodule KQ.Factory do
   # use with Ecto
-  use ExMachina.Ecto, repo: KindQuiz.Repo
+  use ExMachina.Ecto, repo: KQ.Repo
 
-  alias KindQuiz.Quizzes.Answer
-  alias KindQuiz.Quizzes.Outcome
-  alias KindQuiz.Quizzes.Question
-  alias KindQuiz.Quizzes.Quiz
+  alias KQ.Quizzes.Answer
+  alias KQ.Quizzes.Outcome
+  alias KQ.Quizzes.Question
+  alias KQ.Quizzes.Quiz
 
   def quiz_factory do
     %Quiz{

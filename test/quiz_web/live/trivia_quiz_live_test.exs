@@ -1,8 +1,8 @@
-defmodule KindQuizWeb.TriviaQuizLiveTest do
-  use KindQuizWeb.ConnCase, async: true
+defmodule KQWeb.TriviaQuizLiveTest do
+  use KQWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import KindQuiz.Factory
+  import KQ.Factory
 
   setup :setup_quiz
 

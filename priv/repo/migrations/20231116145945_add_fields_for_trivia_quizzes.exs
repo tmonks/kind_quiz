@@ -1,4 +1,4 @@
-defmodule KindQuiz.Repo.Migrations.AddFieldsForTriviaQuizzes do
+defmodule KQ.Repo.Migrations.AddFieldsForTriviaQuizzes do
   use Ecto.Migration
 
   def change do

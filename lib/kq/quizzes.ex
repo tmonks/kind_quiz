@@ -1,13 +1,13 @@
-defmodule KindQuiz.Quizzes do
+defmodule KQ.Quizzes do
   @moduledoc """
   Loads quiz and questions data
   """
 
   import Ecto.Query
 
-  alias KindQuiz.Repo
-  alias KindQuiz.Quizzes.Outcome
-  alias KindQuiz.Quizzes.Quiz
+  alias KQ.Repo
+  alias KQ.Quizzes.Outcome
+  alias KQ.Quizzes.Quiz
 
   @doc """
   Creates a new trivia quiz with the given title.

@@ -1,4 +1,4 @@
-defmodule KindQuizWeb.CoreComponents do
+defmodule KQWeb.CoreComponents do
   @moduledoc """
   Provides core UI components.
 
@@ -642,9 +642,9 @@ defmodule KindQuizWeb.CoreComponents do
     # uncommenting and adjusting the following code:
 
     # if count = opts[:count] do
-    #   Gettext.dngettext(KindQuizWeb.Gettext, "errors", msg, msg, count, opts)
+    #   Gettext.dngettext(KQWeb.Gettext, "errors", msg, msg, count, opts)
     # else
-    #   Gettext.dgettext(KindQuizWeb.Gettext, "errors", msg, opts)
+    #   Gettext.dgettext(KQWeb.Gettext, "errors", msg, opts)
     # end
 
     Enum.reduce(opts, msg, fn {key, value}, acc ->

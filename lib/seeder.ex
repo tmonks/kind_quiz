@@ -1,9 +1,9 @@
-defmodule KindQuiz.Seeder do
-  alias KindQuiz.Repo
-  alias KindQuiz.Quizzes.Answer
-  alias KindQuiz.Quizzes.Outcome
-  alias KindQuiz.Quizzes.Question
-  alias KindQuiz.Quizzes.Quiz
+defmodule KQ.Seeder do
+  alias KQ.Repo
+  alias KQ.Quizzes.Answer
+  alias KQ.Quizzes.Outcome
+  alias KQ.Quizzes.Question
+  alias KQ.Quizzes.Quiz
 
   def run do
     delete_all()

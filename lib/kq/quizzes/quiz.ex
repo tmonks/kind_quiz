@@ -1,8 +1,8 @@
-defmodule KindQuiz.Quizzes.Quiz do
+defmodule KQ.Quizzes.Quiz do
   use Ecto.Schema
   import Ecto.Changeset
-  alias KindQuiz.Quizzes.Outcome
-  alias KindQuiz.Quizzes.Question
+  alias KQ.Quizzes.Outcome
+  alias KQ.Quizzes.Question
 
   schema "quizzes" do
     field :title, :string

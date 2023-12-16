@@ -1,5 +1,5 @@
-defmodule KindQuiz.StabilityAi.Api do
-  alias KindQuiz.StabilityAi.Client
+defmodule KQ.StabilityAi.Api do
+  alias KQ.StabilityAi.Client
 
   @doc """
   Generates and saves an image for the given prompt.

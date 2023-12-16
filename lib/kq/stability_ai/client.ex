@@ -1,10 +1,10 @@
-defmodule KindQuiz.StabilityAi.Client do
+defmodule KQ.StabilityAi.Client do
   @moduledoc """
   Behaviour for a client that communicates with the Stability AI API
   """
 
   def impl do
-    Application.get_env(:quiz, :stability_ai_client, KindQuiz.StabilityAi.HttpClient)
+    Application.get_env(:quiz, :stability_ai_client, KQ.StabilityAi.HttpClient)
   end
 
   @callback post(url :: String.t(), options :: keyword()) ::

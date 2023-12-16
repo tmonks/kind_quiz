@@ -1,4 +1,4 @@
-defmodule KindQuiz.MixProject do
+defmodule KQ.MixProject do
   use Mix.Project
 
   def project do
@@ -18,7 +18,7 @@ defmodule KindQuiz.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {KindQuiz.Application, []},
+      mod: {KQ.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

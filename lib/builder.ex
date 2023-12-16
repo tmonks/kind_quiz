@@ -1,8 +1,8 @@
-defmodule KindQuiz.Builder do
-  alias KindQuiz.Quizzes
-  alias KindQuiz.Quizzes.Question
-  alias KindQuiz.Generator
-  alias KindQuiz.Repo
+defmodule KQ.Builder do
+  alias KQ.Quizzes
+  alias KQ.Quizzes.Question
+  alias KQ.Generator
+  alias KQ.Repo
 
   @doc """
   Populates questions for brand new trivia quizzes

@@ -1,8 +1,8 @@
-defmodule KindQuizWeb.QuizLive do
-  use KindQuizWeb, :live_view
+defmodule KQWeb.QuizLive do
+  use KQWeb, :live_view
   import Phoenix.HTML.Form
 
-  alias KindQuiz.Quizzes
+  alias KQ.Quizzes
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do
@@ -80,7 +80,7 @@ defmodule KindQuizWeb.QuizLive do
           </div>
           <%= for answer <- @answers do %>
             <div class="pb-2">
-              <!-- TODO: figure out how to avoid conflict with KindQuizWeb.CoreComponents.label -->
+              <!-- TODO: figure out how to avoid conflict with KQWeb.CoreComponents.label -->
               <%= Phoenix.HTML.Form.label do %>
                 <%= radio_button(f, :response, answer.number,
                   class: "mr-2",

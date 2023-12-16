@@ -1,30 +1,12 @@
-defmodule KindQuizWeb.AdminLive do
-  use KindQuizWeb, :live_view
+defmodule KQWeb.IndexLive do
+  use KQWeb, :live_view
 
-  alias KindQuiz.Quizzes
+  alias KQ.Quizzes
 
   @impl true
   def mount(_params, _session, socket) do
-    quizzes = Quizzes.list_quizzes()
+    quizzes = Quizzes.list_active_quizzes()
     {:ok, assign(socket, quizzes: quizzes)}
-  end
-
-  @impl true
-  def handle_event("toggle-active", %{"id" => quiz_id}, socket) do
-    quiz_id = String.to_integer(quiz_id)
-    quiz = get_quiz_from_assigns(socket, quiz_id)
-    {:ok, quiz} = Quizzes.toggle_active(quiz)
-    socket = update_quiz_in_assigns(socket, quiz)
-    {:noreply, socket}
-  end
-
-  defp get_quiz_from_assigns(socket, quiz_id) do
-    Enum.find(socket.assigns.quizzes, &(&1.id == quiz_id))
-  end
-
-  defp update_quiz_in_assigns(socket, quiz) do
-    quizzes = Enum.map(socket.assigns.quizzes, &if(&1.id == quiz.id, do: quiz, else: &1))
-    socket |> assign(:quizzes, quizzes)
   end
 
   @impl true
@@ -40,14 +22,7 @@ defmodule KindQuizWeb.AdminLive do
               <div class="text-xl font-bold mb-2">
                 <%= quiz.title %>
               </div>
-              <label>
-                <input
-                  type="checkbox"
-                  phx-click="toggle-active"
-                  phx-value-id={quiz.id}
-                  checked={quiz.is_active}
-                /> Active
-              </label>
+              <div></div>
             </div>
           </div>
         </a>

@@ -1,10 +1,10 @@
-defmodule KindQuizWeb.QuizLiveTest do
-  use KindQuizWeb.ConnCase, async: true
+defmodule KQWeb.QuizLiveTest do
+  use KQWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
-  import KindQuiz.Factory
+  import KQ.Factory
 
-  alias KindQuiz.Repo
+  alias KQ.Repo
 
   setup :setup_quiz
 

@@ -1,4 +1,4 @@
-defmodule KindQuiz.Repo.Migrations.CreateAnswers do
+defmodule KQ.Repo.Migrations.CreateAnswers do
   use Ecto.Migration
 
   def change do

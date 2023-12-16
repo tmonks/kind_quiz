@@ -1,9 +1,9 @@
-defmodule KindQuizWeb.AdminLiveTest do
-  use KindQuizWeb.ConnCase, async: true
+defmodule KQWeb.AdminLiveTest do
+  use KQWeb.ConnCase, async: true
   import Phoenix.LiveViewTest
-  import KindQuiz.Factory
+  import KQ.Factory
 
-  alias KindQuiz.Quizzes
+  alias KQ.Quizzes
 
   describe "unauthenticated" do
     test "returns 401 when not logged in", %{conn: conn} do

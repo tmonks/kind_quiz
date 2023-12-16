@@ -1,9 +1,9 @@
-defmodule KindQuiz.StabilityAi.ApiTest do
-  use KindQuizWeb.ConnCase, async: true
+defmodule KQ.StabilityAi.ApiTest do
+  use KQWeb.ConnCase, async: true
 
   import Mox
-  alias KindQuiz.StabilityAi.Api
-  alias KindQuiz.StabilityAi.MockClient
+  alias KQ.StabilityAi.Api
+  alias KQ.StabilityAi.MockClient
 
   setup [:verify_on_exit!, :setup_environment]
 

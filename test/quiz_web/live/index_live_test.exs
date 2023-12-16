@@ -1,7 +1,7 @@
-defmodule KindQuizWeb.IndexLiveTest do
-  use KindQuizWeb.ConnCase, async: true
+defmodule KQWeb.IndexLiveTest do
+  use KQWeb.ConnCase, async: true
   import Phoenix.LiveViewTest
-  import KindQuiz.Factory
+  import KQ.Factory
 
   test "renders a card for each quiz", %{conn: conn} do
     quiz1 = insert(:quiz, title: "What kind of pizza are you?")

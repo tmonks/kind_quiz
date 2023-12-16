@@ -1,5 +1,5 @@
 ExUnit.start()
-Ecto.Adapters.SQL.Sandbox.mode(KindQuiz.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(KQ.Repo, :manual)
 
-Mox.defmock(KindQuiz.StabilityAi.MockClient, for: KindQuiz.StabilityAi.Client)
-Application.put_env(:quiz, :stability_ai_client, KindQuiz.StabilityAi.MockClient)
+Mox.defmock(KQ.StabilityAi.MockClient, for: KQ.StabilityAi.Client)
+Application.put_env(:quiz, :stability_ai_client, KQ.StabilityAi.MockClient)

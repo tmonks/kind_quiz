@@ -1,11 +1,11 @@
-defmodule KindQuizWeb.Router do
-  use KindQuizWeb, :router
+defmodule KQWeb.Router do
+  use KQWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, html: {KindQuizWeb.Layouts, :root}
+    plug :put_root_layout, html: {KQWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -14,7 +14,7 @@ defmodule KindQuizWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", KindQuizWeb do
+  scope "/", KQWeb do
     pipe_through :browser
 
     live "/", IndexLive
@@ -23,7 +23,7 @@ defmodule KindQuizWeb.Router do
     live "/trivia/:id", TriviaQuizLive, :show
   end
 
-  scope "/admin", KindQuizWeb do
+  scope "/admin", KQWeb do
     pipe_through [:browser, :auth]
 
     live "/", AdminLive

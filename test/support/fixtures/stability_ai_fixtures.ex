@@ -1,4 +1,4 @@
-defmodule KindQuiz.Fixtures.StabilityAiFixtures do
+defmodule KQ.Fixtures.StabilityAiFixtures do
   def text_to_image_response() do
     {:ok,
      %Req.Response{

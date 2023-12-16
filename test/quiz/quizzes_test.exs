@@ -1,9 +1,9 @@
-defmodule KindQuiz.QuizzesTest do
-  use KindQuiz.DataCase, async: true
-  import KindQuiz.Factory
+defmodule KQ.QuizzesTest do
+  use KQ.DataCase, async: true
+  import KQ.Factory
 
-  alias KindQuiz.Quizzes
-  alias KindQuiz.Quizzes.Quiz
+  alias KQ.Quizzes
+  alias KQ.Quizzes.Quiz
 
   describe "create_trivia_quiz/1" do
     test "creates a trivia quiz from a title" do

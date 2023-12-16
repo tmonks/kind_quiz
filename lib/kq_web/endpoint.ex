@@ -1,4 +1,4 @@
-defmodule KindQuizWeb.Endpoint do
+defmodule KQWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :quiz
 
   # The session will be stored in the cookie and signed,
@@ -21,7 +21,7 @@ defmodule KindQuizWeb.Endpoint do
     at: "/",
     from: :quiz,
     gzip: false,
-    only: KindQuizWeb.static_paths()
+    only: KQWeb.static_paths()
 
   # serve quiz images from /data/images in production
   if Mix.env() == :prod do
@@ -51,5 +51,5 @@ defmodule KindQuizWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug KindQuizWeb.Router
+  plug KQWeb.Router
 end
