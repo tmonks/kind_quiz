@@ -3,16 +3,29 @@ defmodule KQ.QuizzesTest do
   import KQ.Factory
 
   alias KQ.Quizzes
+  alias KQ.Quizzes.Outcome
   alias KQ.Quizzes.Quiz
 
   describe "create_trivia_quiz/1" do
     test "creates a trivia quiz from a title" do
-      assert {:ok, %Quiz{title: "Amazing trivia quiz"}} =
+      assert {:ok, %Quiz{title: "Amazing trivia quiz", type: :trivia}} =
                Quizzes.create_trivia_quiz("Amazing trivia quiz")
     end
 
     test "returns an error changeset if the title is blank" do
       assert {:error, changeset} = Quizzes.create_trivia_quiz("")
+      assert {"can't be blank", _} = changeset.errors[:title]
+    end
+  end
+
+  describe "create_category_quiz/1" do
+    test "creates a category quiz from a title" do
+      assert {:ok, %Quiz{title: "Amazing category quiz", type: :category}} =
+               Quizzes.create_category_quiz("Amazing category quiz")
+    end
+
+    test "returns an error changeset if the title is blank" do
+      assert {:error, changeset} = Quizzes.create_category_quiz("")
       assert {"can't be blank", _} = changeset.errors[:title]
     end
   end
@@ -163,6 +176,27 @@ defmodule KQ.QuizzesTest do
       %{id: id3} = insert(:quiz, inserted_at: DateTime.utc_now() |> DateTime.add(-30))
 
       assert [%{id: ^id2}, %{id: ^id3}, %{id: ^id1}] = Quizzes.list_empty_quizzes()
+    end
+  end
+
+  describe "add_outcomes/2" do
+    test "adds outcomes to a quiz" do
+      quiz = insert(:quiz)
+
+      outcomes = [
+        %{text: "Veggie Pizza", image: "veggie", number: 1},
+        %{text: "Pepperoni Pizza", image: "pepperoni", number: 2},
+        %{text: "Cheese Pizza", image: "cheese", number: 3}
+      ]
+
+      assert {:ok, quiz} = Quizzes.add_outcomes(quiz, outcomes)
+
+      assert [
+               %Outcome{text: "Veggie Pizza", image: "veggie", number: 1},
+               %Outcome{text: "Pepperoni Pizza", image: "pepperoni", number: 2},
+               %Outcome{text: "Cheese Pizza", image: "cheese", number: 3}
+             ] =
+               quiz.outcomes
     end
   end
 end

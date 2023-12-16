@@ -4,6 +4,7 @@ defmodule KQ.Quizzes do
   """
 
   import Ecto.Query
+  import Ecto.Changeset, only: [put_assoc: 3]
 
   alias KQ.Repo
   alias KQ.Quizzes.Outcome
@@ -15,6 +16,15 @@ defmodule KQ.Quizzes do
   def create_trivia_quiz(title) do
     %Quiz{}
     |> Quiz.changeset(%{title: title, type: :trivia})
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a new category quiz with the given title.
+  """
+  def create_category_quiz(title) do
+    %Quiz{}
+    |> Quiz.changeset(%{title: title, type: :category})
     |> Repo.insert()
   end
 
@@ -92,5 +102,15 @@ defmodule KQ.Quizzes do
       order_by: [asc: q.inserted_at]
     )
     |> Repo.all()
+  end
+
+  @doc """
+  Adds a set of outcomes to a quiz
+  """
+  def add_outcomes(quiz, outcomes) do
+    Repo.preload(quiz, :outcomes)
+    |> Ecto.Changeset.change()
+    |> put_assoc(:outcomes, outcomes)
+    |> Repo.update()
   end
 end
