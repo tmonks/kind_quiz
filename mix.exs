@@ -52,7 +52,8 @@ defmodule KQ.MixProject do
       {:ai, "~> 0.3.3"},
       {:dotenvy, "~> 0.8.0"},
       {:req, "~> 0.4.0"},
-      {:mox, "~> 1.0", only: :test}
+      {:mox, "~> 1.0", only: :test},
+      {:bypass, "~> 2.1", only: :test}
     ]
   end
 

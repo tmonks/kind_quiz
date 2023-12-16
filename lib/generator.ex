@@ -159,7 +159,10 @@ defmodule KQ.Generator do
     |> decode_json()
   end
 
-  def generate_cover_image_prompt(quiz) do
+  @doc """
+  Generates an prompt to create a cover image for a quiz
+  """
+  def generate_image_prompt(%Quiz{} = quiz) do
     system_prompt = """
     You are a an image prompt generator that generates prompts to create cover images for quizzes.
     I will give you the title of the quiz and you will generate a prompt for a cover image for that quiz.
@@ -171,7 +174,6 @@ defmodule KQ.Generator do
 
     get_completion(@models[:gpt4], system_prompt, user_prompt, temperature: 0.8)
     |> parse_chat()
-    |> IO.inspect()
   end
 
   @doc """
@@ -179,7 +181,7 @@ defmodule KQ.Generator do
   Returns a 3-item :ok tuple with the filename and prompt used to generate the image.
   """
   def generate_image(%Quiz{} = quiz) do
-    {:ok, prompt} = generate_cover_image_prompt(quiz)
+    {:ok, prompt} = generate_image_prompt(quiz)
 
     # generate image
     {:ok, %{data: [%{"url" => url}]}} =
@@ -235,7 +237,7 @@ defmodule KQ.Generator do
     Jason.decode!(json)
   end
 
-  defp create_quiz_changeset(attrs) do
-    Quiz.changeset(%Quiz{}, attrs)
-  end
+  # defp create_quiz_changeset(attrs) do
+  #   Quiz.changeset(%Quiz{}, attrs)
+  # end
 end

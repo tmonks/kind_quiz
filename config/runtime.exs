@@ -25,10 +25,19 @@ if System.get_env("PHX_SERVER") do
 end
 
 # OpenAI API configuration
-config :openai,
-  api_key: env!("OPENAI_API_KEY"),
-  organization_key: env!("OPENAI_ORG_KEY"),
-  http_options: [recv_timeout: 60_000]
+if config_env() == :test do
+  # test
+  config :openai,
+    api_key: "test_api_key",
+    organization_key: "test_org_key",
+    api_url: "http://localhost:4010"
+else
+  # dev and prod
+  config :openai,
+    api_key: env!("OPENAI_API_KEY"),
+    organization_key: env!("OPENAI_ORG_KEY"),
+    http_options: [recv_timeout: 120_000]
+end
 
 # Stability.ai configuration
 config :quiz, stability_ai_api_key: env!("STABILITY_AI_API_KEY")
