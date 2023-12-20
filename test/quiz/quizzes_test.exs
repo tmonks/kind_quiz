@@ -199,4 +199,24 @@ defmodule KQ.QuizzesTest do
                quiz.outcomes
     end
   end
+
+  describe "set_outcome_image_prompts/2" do
+    test "sets the image prompt for each outcome on a quiz" do
+      quiz = insert(:quiz)
+      outcome1 = insert(:outcome, quiz: quiz, number: 1)
+      outcome2 = insert(:outcome, quiz: quiz, number: 2)
+
+      assert {:ok, _quiz} = Quizzes.set_outcome_image_prompts(quiz, "Prompt for outcome image")
+      assert %{image_prompt: "Prompt for outcome image"} = Repo.reload(outcome1)
+      assert %{image_prompt: "Prompt for outcome image"} = Repo.reload(outcome2)
+    end
+
+    test "replaces {{outcome}} placeholders in the image_prompt with the outcome's text" do
+      quiz = insert(:quiz)
+      insert(:outcome, quiz: quiz, number: 1, text: "Veggie Pizza")
+
+      assert {:ok, %{outcomes: [%{image_prompt: "Image of Veggie Pizza"}]}} =
+               Quizzes.set_outcome_image_prompts(quiz, "Image of {{outcome}}")
+    end
+  end
 end

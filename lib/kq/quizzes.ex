@@ -113,4 +113,29 @@ defmodule KQ.Quizzes do
     |> put_assoc(:outcomes, outcomes)
     |> Repo.update()
   end
+
+  @doc """
+  Sets the image_prompt for each of the outcomes on a quiz
+  Replaces {{outcome}} with the outcome's text
+  """
+  def set_outcome_image_prompts(quiz, image_prompt) do
+    %{outcomes: outcomes} =
+      Repo.preload(quiz, :outcomes)
+
+    Enum.each(outcomes, &update_image_prompt(&1, image_prompt))
+
+    {:ok, Repo.preload(quiz, :outcomes, force: true)}
+  end
+
+  defp update_image_prompt(outcome, image_prompt) do
+    image_prompt = fill_placeholders(outcome, image_prompt)
+
+    outcome
+    |> Ecto.Changeset.change(%{image_prompt: image_prompt})
+    |> Repo.update()
+  end
+
+  defp fill_placeholders(outcome, image_prompt) do
+    String.replace(image_prompt, "{{outcome}}", outcome.text)
+  end
 end
