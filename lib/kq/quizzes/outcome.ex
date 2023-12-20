@@ -7,6 +7,8 @@ defmodule KQ.Quizzes.Outcome do
     field :text, :string
     field :image, :string
     field :number, :integer
+    field :image_prompt, :string
+    field :description, :string
     belongs_to :quiz, Quiz
 
     timestamps()
