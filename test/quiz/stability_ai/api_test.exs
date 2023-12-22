@@ -38,6 +38,5 @@ defmodule KQ.StabilityAi.ApiTest do
 
   defp setup_environment(_) do
     Application.put_env(:quiz, :stability_ai_api_key, "StaB1l1tyA1")
-    Application.put_env(:quiz, :download_path, "/tmp")
   end
 end

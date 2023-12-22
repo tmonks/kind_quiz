@@ -1,8 +1,11 @@
 defmodule KQ.Builder do
   alias KQ.Quizzes
+  alias KQ.Quizzes.Outcome
   alias KQ.Quizzes.Question
+  alias KQ.Quizzes.Quiz
   alias KQ.Generator
   alias KQ.Repo
+  alias KQ.StabilityAi.Api
 
   @doc """
   Populates questions for brand new trivia quizzes
@@ -18,13 +21,21 @@ defmodule KQ.Builder do
   end
 
   @doc """
-  Generates and adds an image to a quiz
+  Generates and adds an image to a quiz or an outcome
   """
-  def add_image(quiz) do
+  def add_image(%Quiz{} = quiz) do
     {:ok, filename, prompt} = Generator.generate_image(quiz)
 
     quiz
     |> Ecto.Changeset.change(%{image: filename, image_prompt: prompt})
+    |> Repo.update()
+  end
+
+  def add_image(%Outcome{image_prompt: image_prompt} = outcome) when not is_nil(image_prompt) do
+    {:ok, filename} = Api.generate_image(image_prompt)
+
+    outcome
+    |> Ecto.Changeset.change(%{image: filename})
     |> Repo.update()
   end
 

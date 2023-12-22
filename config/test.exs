@@ -22,3 +22,6 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# set download path for generated images to /tmp
+config :quiz, :download_path, "/tmp"

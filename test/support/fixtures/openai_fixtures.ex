@@ -12,7 +12,7 @@ defmodule KQ.Fixtures.OpenAI do
      }}
   end
 
-  def chat_response_image_prompt do
+  def chat_response_image_prompt(expected_text \\ "Some image prompt") do
     {:ok,
      %{
        id: "chatcmpl-8WVzE1LU67FXluVAn9dMSre0KncVE",
@@ -30,8 +30,7 @@ defmodule KQ.Fixtures.OpenAI do
            "index" => 0,
            "logprobs" => nil,
            "message" => %{
-             "content" =>
-               "Fantasy illustration of an enchanted Thanksgiving feast table with a variety of mystical side dishes, such as a bowl of glowing cranberry sauce, a levitating sweet potato casserole with twinkling marshmallows, and a pie with a magical aura, all set in an autumnal forest clearing surrounded by mythical creatures, with no text.",
+             "content" => expected_text,
              "role" => "assistant"
            }
          }
