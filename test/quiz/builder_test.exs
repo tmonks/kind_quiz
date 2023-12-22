@@ -6,7 +6,6 @@ defmodule KQ.BuilderTest do
   import KQ.Fixtures.StabilityAiFixtures
 
   alias KQ.Builder
-  alias KQ.StabilityAi.MockClient
 
   setup :verify_on_exit!
 
@@ -22,20 +21,10 @@ defmodule KQ.BuilderTest do
     test "can generate and add an image to an outcome" do
       outcome = insert(:outcome, image_prompt: "picture of a cat", image: nil)
 
-      MockClient |> expect_text_to_image_request("picture of a cat")
+      expect_text_to_image_request("picture of a cat")
 
       {:ok, outcome} = Builder.add_image(outcome)
       assert not is_nil(outcome.image)
     end
-  end
-
-  defp expect_text_to_image_request(mock_client, prompt) do
-    mock_client
-    |> expect(:post, fn _url, options ->
-      json = Keyword.get(options, :json)
-      assert %{text_prompts: prompts} = json
-      assert Enum.any?(prompts, &(&1[:text] == prompt))
-      text_to_image_response()
-    end)
   end
 end

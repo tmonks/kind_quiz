@@ -1,5 +1,9 @@
 defmodule KQ.Fixtures.StabilityAiFixtures do
-  def text_to_image_response() do
+  use KQ.DataCase, only: [assert: 2]
+  import Mox
+  alias KQ.StabilityAi.MockClient
+
+  def text_to_image_response do
     {:ok,
      %Req.Response{
        status: 200,
@@ -31,5 +35,18 @@ defmodule KQ.Fixtures.StabilityAiFixtures do
        trailers: %{},
        private: %{}
      }}
+  end
+
+  @doc """
+  Set up mock client to expect a text to image request with the given prompt
+  """
+  def expect_text_to_image_request(prompt) do
+    MockClient
+    |> expect(:post, fn _url, options ->
+      json = Keyword.get(options, :json)
+      assert %{text_prompts: prompts} = json
+      assert Enum.any?(prompts, &(&1[:text] == prompt))
+      text_to_image_response()
+    end)
   end
 end
