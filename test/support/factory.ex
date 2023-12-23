@@ -32,7 +32,7 @@ defmodule KQ.Factory do
     %Outcome{
       quiz: build(:quiz),
       text: "You are a pepperoni pizza!",
-      number: 1
+      number: sequence(:outcome_number, & &1, start_at: 1)
     }
   end
 end

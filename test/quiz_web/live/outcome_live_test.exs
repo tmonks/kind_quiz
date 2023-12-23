@@ -1,5 +1,5 @@
 defmodule KQWeb.OutcomeLiveTest do
-  use KQWeb.ConnCase, async: true
+  use KQWeb.ConnCase, async: false
 
   import Phoenix.LiveViewTest
   import KQ.Factory
@@ -15,7 +15,7 @@ defmodule KQWeb.OutcomeLiveTest do
 
   test "has a button to restart the quiz", %{conn: conn} do
     outcome = insert(:outcome)
-    assert {:ok, view, _html} = live(conn, ~p"/quiz/#{outcome.quiz.id}/outcome/#{outcome.id}")
+    assert {:ok, view, _html} = live(conn, ~p"/quiz/#{outcome.quiz.id}/outcome/#{outcome.number}")
 
     view
     |> element("#restart-quiz-button")
@@ -25,14 +25,14 @@ defmodule KQWeb.OutcomeLiveTest do
 
   test "displays a picture of the outcome if one is set", %{conn: conn} do
     outcome = insert(:outcome, image: "outcome-5.jpg")
-    assert {:ok, view, _html} = live(conn, ~p"/quiz/#{outcome.quiz.id}/outcome/#{outcome.id}")
+    assert {:ok, view, _html} = live(conn, ~p"/quiz/#{outcome.quiz.id}/outcome/#{outcome.number}")
 
     assert has_element?(view, "img[src='/images/outcome-5.jpg']")
   end
 
   test "does not display picture if the outcome does not have one", %{conn: conn} do
     outcome = insert(:outcome, image: nil)
-    assert {:ok, view, _html} = live(conn, ~p"/quiz/#{outcome.quiz.id}/outcome/#{outcome.id}")
+    assert {:ok, view, _html} = live(conn, ~p"/quiz/#{outcome.quiz.id}/outcome/#{outcome.number}")
 
     refute has_element?(view, "img")
   end

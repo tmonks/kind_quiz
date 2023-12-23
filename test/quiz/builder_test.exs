@@ -29,4 +29,23 @@ defmodule KQ.BuilderTest do
       assert outcome.image == "img-#{date}-953806256.png"
     end
   end
+
+  describe "add_outcome_images/1" do
+    test "adds an image for each outcome" do
+      quiz = insert(:quiz, type: :category)
+
+      outcome1 =
+        insert(:outcome, quiz: quiz, image_prompt: "picture of a cat", image: nil)
+
+      outcome2 =
+        insert(:outcome, quiz: quiz, image_prompt: "picture of a dog", image: nil)
+
+      expect_text_to_image_request("picture of a cat")
+      expect_text_to_image_request("picture of a dog")
+
+      {:ok, _quiz} = Builder.add_outcome_images(quiz)
+      assert Repo.reload(outcome1) |> Map.get(:image) =~ ~r/img.*png/
+      assert Repo.reload(outcome2) |> Map.get(:image) =~ ~r/img.*png/
+    end
+  end
 end

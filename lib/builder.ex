@@ -55,6 +55,17 @@ defmodule KQ.Builder do
   end
 
   @doc """
+  Adds an image to each outcome of a category quiz
+  """
+  def add_outcome_images(%Quiz{} = quiz) do
+    quiz = Repo.preload(quiz, :outcomes)
+    Enum.each(quiz.outcomes, fn outcome -> add_image(outcome) end)
+
+    quiz = quiz |> Repo.reload() |> Repo.preload(:outcomes)
+    {:ok, quiz}
+  end
+
+  @doc """
   Builds a category quiz with outcomes, questions, and images
   """
   def build_category_quiz(title) do
