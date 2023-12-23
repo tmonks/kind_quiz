@@ -12,16 +12,32 @@ defmodule KQ.GeneratorTest do
   end
 
   describe "generate_image_prompt/1" do
-    test "Returns a prompt for generating an image for a quiz", %{bypass: bypass} do
+    test "Generates a text prompt for creating an image for a quiz", %{bypass: bypass} do
       quiz = insert(:quiz, title: "Test Quiz")
-      json_response = chat_response_image_prompt() |> elem(1) |> Jason.encode!()
+
+      json_response =
+        chat_response_image_prompt("Prompt for quiz image") |> elem(1) |> Jason.encode!()
 
       Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
         Plug.Conn.resp(conn, 200, json_response)
       end)
 
       assert {:ok, prompt} = Generator.generate_image_prompt(quiz)
-      assert prompt =~ "Fantasy illustration of an enchanted Thanksgiving feast table"
+      assert prompt =~ "Prompt for quiz image"
+    end
+
+    test "Generates a text prompt for creating an image for a outcome", %{bypass: bypass} do
+      outcome = insert(:outcome)
+
+      json_response =
+        chat_response_image_prompt("Prompt for outcome image") |> elem(1) |> Jason.encode!()
+
+      Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
+        Plug.Conn.resp(conn, 200, json_response)
+      end)
+
+      assert {:ok, prompt} = Generator.generate_image_prompt(outcome)
+      assert prompt =~ "Prompt for outcome image"
     end
   end
 end

@@ -3,6 +3,7 @@ defmodule KQ.Generator do
   Generatez quizzes and questions using OpenAI API
   """
 
+  alias KQ.Quizzes.Outcome
   alias KQ.Quizzes.Quiz
   alias KQ.Repo
 
@@ -160,7 +161,7 @@ defmodule KQ.Generator do
   end
 
   @doc """
-  Generates an prompt to create a cover image for a quiz
+  Generates an prompt to create a cover image for a quiz or outcome
   """
   def generate_image_prompt(%Quiz{} = quiz) do
     system_prompt = """
@@ -171,6 +172,24 @@ defmodule KQ.Generator do
     """
 
     user_prompt = "Title: #{quiz.title}"
+
+    get_completion(@models[:gpt4], system_prompt, user_prompt, temperature: 0.8)
+    |> parse_chat()
+  end
+
+  def generate_image_prompt(%Outcome{} = outcome) do
+    outcome = Repo.preload(outcome, :quiz)
+
+    system_prompt = ""
+
+    user_prompt =
+      """
+      Please write a Stable Diffusion prompt to generate an image to when a user completes
+      the personality quiz: "#{outcome.quiz.title}" and gets the outcome: #{outcome.text}.
+      The image should be entertaining for a 10-year-old child.
+      Try to make it funny, surprising, or ironic.
+      Provide only the prompt text that can be passed to Stable Diffusion with no additional explanation.
+      """
 
     get_completion(@models[:gpt4], system_prompt, user_prompt, temperature: 0.8)
     |> parse_chat()
