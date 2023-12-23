@@ -31,7 +31,10 @@ defmodule KQ.StabilityAi.ApiTest do
          }}
       end)
 
-      assert {:ok, "SD-awesome-12345-a_cute_fluffy_cat.png"} =
+      date = Date.utc_today() |> Date.to_iso8601() |> String.replace("-", "")
+      expected_filename = "img-#{date}-12345.png"
+
+      assert {:ok, ^expected_filename} =
                Api.generate_image("a cute fluffy cat", %{style_preset: "awesome"})
     end
   end

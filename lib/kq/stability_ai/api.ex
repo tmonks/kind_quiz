@@ -42,17 +42,24 @@ defmodule KQ.StabilityAi.Api do
 
     %{"artifacts" => [%{"base64" => base64, "seed" => seed}]} = resp_body
     image_data = Base.decode64!(base64)
-    filename = make_filename(body.style_preset, seed, prompt)
+    filename = make_filename(seed)
     File.write!("#{download_path}/#{filename}", image_data)
     {:ok, filename}
   end
 
-  defp make_filename(style_preset, seed, prompt) do
-    prompt = prompt |> String.replace(" ", "_")
-    base_name = "SD-#{style_preset}-#{seed}-#{prompt}"
-    # truncate to 255 characters total
-    (base_name |> String.slice(0..250)) <> ".png"
+  defp make_filename(seed) do
+    date = Date.utc_today() |> Date.to_iso8601() |> String.replace("-", "")
+    "img-#{date}-#{seed}.png"
   end
+
+  # defp make_filename(style_preset, seed, prompt) do
+  # replace non-alphanumeric characters with underscores
+  # prompt = prompt |> String.replace(~r/[^a-zA-Z0-9]/, "_")
+
+  # base_name = "SD-#{style_preset}-#{seed}-#{prompt}"
+  # truncate to 125 characters total
+  # (base_name |> String.slice(0..120)) <> ".png"
+  # end
 
   defp get_api_key() do
     Application.get_env(:quiz, :stability_ai_api_key)

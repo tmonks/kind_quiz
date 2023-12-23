@@ -20,11 +20,13 @@ defmodule KQ.BuilderTest do
   describe "add_image/1" do
     test "can generate and add an image to an outcome" do
       outcome = insert(:outcome, image_prompt: "picture of a cat", image: nil)
+      date = Date.utc_today() |> Date.to_iso8601() |> String.replace("-", "")
 
       expect_text_to_image_request("picture of a cat")
 
       {:ok, outcome} = Builder.add_image(outcome)
-      assert not is_nil(outcome.image)
+      # image named with date and seed
+      assert outcome.image == "img-#{date}-953806256.png"
     end
   end
 end
