@@ -27,7 +27,7 @@ defmodule KQWeb.OutcomeLiveTest do
     outcome = insert(:outcome, image: "outcome-5.jpg")
     assert {:ok, view, _html} = live(conn, ~p"/quiz/#{outcome.quiz.id}/outcome/#{outcome.number}")
 
-    assert has_element?(view, "img[src='/images/outcome-5.jpg']")
+    assert has_element?(view, "img[src='/images/quiz/outcome-5.jpg']")
   end
 
   test "does not display picture if the outcome does not have one", %{conn: conn} do

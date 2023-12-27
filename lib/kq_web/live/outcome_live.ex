@@ -24,7 +24,7 @@ defmodule KQWeb.OutcomeLive do
         <%= @outcome.text %>!
       </h2>
       <%= if @outcome.image do %>
-        <img src={~p"/images/#{@outcome.image}"} class="mt-8 mx-auto" style="max-height: 700px" />
+        <img src={~p"/images/quiz/#{@outcome.image}"} class="mt-8 mx-auto" style="max-height: 700px" />
       <% end %>
       <a
         type="button"
