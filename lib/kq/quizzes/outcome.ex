@@ -17,7 +17,7 @@ defmodule KQ.Quizzes.Outcome do
   @doc false
   def changeset(outcome, attrs) do
     outcome
-    |> cast(attrs, [:text, :image, :number])
+    |> cast(attrs, [:text, :image, :number, :image_prompt, :description])
     |> validate_required([:text, :number])
   end
 end

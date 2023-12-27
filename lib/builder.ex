@@ -69,11 +69,17 @@ defmodule KQ.Builder do
   Builds a category quiz with outcomes, questions, and images
   """
   def build_category_quiz(title) do
-    Quizzes.create_category_quiz(title)
+    {:ok, quiz} = Quizzes.create_category_quiz(title)
+
+    # Adds outcomes
+    {:ok, outcomes} = Generator.generate_outcomes(quiz)
+
+    Quizzes.add_outcomes(quiz, outcomes)
+
+    # add image to each outcome
+    # add_outcome_images(quiz)
 
     # add_image(quiz)
-
-    # Add outcomes
 
     # Add questions
     # Enum.each(1..5, fn _ -> add_category_question(quiz) end)

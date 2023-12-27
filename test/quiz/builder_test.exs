@@ -4,16 +4,40 @@ defmodule KQ.BuilderTest do
   import Mox
   import KQ.Factory
   import KQ.Fixtures.StabilityAiFixtures
+  import KQ.Fixtures.OpenAI
 
   alias KQ.Builder
 
   setup :verify_on_exit!
 
+  # setup Bypass for OpenAI calls
+  setup do
+    bypass = Bypass.open(port: 4010)
+    {:ok, bypass: bypass}
+  end
+
   describe "build_category_quiz/1" do
-    test "creates a quiz from the specified title" do
+    test "creates a quiz from the specified title", %{bypass: bypass} do
+      expected_response = chat_response_outcomes() |> elem(1) |> Jason.encode!()
+
+      Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
+        Plug.Conn.resp(conn, 200, expected_response)
+      end)
+
       {:ok, quiz} = Builder.build_category_quiz("Test Quiz")
 
       assert quiz.title == "Test Quiz"
+    end
+
+    test "calls OpenAI to generate and add outcomes", %{bypass: bypass} do
+      expected_response = chat_response_outcomes() |> elem(1) |> Jason.encode!()
+
+      Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
+        Plug.Conn.resp(conn, 200, expected_response)
+      end)
+
+      {:ok, quiz} = Builder.build_category_quiz("Test Quiz")
+      IO.inspect(quiz.outcomes)
     end
   end
 
