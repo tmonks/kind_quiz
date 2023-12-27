@@ -184,9 +184,9 @@ defmodule KQ.QuizzesTest do
       quiz = insert(:quiz)
 
       outcomes = [
-        %{text: "Veggie Pizza", image: "veggie", number: 1},
-        %{text: "Pepperoni Pizza", image: "pepperoni", number: 2},
-        %{text: "Cheese Pizza", image: "cheese", number: 3}
+        %{"text" => "Veggie Pizza", "image" => "veggie", "number" => 1},
+        %{"text" => "Pepperoni Pizza", "image" => "pepperoni", "number" => 2},
+        %{"text" => "Cheese Pizza", "image" => "cheese", "number" => 3}
       ]
 
       assert {:ok, quiz} = Quizzes.add_outcomes(quiz, outcomes)

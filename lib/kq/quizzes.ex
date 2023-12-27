@@ -4,7 +4,7 @@ defmodule KQ.Quizzes do
   """
 
   import Ecto.Query
-  import Ecto.Changeset, only: [put_assoc: 3]
+  import Ecto.Changeset, only: [cast_assoc: 3]
 
   alias KQ.Repo
   alias KQ.Quizzes.Outcome
@@ -106,12 +106,20 @@ defmodule KQ.Quizzes do
 
   @doc """
   Adds a set of outcomes to a quiz
+
+  ## Examples
+
+    iex> add_outcomes(quiz, [%{"text" => "Outcome 1", "description" => "Description 1", "number" => 1}])
+    {:ok, %Quiz{}}
   """
   def add_outcomes(quiz, outcomes) do
-    Repo.preload(quiz, :outcomes)
-    |> Ecto.Changeset.change()
-    |> put_assoc(:outcomes, outcomes)
+    quiz
+    |> Repo.preload(:outcomes)
+    |> Ecto.Changeset.cast(%{"outcomes" => outcomes}, [])
+    |> cast_assoc(:outcomes, with: &Outcome.changeset/2)
     |> Repo.update()
+
+    {:ok, Repo.preload(quiz, :outcomes)}
   end
 
   @doc """
