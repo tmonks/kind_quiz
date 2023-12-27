@@ -1,5 +1,5 @@
 defmodule KQ.GeneratorTest do
-  use KQ.DataCase, async: true
+  use KQ.DataCase, async: false
 
   import KQ.Factory
   import KQ.Fixtures.OpenAI
@@ -38,6 +38,23 @@ defmodule KQ.GeneratorTest do
 
       assert {:ok, prompt} = Generator.generate_image_prompt(outcome)
       assert prompt =~ "Prompt for outcome image"
+    end
+  end
+
+  describe "generate_outcomes/2" do
+    test "Generates outcomes for a quiz", %{bypass: bypass} do
+      quiz = insert(:quiz, title: "Test Quiz")
+
+      json_response =
+        chat_response_outcomes() |> elem(1) |> Jason.encode!()
+
+      Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
+        Plug.Conn.resp(conn, 200, json_response)
+      end)
+
+      assert {:ok, outcomes} = Generator.generate_outcomes(quiz, 3)
+      assert length(outcomes) == 4
+      assert %{"text" => _, "description" => _, "number" => _} = Enum.at(outcomes, 0)
     end
   end
 end

@@ -107,12 +107,15 @@ defmodule KQ.Generator do
 
     user_prompt = "Quiz title: #{quiz.title}, Outcomes: #{outcomes}"
 
-    get_completion(@models[:gpt4], system_prompt, user_prompt,
-      temperature: 0.8,
-      response_format: %{type: "json_object"}
-    )
-    |> parse_chat()
-    |> decode_json()
+    %{"outcomes" => outcomes} =
+      get_completion(@models[:gpt4], system_prompt, user_prompt,
+        temperature: 0.8,
+        response_format: %{type: "json_object"}
+      )
+      |> parse_chat()
+      |> decode_json()
+
+    {:ok, outcomes}
   end
 
   @doc """
@@ -151,6 +154,55 @@ defmodule KQ.Generator do
       """
 
     user_prompt = "Subject: #{title}. Previous questions: #{previous_questions}"
+
+    get_completion(@models[:gpt4], system_prompt, user_prompt,
+      temperature: 0.8,
+      response_format: %{type: "json_object"}
+    )
+    |> parse_chat()
+    |> decode_json()
+  end
+
+  @doc """
+  Generates a set of category quiz questions
+  """
+  def generate_category_questions(quiz) do
+    quiz = Repo.preload(quiz, :outcomes)
+
+    system_prompt = """
+    You are a quiz question generator that generates fun personaly quiz questions for 10-14 year olds.
+    The quiz will attempt to categorize the taker in some way based on their responses.
+    The quiz will have a certain number of possible outcomes (i.e. categories that the taker can be placed in).
+    Each question should have a number of possible answers equal to the number of possible outcomes.
+    The most frequently selected answer number will determine the outcome.
+    Each question's answer `number` 1 will correspond to the outcome with `number` 1, and so on.
+    The answers should be brief and easy for a 10-year old to understand.
+    I will give you the title of the quiz, and the possible outcomes
+    Please generate 5 questions JSON format like the example below.
+    Respond ONLY with the valid JSON and no additional text.
+
+    User: "Title: What kind of superhero are you? Outcomes: 1) Captain America, 2) Black Panther, 3) Iron Man, 4) Thor"
+
+    You:
+
+    {
+      "questions": [
+        {
+          "text": "How do you like to spend your free time?",
+          "answers": [
+            { "text": "Helping others", "number": 1 },
+            { "text": "Studying or reading", "number": 2 },
+            { "text": "Inventing or building things", "number": 3 },
+            { "text": "Exploring the outdoors", "number": 4 }
+          ]
+        }
+      ]
+      // 4 more questions...
+    }
+    """
+
+    outcomes = quiz.outcomes |> Enum.map(&"#{&1.number}) #{&1.text}") |> Enum.join(", ")
+    user_prompt = "Title: #{quiz.title}. Outcomes: #{outcomes}" |> IO.inspect()
 
     get_completion(@models[:gpt4], system_prompt, user_prompt,
       temperature: 0.8,
