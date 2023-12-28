@@ -118,8 +118,6 @@ defmodule KQ.Quizzes do
     |> Ecto.Changeset.cast(%{"outcomes" => outcomes}, [])
     |> cast_assoc(:outcomes, with: &Outcome.changeset/2)
     |> Repo.update()
-
-    {:ok, Repo.preload(quiz, :outcomes)}
   end
 
   @doc """

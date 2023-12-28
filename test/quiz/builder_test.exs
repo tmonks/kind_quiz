@@ -36,8 +36,7 @@ defmodule KQ.BuilderTest do
         Plug.Conn.resp(conn, 200, expected_response)
       end)
 
-      {:ok, quiz} = Builder.build_category_quiz("Test Quiz")
-      IO.inspect(quiz.outcomes)
+      {:ok, _quiz} = Builder.build_category_quiz("Test Quiz")
     end
   end
 

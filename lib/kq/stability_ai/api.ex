@@ -7,7 +7,9 @@ defmodule KQ.StabilityAi.Api do
 
   Possible params:
 
-  - style_preset: 3d-model, analog-film, anime, cinematic, comic-book, digital-art, enhance, fantasy-art, isometric, line-art, low-poly, modeling-compound, neon-punk, origami, photographic, pixel-art, tile-texture
+  - style_preset: 3d-model, analog-film, anime, cinematic, comic-book, digital-art,
+    enhance, fantasy-art, isometric, line-art, low-poly, modeling-compound, neon-punk,
+    origami, photographic, pixel-art, tile-texture
   """
   def generate_image(prompt, params \\ %{}) do
     model = "stable-diffusion-xl-1024-v1-0"
