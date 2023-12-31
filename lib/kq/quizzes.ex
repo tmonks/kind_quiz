@@ -22,9 +22,11 @@ defmodule KQ.Quizzes do
   @doc """
   Creates a new category quiz with the given title.
   """
-  def create_category_quiz(title) do
+  def create_category_quiz(attrs) do
+    attrs = Map.put(attrs, "type", :category)
+
     %Quiz{}
-    |> Quiz.changeset(%{title: title, type: :category})
+    |> Quiz.changeset(attrs)
     |> Repo.insert()
   end
 

@@ -19,14 +19,46 @@ defmodule KQ.QuizzesTest do
   end
 
   describe "create_category_quiz/1" do
-    test "creates a category quiz from a title" do
-      assert {:ok, %Quiz{title: "Amazing category quiz", type: :category}} =
-               Quizzes.create_category_quiz("Amazing category quiz")
+    test "creates a category quiz with outcomes and questions" do
+      attrs = %{
+        "title" => "Amazing category quiz",
+        "outcomes" => [
+          %{"text" => "Veggie Pizza", "number" => 1},
+          %{"text" => "Pepperoni Pizza", "number" => 2},
+          %{"text" => "Cheese Pizza", "number" => 3}
+        ],
+        "questions" => [
+          %{
+            "text" => "What is your favorite topping?",
+            "answers" => [
+              %{"text" => "Pepperoni", "number" => 2},
+              %{"text" => "Veggies", "number" => 1},
+              %{"text" => "Cheese", "number" => 3}
+            ]
+          },
+          %{
+            "text" => "What is your favorite crust?",
+            "answers" => [
+              %{"text" => "Thin", "number" => 1},
+              %{"text" => "Thick", "number" => 2},
+              %{"text" => "Stuffed", "number" => 3}
+            ]
+          }
+        ]
+      }
+
+      assert {:ok, %Quiz{title: "Amazing category quiz", type: :category} = quiz} =
+               Quizzes.create_category_quiz(attrs)
+
+      assert length(quiz.outcomes) == 3
+      assert length(quiz.questions) == 2
     end
 
-    test "returns an error changeset if the title is blank" do
-      assert {:error, changeset} = Quizzes.create_category_quiz("")
+    test "returns an error changeset if the title if missing a required field" do
+      assert {:error, changeset} = Quizzes.create_category_quiz(%{})
       assert {"can't be blank", _} = changeset.errors[:title]
+      assert {"can't be blank", _} = changeset.errors[:outcomes]
+      assert {"can't be blank", _} = changeset.errors[:questions]
     end
   end
 
