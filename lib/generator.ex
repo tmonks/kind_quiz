@@ -31,7 +31,7 @@ defmodule KQ.Generator do
     Each question should have a number of possible answers equal to the number of possible outcomes.
     The most frequently selected answer number will determine the outcome.
     Each question's answer `number` 1 will correspond to the outcome with `number` 1, and so on.
-    The answers should be brief and easy for a 10-year old to understand.
+    The answers should be brief, not too wordy, and easy for a 10-year old to understand.
     Insert a relevant emoji at the beginning of the title.
     I will give you the title of the quiz, and either the specific outcomes or the number of outcomes for you to make up.
     Please generate the quiz in JSON format like the example below.
@@ -80,7 +80,13 @@ defmodule KQ.Generator do
   @doc """
   Generates a set of outcomes for a category quiz
   """
-  def generate_outcomes(quiz, outcomes \\ 5) do
+  def generate_outcomes(title, outcomes \\ 5)
+
+  def generate_outcomes(%Quiz{} = quiz, outcomes) do
+    generate_outcomes(quiz.title, outcomes)
+  end
+
+  def generate_outcomes(quiz_title, outcomes) do
     system_prompt =
       """
       Please generate possible outcomes for a personality quiz.
@@ -105,7 +111,7 @@ defmodule KQ.Generator do
       }
       """
 
-    user_prompt = "Quiz title: #{quiz.title}, Outcomes: #{outcomes}"
+    user_prompt = "Quiz title: #{quiz_title}, Outcomes: #{outcomes}"
 
     %{"outcomes" => outcomes} =
       get_completion(@models[:gpt4], system_prompt, user_prompt,
@@ -202,14 +208,17 @@ defmodule KQ.Generator do
     """
 
     outcomes = quiz.outcomes |> Enum.map(&"#{&1.number}) #{&1.text}") |> Enum.join(", ")
-    user_prompt = "Title: #{quiz.title}. Outcomes: #{outcomes}" |> IO.inspect()
+    user_prompt = "Title: #{quiz.title}. Outcomes: #{outcomes}"
 
-    get_completion(@models[:gpt4], system_prompt, user_prompt,
-      temperature: 0.8,
-      response_format: %{type: "json_object"}
-    )
-    |> parse_chat()
-    |> decode_json()
+    %{"questions" => questions} =
+      get_completion(@models[:gpt4], system_prompt, user_prompt,
+        temperature: 0.8,
+        response_format: %{type: "json_object"}
+      )
+      |> parse_chat()
+      |> decode_json()
+
+    {:ok, questions}
   end
 
   @doc """
