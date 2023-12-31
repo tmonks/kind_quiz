@@ -22,7 +22,7 @@ defmodule KQ.Quizzes.Quiz do
     quiz
     |> cast(attrs, [:title, :type, :is_active])
     |> validate_required([:title, :type])
-    |> cast_assoc(:outcomes)
-    |> cast_assoc(:questions)
+    |> cast_assoc(:outcomes, required: true)
+    |> cast_assoc(:questions, required: true)
   end
 end
