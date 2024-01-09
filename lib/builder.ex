@@ -23,8 +23,8 @@ defmodule KQ.Builder do
   @doc """
   Generates and adds an image to a quiz or an outcome
   """
-  def add_image(%Quiz{} = quiz) do
-    {:ok, filename, prompt} = Generator.generate_image(quiz)
+  def add_image(%Quiz{image_prompt: prompt} = quiz) when not is_nil(prompt) do
+    {:ok, filename} = Api.generate_image(quiz.image_prompt)
 
     quiz
     |> Ecto.Changeset.change(%{image: filename, image_prompt: prompt})
@@ -68,22 +68,32 @@ defmodule KQ.Builder do
   @doc """
   Builds a category quiz with outcomes, questions, and images
   """
-  def build_category_quiz(title) do
-    {:ok, quiz} = Quizzes.create_category_quiz(title)
+  def build_category_quiz(title, options \\ []) do
+    defaults = %{}
 
-    # Adds outcomes
-    {:ok, outcomes} = Generator.generate_outcomes(quiz)
+    options = options |> Enum.into(defaults)
+    outcome_image_prompt = Map.fetch!(options, :outcome_image_prompt)
 
-    Quizzes.add_outcomes(quiz, outcomes)
+    # generate the quiz, outcomes and questions
+    attrs = Generator.generate_category_quiz(title)
+
+    # generate an image prompt for the quiz itself and add to attrs
+    {:ok, image_prompt} = Generator.generate_image_prompt(title)
+    attrs = Map.put(attrs, "image_prompt", image_prompt)
+
+    # create the quiz
+    {:ok, quiz} = Quizzes.create_category_quiz(attrs)
+
+    # generate and add cover image
+    {:ok, quiz} = add_image(quiz)
+
+    # set outcome image prompts on the quiz outcomes
+    {:ok, quiz} = Quizzes.set_outcome_image_prompts(quiz, outcome_image_prompt)
 
     # add image to each outcome
-    # add_outcome_images(quiz)
+    Enum.each(quiz.outcomes, fn outcome -> add_image(outcome) end)
 
-    # add_image(quiz)
-
-    # Add questions
-    # Enum.each(1..5, fn _ -> add_category_question(quiz) end)
-
-    # Repo.reload(quiz) |> Repo.preload(:questions)
+    # return reloaded quiz
+    {:ok, Repo.reload(quiz) |> Repo.preload([:outcomes, :questions])}
   end
 end

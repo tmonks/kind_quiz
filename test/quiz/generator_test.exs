@@ -22,7 +22,7 @@ defmodule KQ.GeneratorTest do
       assert %{"title" => title, "outcomes" => outcomes, "questions" => questions} =
                Generator.generate_category_quiz("Amazing category quiz", 5)
 
-      assert title == "🍕 What kind of pizza are you?"
+      assert title == "What kind of pizza are you?"
       assert length(outcomes) == 5
       assert %{"number" => 1, "text" => _} = Enum.at(outcomes, 0)
       assert length(questions) == 5
@@ -35,25 +35,30 @@ defmodule KQ.GeneratorTest do
     test "Generates a text prompt for creating an image for a quiz", %{bypass: bypass} do
       quiz = insert(:quiz, title: "Test Quiz")
 
-      json_response =
-        chat_response_image_prompt("Prompt for quiz image") |> elem(1) |> Jason.encode!()
-
       Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
-        Plug.Conn.resp(conn, 200, json_response)
+        Plug.Conn.resp(conn, 200, chat_response_image_prompt("Prompt for quiz image"))
       end)
 
       assert {:ok, prompt} = Generator.generate_image_prompt(quiz)
       assert prompt =~ "Prompt for quiz image"
     end
 
+    test "Generates a text prompt for creating an image for a quiz from a quiz title", %{
+      bypass: bypass
+    } do
+      Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
+        Plug.Conn.resp(conn, 200, chat_response_image_prompt("Prompt for quiz image"))
+      end)
+
+      assert {:ok, prompt} = Generator.generate_image_prompt("Some amazing quiz")
+      assert prompt =~ "Prompt for quiz image"
+    end
+
     test "Generates a text prompt for creating an image for a outcome", %{bypass: bypass} do
       outcome = insert(:outcome)
 
-      json_response =
-        chat_response_image_prompt("Prompt for outcome image") |> elem(1) |> Jason.encode!()
-
       Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
-        Plug.Conn.resp(conn, 200, json_response)
+        Plug.Conn.resp(conn, 200, chat_response_image_prompt("Prompt for outcome image"))
       end)
 
       assert {:ok, prompt} = Generator.generate_image_prompt(outcome)

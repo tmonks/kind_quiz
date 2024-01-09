@@ -20,9 +20,9 @@ defmodule KQ.Quizzes.Quiz do
   @doc false
   def changeset(quiz, attrs) do
     quiz
-    |> cast(attrs, [:title, :type, :is_active])
+    |> cast(attrs, [:title, :type, :is_active, :image_prompt])
     |> validate_required([:title, :type])
-    |> cast_assoc(:outcomes, required: true)
-    |> cast_assoc(:questions, required: true)
+    |> cast_assoc(:outcomes)
+    |> cast_assoc(:questions)
   end
 end

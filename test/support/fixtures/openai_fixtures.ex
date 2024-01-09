@@ -17,7 +17,7 @@ defmodule KQ.Fixtures.OpenAI do
           "logprobs" => nil,
           "message" => %{
             "content" =>
-              "{\n  \"title\": \"🍕 What kind of pizza are you?\",\n  \"type\": \"category\",\n  \"outcomes\": [\n    { \"number\": 1, \"text\": \"Cheese Pizza\" },\n    { \"number\": 2, \"text\": \"Pepperoni Pizza\" },\n    { \"number\": 3, \"text\": \"Veggie Pizza\" },\n    { \"number\": 4, \"text\": \"Hawaiian Pizza\" },\n    { \"number\": 5, \"text\": \"Meat Lovers Pizza\" }\n  ],\n  \"questions\": [\n    {\n      \"text\": \"What's your favorite school subject?\",\n      \"answers\": [\n        { \"text\": \"Art\", \"number\": 1 },\n        { \"text\": \"Gym\", \"number\": 2 },\n        { \"text\": \"Science\", \"number\": 3 },\n        { \"text\": \"Music\", \"number\": 4 },\n        { \"text\": \"Lunch!\", \"number\": 5 }\n      ]\n    },\n    {\n      \"text\": \"Pick a weekend activity:\",\n      \"answers\": [\n        { \"text\": \"Drawing or painting\", \"number\": 1 },\n        { \"text\": \"Playing video games\", \"number\": 2 },\n        { \"text\": \"Gardening or hiking\", \"number\": 3 },\n        { \"text\": \"Going to the beach\", \"number\": 4 },\n        { \"text\": \"Playing sports\", \"number\": 5 }\n      ]\n    },\n    {\n      \"text\": \"Choose a pet:\",\n      \"answers\": [\n        { \"text\": \"Fish\", \"number\": 1 },\n        { \"text\": \"Dog\", \"number\": 2 },\n        { \"text\": \"Cat\", \"number\": 3 },\n        { \"text\": \"Parrot\", \"number\": 4 },\n        { \"text\": \"Hamster\", \"number\": 5 }\n      ]\n    },\n    {\n      \"text\": \"What is your dream vacation?\",\n      \"answers\": [\n        { \"text\": \"Art museum tour\", \"number\": 1 },\n        { \"text\": \"Amusement park adventure\", \"number\": 2 },\n        { \"text\": \"Nature camp\", \"number\": 3 },\n        { \"text\": \"Tropical island\", \"number\": 4 },\n        { \"text\": \"Big city exploration\", \"number\": 5 }\n      ]\n    },\n    {\n      \"text\": \"Pick a superpower:\",\n      \"answers\": [\n        { \"text\": \"Invisibility\", \"number\": 1 },\n        { \"text\": \"Super speed\", \"number\": 2 },\n        { \"text\": \"Talking to animals\", \"number\": 3 },\n        { \"text\": \"Flying\", \"number\": 4 },\n        { \"text\": \"Super strength\", \"number\": 5 }\n      ]\n    }\n  ]\n}",
+              "{\n  \"title\": \"What kind of pizza are you?\",\n  \"type\": \"category\",\n  \"outcomes\": [\n    { \"number\": 1, \"text\": \"Cheese Pizza\" },\n    { \"number\": 2, \"text\": \"Pepperoni Pizza\" },\n    { \"number\": 3, \"text\": \"Veggie Pizza\" },\n    { \"number\": 4, \"text\": \"Hawaiian Pizza\" },\n    { \"number\": 5, \"text\": \"Meat Lovers Pizza\" }\n  ],\n  \"questions\": [\n    {\n      \"text\": \"What's your favorite school subject?\",\n      \"answers\": [\n        { \"text\": \"Art\", \"number\": 1 },\n        { \"text\": \"Gym\", \"number\": 2 },\n        { \"text\": \"Science\", \"number\": 3 },\n        { \"text\": \"Music\", \"number\": 4 },\n        { \"text\": \"Lunch!\", \"number\": 5 }\n      ]\n    },\n    {\n      \"text\": \"Pick a weekend activity:\",\n      \"answers\": [\n        { \"text\": \"Drawing or painting\", \"number\": 1 },\n        { \"text\": \"Playing video games\", \"number\": 2 },\n        { \"text\": \"Gardening or hiking\", \"number\": 3 },\n        { \"text\": \"Going to the beach\", \"number\": 4 },\n        { \"text\": \"Playing sports\", \"number\": 5 }\n      ]\n    },\n    {\n      \"text\": \"Choose a pet:\",\n      \"answers\": [\n        { \"text\": \"Fish\", \"number\": 1 },\n        { \"text\": \"Dog\", \"number\": 2 },\n        { \"text\": \"Cat\", \"number\": 3 },\n        { \"text\": \"Parrot\", \"number\": 4 },\n        { \"text\": \"Hamster\", \"number\": 5 }\n      ]\n    },\n    {\n      \"text\": \"What is your dream vacation?\",\n      \"answers\": [\n        { \"text\": \"Art museum tour\", \"number\": 1 },\n        { \"text\": \"Amusement park adventure\", \"number\": 2 },\n        { \"text\": \"Nature camp\", \"number\": 3 },\n        { \"text\": \"Tropical island\", \"number\": 4 },\n        { \"text\": \"Big city exploration\", \"number\": 5 }\n      ]\n    },\n    {\n      \"text\": \"Pick a superpower:\",\n      \"answers\": [\n        { \"text\": \"Invisibility\", \"number\": 1 },\n        { \"text\": \"Super speed\", \"number\": 2 },\n        { \"text\": \"Talking to animals\", \"number\": 3 },\n        { \"text\": \"Flying\", \"number\": 4 },\n        { \"text\": \"Super strength\", \"number\": 5 }\n      ]\n    }\n  ]\n}",
             "role" => "assistant"
           }
         }
@@ -41,30 +41,30 @@ defmodule KQ.Fixtures.OpenAI do
   end
 
   def chat_response_image_prompt(expected_text \\ "Some image prompt") do
-    {:ok,
-     %{
-       id: "chatcmpl-8WVzE1LU67FXluVAn9dMSre0KncVE",
-       usage: %{
-         "completion_tokens" => 67,
-         "prompt_tokens" => 110,
-         "total_tokens" => 177
-       },
-       created: 1_702_760_144,
-       object: "chat.completion",
-       model: "gpt-4-1106-preview",
-       choices: [
-         %{
-           "finish_reason" => "stop",
-           "index" => 0,
-           "logprobs" => nil,
-           "message" => %{
-             "content" => expected_text,
-             "role" => "assistant"
-           }
-         }
-       ],
-       system_fingerprint: "fp_3905aa4f79"
-     }}
+    %{
+      id: "chatcmpl-8WVzE1LU67FXluVAn9dMSre0KncVE",
+      usage: %{
+        "completion_tokens" => 67,
+        "prompt_tokens" => 110,
+        "total_tokens" => 177
+      },
+      created: 1_702_760_144,
+      object: "chat.completion",
+      model: "gpt-4-1106-preview",
+      choices: [
+        %{
+          "finish_reason" => "stop",
+          "index" => 0,
+          "logprobs" => nil,
+          "message" => %{
+            "content" => expected_text,
+            "role" => "assistant"
+          }
+        }
+      ],
+      system_fingerprint: "fp_3905aa4f79"
+    }
+    |> Jason.encode!()
   end
 
   def chat_response_outcomes do
@@ -121,5 +121,11 @@ defmodule KQ.Fixtures.OpenAI do
       system_fingerprint: "fp_3905aa4f79"
     }
     |> Jason.encode!()
+  end
+
+  def expect_chat_request(bypass, response) do
+    Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
+      Plug.Conn.resp(conn, 200, response)
+    end)
   end
 end

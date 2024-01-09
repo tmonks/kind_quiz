@@ -224,7 +224,7 @@ defmodule KQ.Generator do
   @doc """
   Generates an prompt to create a cover image for a quiz or outcome
   """
-  def generate_image_prompt(%Quiz{} = quiz) do
+  def generate_image_prompt(quiz_title) when is_binary(quiz_title) do
     system_prompt = """
     You are a an image prompt generator that generates prompts to create cover images for quizzes.
     I will give you the title of the quiz and you will generate a prompt for a cover image for that quiz.
@@ -232,10 +232,14 @@ defmodule KQ.Generator do
     Do not give any additional explantion, just the prompt text that can be passed to the DALL-E model.
     """
 
-    user_prompt = "Title: #{quiz.title}"
+    user_prompt = "Title: #{quiz_title}"
 
     get_completion(@models[:gpt4], system_prompt, user_prompt, temperature: 0.8)
     |> parse_chat()
+  end
+
+  def generate_image_prompt(%Quiz{} = quiz) do
+    generate_image_prompt(quiz.title)
   end
 
   def generate_image_prompt(%Outcome{} = outcome) do

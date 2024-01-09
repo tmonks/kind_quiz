@@ -17,26 +17,45 @@ defmodule KQ.BuilderTest do
   end
 
   describe "build_category_quiz/1" do
-    test "creates a quiz from the specified title", %{bypass: bypass} do
-      expected_response = chat_response_outcomes() |> elem(1) |> Jason.encode!()
+    test "uses OpenAI and StabilityAI to build a complete category quiz", %{bypass: bypass} do
+      {:ok, agent} = Agent.start_link(fn -> 1 end)
+      counter_fn = fn -> Agent.get_and_update(agent, fn x -> {x, x + 1} end) end
 
-      Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
-        Plug.Conn.resp(conn, 200, expected_response)
+      Bypass.expect(bypass, "POST", "/v1/chat/completions", fn conn ->
+        case counter_fn.() do
+          1 ->
+            Plug.Conn.resp(conn, 200, chat_response_category_quiz())
+
+          2 ->
+            Plug.Conn.resp(conn, 200, chat_response_image_prompt("Prompt for cover image"))
+
+          _ ->
+            raise "Unexpected call to OpenAI"
+        end
       end)
 
-      {:ok, quiz} = Builder.build_category_quiz("Test Quiz")
+      # Call to StabilityAI to generate cover image
+      expect_text_to_image_request("Prompt for cover image")
 
-      assert quiz.title == "Test Quiz"
-    end
+      # Call to StabilityAI 5 more times to generate outcome images
+      expect_text_to_image_request("Prompt for Cheese Pizza outcome")
+      expect_text_to_image_request("Prompt for Pepperoni Pizza outcome")
+      expect_text_to_image_request("Prompt for Veggie Pizza outcome")
+      expect_text_to_image_request("Prompt for Hawaiian Pizza outcome")
+      expect_text_to_image_request("Prompt for Meat Lovers Pizza outcome")
 
-    test "calls OpenAI to generate and add outcomes", %{bypass: bypass} do
-      expected_response = chat_response_outcomes() |> elem(1) |> Jason.encode!()
+      {:ok, quiz} =
+        Builder.build_category_quiz("What kind of pizza are you?",
+          outcome_image_prompt: "Prompt for {{outcome}} outcome"
+        )
 
-      Bypass.expect_once(bypass, "POST", "/v1/chat/completions", fn conn ->
-        Plug.Conn.resp(conn, 200, expected_response)
-      end)
-
-      {:ok, _quiz} = Builder.build_category_quiz("Test Quiz")
+      assert quiz.title == "What kind of pizza are you?"
+      assert quiz.image_prompt == "Prompt for cover image"
+      assert quiz.image =~ ~r/img.*png/
+      assert [outcome1 | _] = quiz.outcomes
+      assert outcome1.text == "Cheese Pizza"
+      assert outcome1.image_prompt == "Prompt for Cheese Pizza outcome"
+      assert outcome1.image =~ ~r/img.*png/
     end
   end
 
@@ -50,6 +69,15 @@ defmodule KQ.BuilderTest do
       {:ok, outcome} = Builder.add_image(outcome)
       # image named with date and seed
       assert outcome.image == "img-#{date}-953806256.png"
+    end
+
+    test "can generate and add an image to a quiz" do
+      quiz = insert(:quiz, image_prompt: "picture of a cat", image: nil)
+
+      expect_text_to_image_request("picture of a cat")
+
+      {:ok, quiz} = Builder.add_image(quiz)
+      assert quiz.image =~ ~r/img.*png/
     end
   end
 
