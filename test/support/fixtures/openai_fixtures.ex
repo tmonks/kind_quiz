@@ -1,4 +1,32 @@
 defmodule KQ.Fixtures.OpenAI do
+  def chat_response_trivia_question do
+    %{
+      id: "chatcmpl-8f8Ewf1UBcHZgf0Z9o6tlbHKgC9RR",
+      usage: %{
+        "completion_tokens" => 170,
+        "prompt_tokens" => 317,
+        "total_tokens" => 487
+      },
+      choices: [
+        %{
+          "finish_reason" => "stop",
+          "index" => 0,
+          "logprobs" => nil,
+          "message" => %{
+            "content" =>
+              "{\n  \"text\": \"In a crisis, what role would you most likely take on?\",\n  \"correct\": 3,\n  \"explanation\": \"Leaders are decisive and often take charge in times of crisis, much like Captain America. Technicians are the problem solvers, similar to Iron Man with his tech-savvy. Scouts assess situations carefully like Black Widow. Healers, on the other hand, take care of others, akin to the nurturing nature of a superhero like Groot.\",\n  \"answers\": [\n    { \"text\": \"The Leader\", \"number\": 1 },\n    { \"text\": \"The Technician\", \"number\": 2 },\n    { \"text\": \"The Scout\", \"number\": 3 },\n    { \"text\": \"The Healer\", \"number\": 4 }\n  ]\n}",
+            "role" => "assistant"
+          }
+        }
+      ],
+      model: "gpt-4-1106-preview",
+      created: 1_704_813_814,
+      object: "chat.completion",
+      system_fingerprint: "fp_168383a679"
+    }
+    |> Jason.encode!()
+  end
+
   def chat_response_category_quiz do
     %{
       id: "chatcmpl-8bs4ZU6eRVyt09VF26oN9dVTohmjL",

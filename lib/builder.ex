@@ -10,14 +10,15 @@ defmodule KQ.Builder do
   @doc """
   Populates questions for brand new trivia quizzes
   """
-  def create_trivia_quiz(title) do
-    {:ok, quiz} = Quizzes.create_trivia_quiz(title)
+  def build_trivia_quiz(title) do
+    {:ok, image_prompt} = Generator.generate_image_prompt(title)
+    {:ok, quiz} = Quizzes.create_trivia_quiz(%{title: title, image_prompt: image_prompt})
 
     add_image(quiz)
 
     Enum.each(1..10, fn _ -> add_trivia_question(quiz) end)
 
-    Repo.reload(quiz) |> Repo.preload(:questions)
+    {:ok, Repo.reload(quiz) |> Repo.preload(:questions)}
   end
 
   @doc """
@@ -46,7 +47,6 @@ defmodule KQ.Builder do
     Generator.generate_trivia_question(quiz)
     |> create_question_changeset(quiz)
     |> Repo.insert()
-    |> IO.inspect()
   end
 
   defp create_question_changeset(attrs, quiz) do

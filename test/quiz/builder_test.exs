@@ -16,6 +16,34 @@ defmodule KQ.BuilderTest do
     {:ok, bypass: bypass}
   end
 
+  describe "build_trivia_quiz/1" do
+    test "uses OpenAI and StabilityAI to build a complete trivia quiz", %{bypass: bypass} do
+      # set up counter for OpenAI calls
+      {:ok, agent} = Agent.start_link(fn -> 1 end)
+      counter_fn = fn -> Agent.get_and_update(agent, fn x -> {x, x + 1} end) end
+
+      Bypass.expect(bypass, "POST", "/v1/chat/completions", fn conn ->
+        case counter_fn.() do
+          1 ->
+            # OpenAI call to generate the image prompt
+            Plug.Conn.resp(conn, 200, chat_response_image_prompt("Prompt for cover image"))
+
+          _ ->
+            # multiple OpenAI calls to generate the questions
+            Plug.Conn.resp(conn, 200, chat_response_trivia_question())
+        end
+      end)
+
+      # StabilityAI call to generate the image
+      expect_text_to_image_request("Prompt for cover image")
+
+      assert {:ok, quiz} = Builder.build_trivia_quiz("Marvel trivia quiz")
+      assert quiz.image_prompt == "Prompt for cover image"
+      assert quiz.image =~ ~r/img.*png/
+      assert length(quiz.questions) == 10
+    end
+  end
+
   describe "build_category_quiz/1" do
     test "uses OpenAI and StabilityAI to build a complete category quiz", %{bypass: bypass} do
       {:ok, agent} = Agent.start_link(fn -> 1 end)
