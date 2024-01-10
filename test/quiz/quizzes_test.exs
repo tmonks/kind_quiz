@@ -7,13 +7,15 @@ defmodule KQ.QuizzesTest do
   alias KQ.Quizzes.Quiz
 
   describe "create_trivia_quiz/1" do
-    test "creates a trivia quiz from a title" do
+    test "creates a trivia quiz from valid quiz attributes" do
+      attrs = %{title: "Amazing trivia quiz"}
+
       assert {:ok, %Quiz{title: "Amazing trivia quiz", type: :trivia}} =
-               Quizzes.create_trivia_quiz("Amazing trivia quiz")
+               Quizzes.create_trivia_quiz(attrs)
     end
 
     test "returns an error changeset if the title is blank" do
-      assert {:error, changeset} = Quizzes.create_trivia_quiz("")
+      assert {:error, changeset} = Quizzes.create_trivia_quiz(%{title: nil})
       assert {"can't be blank", _} = changeset.errors[:title]
     end
   end

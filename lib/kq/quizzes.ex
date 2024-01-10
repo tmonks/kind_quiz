@@ -13,9 +13,11 @@ defmodule KQ.Quizzes do
   @doc """
   Creates a new trivia quiz with the given title.
   """
-  def create_trivia_quiz(title) do
+  def create_trivia_quiz(attrs) do
+    attrs = Map.put(attrs, :type, :trivia)
+
     %Quiz{}
-    |> Quiz.changeset(%{title: title, type: :trivia})
+    |> Quiz.changeset(attrs)
     |> Repo.insert()
   end
 
