@@ -32,6 +32,7 @@ defmodule KQ.Generator do
     The most frequently selected answer number will determine the outcome.
     Each question's answer `number` 1 will correspond to the outcome with `number` 1, and so on.
     The answers should be brief, not too wordy, and easy for a 10-year old to understand.
+    The answers should NOT BE OBVIOUSLY RELATED TO THE OUTCOME, so the taker cannot easily guess the outcome.
     Insert a relevant emoji at the beginning of the title.
     I will give you the title of the quiz, and either the specific outcomes or the number of outcomes for you to make up.
     Please generate the quiz in JSON format like the example below.
@@ -58,7 +59,7 @@ defmodule KQ.Generator do
             { "text": "Helping others", "number": 1 },
             { "text": "Studying or reading", "number": 2 },
             { "text": "Inventing or building things", "number": 3 },
-            { "text": "Practicing archery or other sports", "number": 4 },
+            { "text": "Playing sports", "number": 4 },
             { "text": "Exploring the outdoors", "number": 5 }
           ]
         }
