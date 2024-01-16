@@ -69,13 +69,15 @@ defmodule KQ.Builder do
   Builds a category quiz with outcomes, questions, and images
   """
   def build_category_quiz(title, options \\ []) do
-    defaults = %{}
-
+    defaults = %{outcomes: 5}
     options = options |> Enum.into(defaults)
+
+    # TODO: make outcome_image_prompt optional
     outcome_image_prompt = Map.fetch!(options, :outcome_image_prompt)
+    outcomes = Map.get(options, :outcomes)
 
     # generate the quiz, outcomes and questions
-    attrs = Generator.generate_category_quiz(title)
+    attrs = Generator.generate_category_quiz(title, outcomes)
 
     # generate an image prompt for the quiz itself and add to attrs
     {:ok, image_prompt} = Generator.generate_image_prompt(title)
