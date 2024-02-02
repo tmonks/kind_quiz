@@ -17,10 +17,14 @@ defmodule KQWeb.Router do
   scope "/", KQWeb do
     pipe_through :browser
 
-    live "/", IndexLive
-    live "/quiz/:id", QuizLive, :show
-    live "/quiz/:id/outcome/:number", OutcomeLive, :show
-    live "/trivia/:id", TriviaQuizLive, :show
+    live_session :auth_check, on_mount: KQWeb.InitAssigns do
+      live "/", IndexLive
+      live "/quiz/:id", QuizLive, :show
+      live "/quiz/:id/outcome/:number", OutcomeLive, :show
+      live "/trivia/:id", TriviaQuizLive, :show
+    end
+
+    get "/login", AuthController, :login
   end
 
   scope "/admin", KQWeb do
