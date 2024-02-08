@@ -26,19 +26,4 @@ defmodule KQWeb.Router do
 
     get "/login", AuthController, :login
   end
-
-  scope "/admin", KQWeb do
-    pipe_through [:browser, :auth]
-
-    live "/", AdminLive
-  end
-
-  defp auth(conn, _opts) do
-    config = Application.get_env(:quiz, :auth)
-
-    Plug.BasicAuth.basic_auth(conn,
-      username: Keyword.fetch!(config, :username),
-      password: Keyword.fetch!(config, :password)
-    )
-  end
 end
