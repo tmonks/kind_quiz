@@ -116,7 +116,7 @@ defmodule KQWeb.IndexLiveTest do
       conn =
         conn
         |> init_test_session(%{})
-        |> put_session("authenticated", true)
+        |> put_session("is_admin", true)
 
       %{context | conn: conn}
     end

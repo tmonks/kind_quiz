@@ -14,7 +14,7 @@ defmodule KQWeb.AuthController do
       conn
     else
       conn
-      |> put_session("authenticated", true)
+      |> put_session("is_admin", true)
       |> redirect(to: "/")
     end
   end

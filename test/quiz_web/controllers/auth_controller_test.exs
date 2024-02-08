@@ -27,8 +27,8 @@ defmodule KQWeb.AuthControllerTest do
       assert response(conn, 302)
       assert redirected_to(conn) == "/"
 
-      # session now contains authenticated = true
-      assert get_session(conn, :authenticated) == true
+      # session now contains is_admin = true
+      assert get_session(conn, :is_admin) == true
     end
   end
 end

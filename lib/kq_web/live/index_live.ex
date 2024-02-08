@@ -6,7 +6,7 @@ defmodule KQWeb.IndexLive do
   @impl true
   def mount(_params, _session, socket) do
     quizzes =
-      if socket.assigns.authenticated do
+      if socket.assigns.is_admin do
         Quizzes.list_quizzes()
       else
         Quizzes.list_active_quizzes()
@@ -46,7 +46,7 @@ defmodule KQWeb.IndexLive do
               <div class="text-xl font-bold mb-2">
                 <%= quiz.title %>
               </div>
-              <%= if @authenticated do %>
+              <%= if @is_admin do %>
               <div>
                 <label>
                   <input
